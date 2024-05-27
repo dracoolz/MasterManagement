@@ -1,0 +1,36 @@
+@charset "UTF-8";
+.top-button {
+    display: flex;
+    gap: 1vw;
+    margin-left: 5vw;
+}
+
+.table {
+    margin-top: 3vh auto;
+}
+
+table, th, td {
+    border: 1px solid black;
+    text-align: center;
+}
+
+.chart-1 {
+    display: flex;
+    justify-content: center;
+    gap: 15%;
+    margin-top: 10vh;
+    margin-left: 5%;
+}
+
+.chart-2 {
+    display: flex;
+    justify-content: center;
+    gap: 20%;
+    margin-top: 10vh;
+    margin-left: 20%;
+}
+
+.footer_button {
+    margin-top: 5vh;
+}
+

@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>商品売上一覧</title>
-<link rel="stylesheet" href="../css/productList.css">
+<link rel="stylesheet" href="../css/companyList.css">
 <script>
     function incrementMonth() {
         const monthSelect = document.getElementById("month");
@@ -44,7 +44,7 @@
 </head>
 <body>
 	<div align="center">
-		<strong>商品別売上一覧</strong>
+		<strong>取引先別売上一覧</strong>
 		<div align="right">
 			<p>
 				<%="ようこそ、"+session.getAttribute("username")+"さん" %>
@@ -75,51 +75,32 @@
 			<option value="12">12</option>
 		</select> <a href="javascript:incrementMonth();">
 			<div class="arrow-right"></div>
-		</a> <br>
+		</a> 
+		<br><br>
 		<div class="form-container">
 			<div class="form-group">
-				<label for="product_name">商品名：</label> <input type="text"
-					id="product_name" size="20">
+				<label for="customer_name">取引先名：</label> <input type="text"
+					id="customer_name" size="20">
 			</div>
 			<div class="form-group">
-				<label for="big">大カテゴリ：</label> <select name="big" id="big">
-					<option value="">選択してください</option>
-					<option value="big_3">big_3</option>
-					<option value="big_2">big_2</option>
-					<option value="big_1">big_1</option>
-				</select>
+				<label for="contact_name">担当者：</label> <input type="text"
+					id="contact_name" size="20">
 			</div>
 			<div class="form-group">
-				<label for="small">小カテゴリ：</label> <select name="small" id="small">
-					<option value="">選択してください</option>
-					<option value="small_3">small_3</option>
-					<option value="small_2">small_2</option>
-					<option value="small_1">small_1</option>
-				</select>
+				<label for="district">県：</label> <input type="text" id="district"
+					size="20">
 			</div>
 		</div>
 		<button type="button">検索</button>
-		<!-- table -->
 		<div class="table">
 			<table>
 				<tr>
-					<th>dir商品ID▽</th>
-					<th>商品名▽</th>
-					<th colspan="3">小カテゴリ▽</th>
-					<th>販売単価▽</th>
-					<th>仕入単価▽</th>
-					<th>販売数▽</th>
-					<th>粗利▽</th>
-					<th>先年度比</th>
-					<th></th>
+					<th>取引先ID▽</th>
+					<th>取引先名▽</th>
+					<th>売上(万円)▽</th>
+					<th>先年度比(%)▽</th>
 				</tr>
 				<tr>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
 					<td>xxx</td>
 					<td>xxx</td>
 					<td>xxx</td>
