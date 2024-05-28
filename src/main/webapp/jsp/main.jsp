@@ -3,7 +3,7 @@
 <head>
 <title>メインメニュー</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" src="**.css">
+<link rel="stylesheet" src="../css/main.css">
 </head>
 
 <body>
@@ -19,7 +19,5 @@
 		<a href="">受注管理</a><br><br>
 		<a href="./password.jsp?state=change">パスワード変更</a>
 	</div>
-
-
 </body>
 </html>

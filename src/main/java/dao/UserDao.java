@@ -43,12 +43,10 @@ public class UserDao extends DBAccess{
 			return list;
 		}
 		
-		
-		//ユーザテーブルでパスワードを検索するメソッド
-		public UserBean selectPassword(int id) {
+		//ユーザテーブルで検索するメソッド
+		public UserBean select(int id) {
 
 			UserBean bean = new UserBean();
-
 			String sql = "select * from emp_info where emp_id=?";
 
 			try {
@@ -56,11 +54,15 @@ public class UserDao extends DBAccess{
 				// ステートメントの作成
 				PreparedStatement ps = getConnection().prepareStatement(sql);
 				ps.setInt(1, id);
-
 				ResultSet rs = ps.executeQuery();
-
-				bean.setEmp_id(rs.getInt("emp_id"));
-				bean.setPassword(rs.getString("password"));
+				
+				while (rs.next()) {
+					bean.setEmp_id(rs.getInt("emp_id"));
+					bean.setEmp_name(rs.getString("emp_name"));
+					bean.setFurigana(rs.getString("furigana"));
+					bean.setFurigana(rs.getString("password"));
+					bean.setFurigana(rs.getString("role"));
+				}
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -69,8 +71,8 @@ public class UserDao extends DBAccess{
 			}
 			return bean;
 		}
-		
-		//ユーザテーブルでパスワードを検索するメソッド
+				
+		//ユーザテーブルで部分一致で検索するメソッド
 		public ArrayList<UserBean> selectPart(String str) {
 			
 			ArrayList<UserBean> list = new ArrayList<UserBean>();
