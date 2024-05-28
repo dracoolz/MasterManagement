@@ -10,7 +10,9 @@ public class SalesBean implements Serializable {
 	private int sale_amount;
 	private int sale_price;
 	private LocalDate date;
-	
+	private String cus_name;
+    private int gross_profit;
+    	
 	
 	public int getSale_id() {
 		return sale_id;
@@ -59,5 +61,23 @@ public class SalesBean implements Serializable {
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
+	
+	public String getCus_name() {
+		return cus_name;
+	}
+
+	public void setCus_name(String cus_name) {
+		this.cus_name = cus_name;
+	}
+
+	public int getGross_profit() {
+		return gross_profit;
+	}
+
+	public void setGross_profit(int gross_profit) {
+		this.gross_profit = gross_profit;
+	}
+
+
 
 }

@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
+<%@ page import="bean.SalesBean"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>商品売上一覧</title>
-<link rel="stylesheet" href="../css/companyList.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/productList.css">
 <script>
     function incrementMonth() {
         const monthSelect = document.getElementById("month");
@@ -43,6 +46,7 @@
 </script>
 </head>
 <body>
+	<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("companylist"); %>
 	<div align="center">
 		<strong>取引先別売上一覧</strong>
 		<div align="right">
@@ -75,23 +79,24 @@
 			<option value="12">12</option>
 		</select> <a href="javascript:incrementMonth();">
 			<div class="arrow-right"></div>
-		</a> 
-		<br><br>
-		<div class="form-container">
-			<div class="form-group">
-				<label for="customer_name">取引先名：</label> <input type="text"
-					id="customer_name" size="20">
+		</a> <br> <br>
+		<form method="post" action="./list">
+			<div class="form-container">
+				<div class="form-group">
+					<label for="customer_name">取引先名：</label> <input type="text"
+						name="customer_name" id="customer_name" size="20">
+				</div>
+				<div class="form-group">
+					<label for="contact_name">担当者：</label> <input type="text"
+						name="contact_name" id="contact_name" size="20">
+				</div>
+				<div class="form-group">
+					<label for="district">県：</label> <input type="text" name="district"
+						id="district" size="20">
+				</div>
 			</div>
-			<div class="form-group">
-				<label for="contact_name">担当者：</label> <input type="text"
-					id="contact_name" size="20">
-			</div>
-			<div class="form-group">
-				<label for="district">県：</label> <input type="text" id="district"
-					size="20">
-			</div>
-		</div>
-		<button type="button">検索</button>
+			<button type="submit" value="検索">検索</button>
+		</form>
 		<div class="table">
 			<table>
 				<tr>
@@ -99,16 +104,17 @@
 					<th>取引先名▽</th>
 					<th>売上(万円)▽</th>
 					<th>先年度比(%)▽</th>
+					<th></th>
 				</tr>
+				<% for (int i = 0; i < list.size(); i++) { %>
 				<tr>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>
-						<button type="button">詳細</button>
-					</td>
+					<td><%= list.get(i).getCus_id() %></td>
+					<td><%= list.get(i).getCus_name() %></td>
+					<td><%= list.get(i).getSale_amount() %></td>
+					<td><%= list.get(i).getGross_profit() %></td>
+					<td><button type="button">詳細</button></td>
 				</tr>
+				<% } %>
 			</table>
 		</div>
 		<div class="footer_button">

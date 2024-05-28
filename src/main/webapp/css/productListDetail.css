@@ -1,4 +1,8 @@
 @charset "UTF-8";
+strong {
+	font-size: 30px;
+}
+
 .top-button {
     display: flex;
     gap: 1vw;

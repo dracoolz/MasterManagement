@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
+<%@ page import="bean.SalesBean"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>商品売上一覧</title>
-<link rel="stylesheet" href="../css/productList.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/productList.css">
 <script>
     function incrementMonth() {
         const monthSelect = document.getElementById("month");
@@ -43,11 +46,12 @@
 </script>
 </head>
 <body>
+	<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("list"); %>
 	<div align="center">
 		<strong>商品別売上一覧</strong>
 		<div align="right">
 			<p>
-				<%="ようこそ、"+session.getAttribute("username")+"さん" %>
+				<%="ようこそ、" + session.getAttribute("username") + "さん"%>
 			</p>
 			<a href="/first">ログアウト</a>
 		</div>
@@ -101,33 +105,33 @@
 		<button type="button">検索</button>
 		<!-- table -->
 		<div class="table">
-			<table>
+			<table border="1">
 				<tr>
-					<th>dir商品ID▽</th>
-					<th>商品名▽</th>
-					<th colspan="3">小カテゴリ▽</th>
-					<th>販売単価▽</th>
-					<th>仕入単価▽</th>
-					<th>販売数▽</th>
+					<th>販売ID▽</th>
+					<th>顧客ID▽</th>
+					<th>顧客名▽</th>
+					<th>商品ID▽</th>
+					<th>販売量▽</th>
+					<th>販売価格▽</th>
 					<th>粗利▽</th>
-					<th>先年度比</th>
+					<th>日付▽</th>
 					<th></th>
 				</tr>
-				<tr>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>
-						<button type="button">詳細</button>
-					</td>
+
+				<% for (int i = 0; i < list.size(); i++) { %>
+				<tr align="center">
+					<td><%= list.get(i).getSale_id() %></td>
+					<td><%= list.get(i).getCus_id() %></td>
+					<td><%= list.get(i).getCus_name() %></td>
+					<td><%= list.get(i).getPro_id() %></td>
+					<td><%= list.get(i).getSale_amount() %></td>
+					<td><%= list.get(i).getSale_price() %></td>
+					<td><%= list.get(i).getGross_profit() %></td>
+					<td><%= list.get(i).getDate() %></td>
+					<td><button type="button">詳細</button></td>
 				</tr>
+				<% } %>
+
 			</table>
 		</div>
 		<div class="footer_button">
