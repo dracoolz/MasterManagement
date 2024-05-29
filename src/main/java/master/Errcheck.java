@@ -1,11 +1,21 @@
 package master;
 
+import bean.UserBean;
+import dao.UserDao;
+
 public class Errcheck {
 
-	public int inputCheck(String str1, String str2) {
-		if(str1 == null) {
+	public int inputCheck(String str) {
+		if(str.length() == 0) {
 			return 1;
-		} else if(str2 == null) {
+		}
+		return 0;
+	}
+	
+	public int inputCheck(String str1, String str2) {
+		if(str1.length() == 0) {
+			return 1;
+		} else if(str2.length() == 0) {
 			return 2;
 		}
 		return 0;
@@ -28,6 +38,15 @@ public class Errcheck {
 		return false;
 	}
 
+	public Boolean existId(int id){
+		UserDao dao = new UserDao();
+		UserBean bean = dao.select(id);
+		if(id == bean.getEmp_id()){
+			return true;
+		}
+		return false;
+	}
+	
 	/*
 	 * 	public String numCheck(String id,String kakaku){
 		String msg;
@@ -39,20 +58,6 @@ public class Errcheck {
 			}
 		}else{
 			msg="IDと価格には数字を入力して下さい";
-		}
-		return msg;
-	}
-	
-	public String exitId(String id){
-		String msg=null;
-		UserDao dao = new UserDao();
-		ArrayList<UserBean> list = dao.jouken(id);
-		for(int i = 0; i<list.size();i++){
-
-			if(id.equals(list.get(i).getId())){
-				msg="既に存在しています";
-			}
-
 		}
 		return msg;
 	}

@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import bean.DBAccess;
 import bean.UserBean;
 
 public class UserDao extends DBAccess{
@@ -48,7 +47,7 @@ public class UserDao extends DBAccess{
 
 			UserBean bean = new UserBean();
 			String sql = "select * from emp_info where emp_id=?";
-
+			
 			try {
 				connect();
 				// ステートメントの作成
@@ -60,8 +59,8 @@ public class UserDao extends DBAccess{
 					bean.setEmp_id(rs.getInt("emp_id"));
 					bean.setEmp_name(rs.getString("emp_name"));
 					bean.setFurigana(rs.getString("furigana"));
-					bean.setFurigana(rs.getString("password"));
-					bean.setFurigana(rs.getString("role"));
+					bean.setPassword(rs.getString("password"));
+					bean.setRole(rs.getInt("role"));
 				}
 				
 			} catch (SQLException e) {
@@ -69,6 +68,7 @@ public class UserDao extends DBAccess{
 			} finally {
 				disconnect();
 			}
+			System.out.println("Role is " +bean.getRole());
 			return bean;
 		}
 				

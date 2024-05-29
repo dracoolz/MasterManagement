@@ -25,37 +25,50 @@ public class LoginServlet extends HttpServlet {
 		//文字コードの設定
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
+		HttpSession session = request.getSession(true);
+		RequestDispatcher rd = null;
 		
-		
-		String id = (String)request.getParameter("id");
-		String pw = (String)request.getParameter("pass");
-		String err = null;
-		Errcheck e = new Errcheck();
-		
-		if(e.inputCheck(id,pw) == 1) {
-			err = "社員番号が入力されていません";
-		} else if(e.inputCheck(id, pw) == 2){
-			err = "パスワードが入力されていません";
-		} else if(e.numberCheck(id) == false) {
-			err = "社員番号が数字で入力されていません";
-		} else {
-			int iid = Integer.parseInt(id);
-			String correct;
-			UserDao dao = new UserDao();
-			UserBean bean = dao.select(iid);
-			correct = bean.getPassword();
-			if(e.correctCheck(pw, correct) == false) {
-				err = "社員番号またはパスワードが違います";
-			} else {
-				HttpSession session = request.getSession(true);
-				session.setAttribute("username", bean.getEmp_name());
-				session.setAttribute("userrole", bean.getRole());
-				RequestDispatcher rd = request.getRequestDispatcher("/jsp/main.jsp");
-				rd.forward(request, response);
+		try {
+			String name = (String)request.getParameter("submit");
+			if(name.equals("ログイン") || name.equals("戻る")) {
+				try {
+					String id = (String)request.getParameter("id");
+					String pw = (String)request.getParameter("pass");
+					String err = null;
+					Errcheck e = new Errcheck();
+					
+					if(e.inputCheck(id,pw) == 1) {
+						err = "社員番号が入力されていません";
+					} else if(e.inputCheck(id, pw) == 2){
+						err = "パスワードが入力されていません";
+					} else if(e.numberCheck(id) == false) {
+						err = "社員番号が数字で入力されていません";
+					} else {
+						int iid = Integer.parseInt(id);
+						UserDao dao = new UserDao();
+						UserBean bean = dao.select(iid);
+						String correct = bean.getPassword();
+						if(e.correctCheck(pw, correct) == false) {
+							err = "社員番号またはパスワードが違います";
+						} else {
+							session.setAttribute("username", bean.getEmp_name());
+							session.setAttribute("userrole", bean.getRole());
+							rd = request.getRequestDispatcher("/jsp/main.jsp");
+							rd.forward(request, response);
+						}
+					}
+					request.setAttribute("id", id);
+					request.setAttribute("pass", pw);
+					request.setAttribute("err", err);
+					rd = request.getRequestDispatcher("/jsp/login.jsp");
+				} catch (Exception e) {
+					rd = request.getRequestDispatcher("/jsp/main.jsp");
+				}
 			}
+		} catch (Exception e2) {
+			e2.printStackTrace();
+			rd = request.getRequestDispatcher("/jsp/forget.jsp");
 		}
-		request.setAttribute("err", err);
-		RequestDispatcher rd = request.getRequestDispatcher("/jsp/login.jsp");
 		rd.forward(request, response);
 	}
 }
