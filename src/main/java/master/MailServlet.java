@@ -52,7 +52,7 @@ public class MailServlet extends HttpServlet {
 		        // メールサーバーのホスト名
 		        String host = "smtp.gmail.com";
 		        // ポート番号（SSLを使用する場合）
-		        int port = 8080;
+		        int port = 465;
 		        // 送信元メールアドレスとパスワード
 		        String from = "gksi.kenshu.202405@gmail.com";
 		        String password = "Pa$$w0rd12345";
@@ -70,7 +70,6 @@ public class MailServlet extends HttpServlet {
 		                return new PasswordAuthentication(from, password);
 		            }
 		        });
-		        session.setDebug(true);
 		        System.out.println("props ok");
 		        // セッションの取得
 		        System.out.println("ike");
@@ -83,6 +82,7 @@ public class MailServlet extends HttpServlet {
 		            message.setSubject("パスワードリセット");
 		            message.setText("以下のリンクからパスワードをリセットしてください\n"
 		            		+ "/jsp/password.jsp");
+		            session.setDebug(true);
 		            
 		            // メールの送信
 		            System.out.println("send");
