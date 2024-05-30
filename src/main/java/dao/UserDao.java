@@ -29,8 +29,9 @@ public class UserDao extends DBAccess{
 					bean.setEmp_id(rs.getInt("emp_id"));
 					bean.setEmp_name(rs.getString("emp_name"));
 					bean.setFurigana(rs.getString("furigana"));
-					bean.setFurigana(rs.getString("password"));
-					bean.setFurigana(rs.getString("role"));
+					bean.setEmp_email(rs.getString("emp_email"));
+					bean.setPassword(rs.getString("password"));
+					bean.setRole(rs.getInt("role"));
 					list.add(bean);
 				}
 
@@ -59,6 +60,7 @@ public class UserDao extends DBAccess{
 					bean.setEmp_id(rs.getInt("emp_id"));
 					bean.setEmp_name(rs.getString("emp_name"));
 					bean.setFurigana(rs.getString("furigana"));
+					bean.setEmp_email(rs.getString("emp_email"));
 					bean.setPassword(rs.getString("password"));
 					bean.setRole(rs.getInt("role"));
 				}
@@ -76,7 +78,7 @@ public class UserDao extends DBAccess{
 		public ArrayList<UserBean> selectPart(String str) {
 			
 			ArrayList<UserBean> list = new ArrayList<UserBean>();
-			String sql = "select * from emp_info where emp_id like %?% or emp_name like %?% or furigana like %?% or role like %?%";
+			String sql = "select * from emp_info where emp_id like %?% or emp_name like %?% or furigana like %?% or emp_email like %?% or role like %?%";
 
 			try {
 				connect();
@@ -91,6 +93,7 @@ public class UserDao extends DBAccess{
 					bean.setEmp_id(rs.getInt("emp_id"));
 					bean.setEmp_name(rs.getString("emp_name"));
 					bean.setFurigana(rs.getString("furigana"));
+					bean.setEmp_email(rs.getString("emp_email"));
 					bean.setFurigana(rs.getString("password"));
 					bean.setFurigana(rs.getString("role"));
 					list.add(bean);
@@ -105,9 +108,9 @@ public class UserDao extends DBAccess{
 		}
 				
 		//ユーザテーブルに値を追加するメソッド
-		public void insert(int emp_id, String emp_name, String furigana, String password, int role) {
+		public void insert(int emp_id, String emp_name, String furigana, String emp_email, String password, int role) {
 
-			String sql = "insert into emp_info(emp_id, emp_name, furigana, password, role) values (?,?,?,?,?)";
+			String sql = "insert into emp_info(emp_id, emp_name, furigana, emp_email, password, role) values (?,?,?,?,?,?)";
 
 			try {
 				connect();
@@ -116,8 +119,9 @@ public class UserDao extends DBAccess{
 				ps.setInt(1, emp_id);
 				ps.setString(2, emp_name);
 				ps.setString(3, furigana);
-				ps.setString(4, password);
-				ps.setInt(5, role);
+				ps.setString(4, emp_email);
+				ps.setString(5, password);
+				ps.setInt(6, role);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -126,9 +130,9 @@ public class UserDao extends DBAccess{
 		}
 		
 		//ユーザを更新（アップデート）するメソッド
-		public void update(int emp_id, int new_id, String emp_name, String furigana, int role) {
+		public void update(int emp_id, int new_id, String emp_name, String furigana, String emp_email, int role) {
 
-			String sql = "update emp_info set emp_id=?,emp_name=?, furigana=?, role=? where emp_id=?";
+			String sql = "update emp_info set emp_id=?,emp_name=?, furigana=?, emp_email=? role=? where emp_id=?";
 
 			try {
 				connect();
@@ -137,8 +141,9 @@ public class UserDao extends DBAccess{
 				ps.setInt(1, new_id);
 				ps.setString(2, emp_name);
 				ps.setString(3, furigana);
-				ps.setInt(4, role);
-				ps.setInt(5, emp_id);
+				ps.setString(4,emp_email);
+				ps.setInt(5, role);
+				ps.setInt(6, emp_id);
 
 			} catch (SQLException e) {
 				e.printStackTrace();

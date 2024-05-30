@@ -8,7 +8,7 @@
 
 <body>
 	<div align="center">
-		<strong style="font-size: 30px;">マスタ管理メニュー</strong>
+		<strong>マスタ管理メニュー</strong>
 		<div align="right">
 			<p><%="ようこそ、"+session.getAttribute("username")+"さん" %></p>
 			<a href="./first">ログアウト</a>
@@ -21,8 +21,9 @@
 		<a href="./managecontrol?no=3">取引先別売上一覧表</a><br><br>
 		<a href="./managecontrol?no=4">商品別売上一覧表</a><br><br>
 		<a href="./managecontrol?no=5">受注管理システムへ</a><br><br>
-		<td><input type="button" name="submit"
-						onclick="location.href='./login'" value="メインメニューに戻る"></td>
+		<td><form method="post" action="./login">
+			<input type="submit" name="submit" value="メインメニューに戻る">
+		</form></td>
 	</div>
 </body>
 </html>

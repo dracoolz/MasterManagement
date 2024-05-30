@@ -7,6 +7,7 @@ public class UserBean implements Serializable{
 	private int emp_id;
 	private String emp_name;
 	private String furigana;
+	private String emp_email;
 	private String password;
 	private int role;
 	public int getEmp_id() {
@@ -26,6 +27,12 @@ public class UserBean implements Serializable{
 	}
 	public void setFurigana(String furigana) {
 		this.furigana = furigana;
+	}
+	public String getEmp_email() {
+		return emp_email;
+	}
+	public void setEmp_email(String emp_email) {
+		this.emp_email = emp_email;
 	}
 	public String getPassword() {
 		return password;

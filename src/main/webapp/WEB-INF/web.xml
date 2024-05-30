@@ -46,7 +46,7 @@
     <servlet-name>ManageControlServlet</servlet-name>
     <url-pattern>/managecontrol</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
     <servlet-name>MailServlet</servlet-name>
     <servlet-class>master.MailServlet</servlet-class>
@@ -54,5 +54,6 @@
   <servlet-mapping>
     <servlet-name>MailServlet</servlet-name>
     <url-pattern>/mail</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> 
+
 </web-app>

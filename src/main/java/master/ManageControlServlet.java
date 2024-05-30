@@ -46,12 +46,12 @@ public class ManageControlServlet extends HttpServlet {
 				BigCategoryDao bdao = new BigCategoryDao();
 				ArrayList<BigCategoryBean> barr = new ArrayList<BigCategoryBean>();
 				barr = bdao.selectAll();
-				request.setAttribute("blist", barr);
+				request.setAttribute("bclist", barr);
 				
 				SmallCategoryDao sdao = new SmallCategoryDao();
 				ArrayList<SmallCategoryBean> sarr = new ArrayList<SmallCategoryBean>();
 				sarr = sdao.selectAll();
-				request.setAttribute("slist", sarr);
+				request.setAttribute("sclist", sarr);
 				
 				rd = request.getRequestDispatcher("./jsp/category.jsp");
 				break;

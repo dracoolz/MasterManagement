@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
 		
 		try {
 			String name = (String)request.getParameter("submit");
-			if(name.equals("ログイン") || name.equals("戻る")) {
+			if(name.equals("ログイン") || name.equals("メインメニューに戻る")) {
 				try {
 					String id = (String)request.getParameter("id");
 					String pw = (String)request.getParameter("pass");
