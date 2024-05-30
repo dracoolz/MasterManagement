@@ -46,7 +46,7 @@
 </script>
 </head>
 <body>
-	<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("list"); %>
+	<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("productlist"); %>
 	<div align="center">
 		<strong>商品別売上一覧</strong>
 		<div align="right">
@@ -105,38 +105,42 @@
 		<button type="button">検索</button>
 		<!-- table -->
 		<div class="table">
+
 			<table border="1">
-				<tr>
-					<th>販売ID▽</th>
-					<th>顧客ID▽</th>
-					<th>顧客名▽</th>
-					<th>商品ID▽</th>
-					<th>販売量▽</th>
-					<th>販売価格▽</th>
-					<th>粗利▽</th>
-					<th>日付▽</th>
+				<tr align="center">
+					<th class="thead">商品ID▽</th>
+					<th class="thead">商品名▽</th>
+					<th class="thead">カテゴリ▽</th>
+					<th class="thead">販売単価 ▽</th>
+					<th class="thead">仕入単価 ▽</th>
+					<th class="thead">販売数▽</th>
+					<th class="thead">粗利▽</th>
+					<th class="thead">先年度比(%)▽</th>
 					<th></th>
 				</tr>
-
 				<% for (int i = 0; i < list.size(); i++) { %>
 				<tr align="center">
-					<td><%= list.get(i).getSale_id() %></td>
-					<td><%= list.get(i).getCus_id() %></td>
-					<td><%= list.get(i).getCus_name() %></td>
 					<td><%= list.get(i).getPro_id() %></td>
+					<td><%= list.get(i).getPi_name() %></td>
+					<td><%= list.get(i).getCategory() %></td>
+					<td><%= list.get(i).getSale_price() %>円</td>
+					<td><%= list.get(i).getStock_price() %>円</td>
 					<td><%= list.get(i).getSale_amount() %></td>
-					<td><%= list.get(i).getSale_price() %></td>
-					<td><%= list.get(i).getGross_profit() %></td>
-					<td><%= list.get(i).getDate() %></td>
-					<td><button type="button">詳細</button></td>
+					<td><%= list.get(i).getProfit() %>円</td>
+					<td><%= list.get(i).getComparison() %></td>
+					<form method="post" action="./detail?no=2">
+					<td>
+						<button type="submit" name="idValue" value="<%= list.get(i).getPro_id() %>">詳細</button>
+					</td>
+					</form>
 				</tr>
 				<% } %>
-
 			</table>
 		</div>
+
 		<div class="footer_button">
 			<button type="button">トップページ</button>
-			<button type="button">戻る</button>
+			<button type="button" onclick="history.back()">戻る</button>
 		</div>
 	</div>
 </body>

@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
+<%@ page import="bean.SalesBean"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>商品別売上詳細</title>
-    <link rel="stylesheet" href="../css/companyListDetail.css">
+    <meta charset="UTF-8">
+    <title>商品別売上詳細</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/companyListDetail.css">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', { 'packages': ['corechart', 'bar'] });
@@ -61,42 +63,57 @@
     </script>
 </head>
 <body>
+    <%
+        ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("companylist");
+        if (list == null) {
+            list = new ArrayList<SalesBean>();
+        }
+        SalesBean firstBean = null;
+        if (!list.isEmpty()) {
+            firstBean = list.get(0);
+        }
+    %>
     <div align="center">
-        <strong>取引先別売上詳細</strong>
+        <strong id="topPage">取引先別売上詳細</strong>
         <div align="right">
             <p>
-                <%="ようこそ、"+session.getAttribute("username")+"さん" %>
+                <%= "ようこそ、" + session.getAttribute("username") + "さん" %>
             </p>
             <a href="/first">ログアウト</a>
         </div>
         <div class="top-button">
             <button type="button">年表示</button>
             <button type="button">月表示</button>
-            <button type="button">戻る</button>
+            <button type="button" onclick="location.href='managecontrol?no=3'">戻る</button>
         </div>
         <!-- table -->
         <div class="table">
             <table>
-				<tr>
-					<th>取引先ID▽</th>
-					<th>取引先名▽</th>
-					<th>売上(万円)▽</th>
-					<th>先年度比(%)▽</th>
-				</tr>
-				<tr>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-					<td>xxx</td>
-				</tr>
-			</table>
+                <tr>
+                    <th>取引先ID▽</th>
+                    <th>取引先名▽</th>
+                    <th>売上(万円)▽</th>
+                    <th>先年度比(%)▽</th>
+                </tr>
+                <% for (int i = 0; i < list.size(); i++) { %>
+                <tr>
+                    <td><%= list.get(i).getCus_id() %></td>
+					<td><%= list.get(i).getCus_name() %></td>
+					<td><%= list.get(i).getSale_amount() %></td>
+					<td><%= list.get(i).getGross_profit() %></td>
+                </tr>
+                <% } %>
+            </table>
         </div>
+        <% if (firstBean != null) { %>
+        <!-- 取引先別詳細情報 -->
         <div align="left" class="company_info">
-        	<h3>株式会社　A</h3>
-        	<p>取引先ＩＤ			***</p>
-        	<p>2024年05月の売上		***万円</p>
-        	<p>先年度比				***％</p>
+            <h3>株式会社 A</h3>
+            <p>取引先ＩＤ <%= firstBean.getCus_id() %></p>
+            <p>2024年05月の売上 <%= firstBean.getSale_amount() %>万円</p>
+            <p>先年度比 <%= firstBean.getGross_profit() %></p>
         </div>
+        <% } %>
         <div class="chart-1">
             <div id="barChart" style="width: 400px; height: 300px;"></div>
             <div>
@@ -141,8 +158,8 @@
         <div class="chart-2">
             <div>
                 <p>
-                    <h3>購入した商品カテゴリの売上</h3>
-                    ランキング
+                <h3>購入した商品カテゴリの売上</h3>
+                ランキング
                 </p>
                 <table>
                     <thead>
@@ -174,9 +191,9 @@
             <div id="piechart" style="width: 500px; height: 300px;"></div>
         </div>
         <div class="footer_button">
-			<button type="button">トップページ</button>
-			<button type="button">戻る</button>
-		</div>
+            <button type="button" onclick="window.location.href='#topPage'">トップページ</button>
+            <button type="button" onclick="location.href='managecontrol?no=3'">戻る</button>
+        </div>
     </div>
 </body>
 </html>

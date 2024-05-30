@@ -112,14 +112,18 @@
 					<td><%= list.get(i).getCus_name() %></td>
 					<td><%= list.get(i).getSale_amount() %></td>
 					<td><%= list.get(i).getGross_profit() %></td>
-					<td><button type="button">詳細</button></td>
+					<td>
+						<form method="post" action="./detail?no=1">
+							<button type="submit" name="idValue" value="<%= list.get(i).getCus_id() %>">詳細</button>
+						</form>
+					</td>
 				</tr>
 				<% } %>
 			</table>
 		</div>
 		<div class="footer_button">
 			<button type="button">トップページ</button>
-			<button type="button">戻る</button>
+			<button type="button" onclick="history.back()">戻る</button>
 		</div>
 	</div>
 </body>

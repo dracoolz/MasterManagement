@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
+<%@ page import="bean.SalesBean"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>商品別売上詳細</title>
-    <link rel="stylesheet" href="../css/productListDetail.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/productListDetail.css">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', { 'packages': ['corechart', 'bar'] });
@@ -61,18 +63,19 @@
     </script>
 </head>
 <body>
+	<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("productlist"); %>
     <div align="center">
-        <strong>商品別売上詳細</strong>
+        <strong id="topPage">商品別売上詳細</strong>
         <div align="right">
             <p>
-                <%="ようこそ、"+session.getAttribute("username")+"さん" %>
+                <%="ようこそ、"+ session.getAttribute("username") + "さん" %>
             </p>
             <a href="/first">ログアウト</a>
         </div>
         <div class="top-button">
             <button type="button">年表示</button>
             <button type="button">月表示</button>
-            <button type="button">戻る</button>
+            <button type="button" onclick="location.href='managecontrol?no=4'">戻る</button>
         </div>
         <!-- table -->
         <div class="table">
@@ -80,25 +83,24 @@
                 <tr>
                     <th>商品ID▽</th>
                     <th>商品名▽</th>
-                    <th colspan="3">小カテゴリ▽</th>
+                    <th>小カテゴリ▽</th>
                     <th>販売単価▽</th>
                     <th>仕入単価▽</th>
                     <th>販売数▽</th>
                     <th>粗利▽</th>
                     <th>先年度比</th>
                 </tr>
-                <tr>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                </tr>
+                <% for (int i = 0; i < list.size(); i++) { %>
+				<tr align="center">
+					<td><%= list.get(i).getPro_id() %></td>
+					<td><%= list.get(i).getPi_name() %></td>
+					<td><%= list.get(i).getCategory() %></td>
+					<td><%= list.get(i).getSale_price() %>円</td>
+					<td><%= list.get(i).getStock_price() %>円</td>
+					<td><%= list.get(i).getSale_amount() %></td>
+					<td><%= list.get(i).getProfit() %>円</td>
+					<td><%= list.get(i).getComparison() %></td>
+                <% } %>
             </table>
         </div>
         <div class="chart-1">
@@ -178,8 +180,8 @@
             <div id="piechart" style="width: 500px; height: 300px;"></div>
         </div>
         <div class="footer_button">
-			<button type="button">トップページ</button>
-			<button type="button">戻る</button>
+			<button type="button" onclick="window.location.href='#topPage'">トップページ</button>
+			<button type="button" onclick="location.href='managecontrol?no=4'">戻る</button>
 		</div>
     </div>
 </body>

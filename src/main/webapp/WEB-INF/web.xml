@@ -23,4 +23,24 @@
 		<url-pattern>/list</url-pattern>
 	</servlet-mapping>
 
+	<!-- DetailServlet (Product & Company) -->
+	<servlet>
+		<servlet-name>DetailServlet</servlet-name>
+		<servlet-class>master.DetailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DetailServlet</servlet-name>
+		<url-pattern>/detail</url-pattern>
+	</servlet-mapping>
+
+	<!-- ManageControlServlet -->
+	<servlet>
+		<servlet-name>ManageControlServlet</servlet-name>
+		<servlet-class>master.ManageControlServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ManageControlServlet</servlet-name>
+		<url-pattern>/managecontrol</url-pattern>
+	</servlet-mapping>
+
 </web-app>
