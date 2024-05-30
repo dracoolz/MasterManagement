@@ -140,7 +140,7 @@
 
 		<div class="footer_button">
 			<button type="button">トップページ</button>
-			<button type="button" onclick="history.back()">戻る</button>
+			<button type="button" onclick="location.hre='./master.jsp'">戻る</button>
 		</div>
 	</div>
 </body>

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>商品売上一覧</title>
+<title>取引先売上一覧</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/productList.css">
 <script>
@@ -123,7 +123,7 @@
 		</div>
 		<div class="footer_button">
 			<button type="button">トップページ</button>
-			<button type="button" onclick="history.back()">戻る</button>
+			<button type="button" onclick="location.href='./master.jsp'">戻る</button>
 		</div>
 	</div>
 </body>
