@@ -49,12 +49,12 @@ public class MailServlet extends HttpServlet {
 				UserDao dao = new UserDao();
 				String to = dao.select(iid).getEmp_email();
 				System.out.println("宛先："+to);
-				String from = "gksi.kenshu.202405@gmail.com";
 		        // メールサーバーのホスト名
 		        String host = "smtp.gmail.com";
 		        // ポート番号（SSLを使用する場合）
-		        int port = 465;
-		        // 送信元メールアドレスのパスワード
+		        int port = 8080;
+		        // 送信元メールアドレスとパスワード
+		        String from = "gksi.kenshu.202405@gmail.com";
 		        String password = "Pa$$w0rd12345";
 
 		        // メールプロパティの設定
@@ -64,11 +64,13 @@ public class MailServlet extends HttpServlet {
 		        props.put("mail.smtp.socketFactory.fallback", "false");
 		        props.put("mail.smtp.ssl.enable", "true");
 		        props.put("mail.smtp.ssl.trust", host);
+		        
 		        Session session = Session.getInstance(props, new Authenticator() {
 		            protected PasswordAuthentication getPasswordAuthentication() {
 		                return new PasswordAuthentication(from, password);
 		            }
 		        });
+		        session.setDebug(true);
 		        System.out.println("props ok");
 		        // セッションの取得
 		        System.out.println("ike");
