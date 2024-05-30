@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+strong {
+	font-size:30px;
+}
+
+#err {
+	color:red;
+}

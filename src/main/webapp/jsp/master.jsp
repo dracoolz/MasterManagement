@@ -24,6 +24,7 @@
 		<td>
 			<input type="button" name="submit" onclick="location.href='./login'" value="メインメニューに戻る">
 		</td>
+		<td><input type="button" name="submit" onclick="location.href='./login'" value="メインメニューに戻る"></td>
 	</div>
 </body>
 </html>

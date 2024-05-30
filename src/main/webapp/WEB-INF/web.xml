@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<<<<<<< HEAD
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 	id="WebApp_ID" version="4.0">
+=======
+	xmlns="https://jakarta.ee/xml/ns/jakartaee"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+	id="WebApp_ID" version="5.0">
+>>>>>>> origin/main
 	<display-name>Master</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
@@ -13,6 +19,59 @@
 		<welcome-file>default.htm</welcome-file>
 	</welcome-file-list>
 
+<<<<<<< HEAD
+=======
+	<!-- FirstServlet -->
+	<servlet>
+		<servlet-name>FirstServlet</servlet-name>
+		<servlet-class>master.FirstServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FirstServlet</servlet-name>
+		<url-pattern>/first</url-pattern>
+	</servlet-mapping>
+
+	<!-- LoginServlet -->
+	<servlet>
+		<servlet-name>LoginServlet</servlet-name>
+		<servlet-class>master.LoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+
+	<!-- MasterServlet -->
+	<servlet>
+		<servlet-name>MasterServlet</servlet-name>
+		<servlet-class>master.MasterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MasterServlet</servlet-name>
+		<url-pattern>/master</url-pattern>
+	</servlet-mapping>
+
+	<!-- ManageControlServlet -->
+	<servlet>
+		<servlet-name>ManageControlServlet</servlet-name>
+		<servlet-class>master.ManageControlServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ManageControlServlet</servlet-name>
+		<url-pattern>/managecontrol</url-pattern>
+	</servlet-mapping>
+
+	<!-- MailServlet -->
+	<servlet>
+		<servlet-name>MailServlet</servlet-name>
+		<servlet-class>master.MailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MailServlet</servlet-name>
+		<url-pattern>/mail</url-pattern>
+	</servlet-mapping>
+
+>>>>>>> origin/main
 	<!-- ListServlet (Product & Company) -->
 	<servlet>
 		<servlet-name>ListServlet</servlet-name>
@@ -33,6 +92,7 @@
 		<url-pattern>/detail</url-pattern>
 	</servlet-mapping>
 
+<<<<<<< HEAD
 	<!-- ManageControlServlet -->
 	<servlet>
 		<servlet-name>ManageControlServlet</servlet-name>
@@ -43,4 +103,6 @@
 		<url-pattern>/managecontrol</url-pattern>
 	</servlet-mapping>
 
+=======
+>>>>>>> origin/main
 </web-app>
