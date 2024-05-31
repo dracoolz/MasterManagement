@@ -39,11 +39,11 @@ public class CheckControlServlet extends HttpServlet {
 
 			if(request.getParameter("submit").equals("登録")){
 
-				String name = request.getParameter("name");
-				String furigana = request.getParameter("furigana");
-				String email = request.getParameter("email");
-				String pass = request.getParameter("pass");
-				String kubun = (String)request.getParameter("kubun");
+				String name = (String)session.getAttribute("name");
+				String furigana = (String)session.getAttribute("furigana");
+				String email = (String)session.getAttribute("email");
+				String pass = (String)session.getAttribute("pass");
+				int kubun = Integer.parseInt((String)session.getAttribute("kubun"));
 
 				UserDao dao= new UserDao();
 				dao.insert(name,furigana,email,pass,kubun);
@@ -53,15 +53,14 @@ public class CheckControlServlet extends HttpServlet {
 
 			if(request.getParameter("submit").equals("変更")){
 
-				int id = Integer.parseInt(request.getParameter("emp_id"));
-				String name = request.getParameter("name");
-				String furigana = request.getParameter("furigana");
-				String email = request.getParameter("email");
-				String pass = request.getParameter("pass");
-				String kubun = (String)request.getParameter("kubun");
+				int id = Integer.parseInt((String)session.getAttribute("emp_id"));
+				String name = (String)session.getAttribute("name");
+				String furigana = (String)session.getAttribute("furigana");
+				String email = (String)session.getAttribute("email");
+				int kubun = Integer.parseInt((String)session.getAttribute("kubun"));
 
 				UserDao dao= new UserDao();
-				dao.update(id,name,furigana,email,pass,kubun);
+				dao.update(id,name,furigana,email,kubun);
 				forward="/jsp/userComp.jsp?submit=変更";
 
 			}
@@ -69,11 +68,6 @@ public class CheckControlServlet extends HttpServlet {
 			if(request.getParameter("submit").equals("削除")){
 
 				int id = Integer.parseInt(request.getParameter("emp_id"));
-				String name = request.getParameter("name");
-				String furigana = request.getParameter("furigana");
-				String email = request.getParameter("email");
-				String pass = request.getParameter("pass");
-				String kubun = (String)request.getParameter("kubun");
 
 				UserDao dao= new UserDao();
 				dao.delete(id);
@@ -172,7 +166,6 @@ public class CheckControlServlet extends HttpServlet {
 				String pro_id = request.getParameter("pro_id");
 				int sp_id = Integer.parseInt(request.getParameter("sp_id"));
 				String pi_id = request.getParameter("pi_id");
-				String pd_id = request.getParameter("pd_id");
 				String pi_name = request.getParameter("pi_name");
 				int bc_id_1 = Integer.parseInt(request.getParameter("bc_id_1"));
 				int sc_id_1 = Integer.parseInt(request.getParameter("sc_id_1"));
@@ -202,14 +195,11 @@ public class CheckControlServlet extends HttpServlet {
 				String image_8 = request.getParameter("image_8");
 				String image_9 = request.getParameter("image_9");
 				String image_10 = request.getParameter("image_10");
-				String images_id = request.getParameter("images_id");
 				char[] image_permission = request.getParameter("image_permission").toCharArray();
 				char[] sell_permission = request.getParameter("sell_permission").toCharArray();
 				char[] auction_permission = request.getParameter("auction_permission").toCharArray();
 				char[] direct_permission = request.getParameter("direct_permission").toCharArray();
 				char[] out_of_stock = request.getParameter("out_of_stock").toCharArray();
-				int category_id = Integer.parseInt(request.getParameter("category_id"));
-				int sc_id = Integer.parseInt(request.getParameter("sc_id"));
 
 
 				ProductDao dao= new ProductDao();
@@ -226,19 +216,12 @@ public class CheckControlServlet extends HttpServlet {
 				int new_sp_id = Integer.parseInt(request.getParameter("new_sp_id"));
 				String pi_id = request.getParameter("pi_id");
 				String new_pi_id = request.getParameter("new_pi_id");
-				String pd_id = request.getParameter("pd_id");
 				String pi_name = request.getParameter("pi_name");
-				int bc_id_1 = Integer.parseInt(request.getParameter("bc_id_1"));
 				int sc_id_1 = Integer.parseInt(request.getParameter("sc_id_1"));
-				int bc_id_2 = Integer.parseInt(request.getParameter("bc_id_2"));
 				int sc_id_2 = Integer.parseInt(request.getParameter("sc_id_2"));
-				int bc_id_3 = Integer.parseInt(request.getParameter("bc_id_3"));
 				int sc_id_3 = Integer.parseInt(request.getParameter("sc_id_3"));
-				int new_bc_id_1 = Integer.parseInt(request.getParameter("new_bc_id_1"));
 				int new_sc_id_1 = Integer.parseInt(request.getParameter("new_sc_id_1"));
-				int new_bc_id_2 = Integer.parseInt(request.getParameter("new_bc_id_2"));
 				int new_sc_id_2 = Integer.parseInt(request.getParameter("new_sc_id_2"));
-				int new_bc_id_3 = Integer.parseInt(request.getParameter("new_bc_id_3"));
 				int new_sc_id_3 = Integer.parseInt(request.getParameter("new_sc_id_3"));
 				String shop_name = request.getParameter("shop_name");
 				String descr = request.getParameter("descr");
@@ -262,14 +245,11 @@ public class CheckControlServlet extends HttpServlet {
 				String image_8 = request.getParameter("image_8");
 				String image_9 = request.getParameter("image_9");
 				String image_10 = request.getParameter("image_10");
-				String images_id = request.getParameter("images_id");
 				char[] image_permission = request.getParameter("image_permission").toCharArray();
 				char[] sell_permission = request.getParameter("sell_permission").toCharArray();
 				char[] auction_permission = request.getParameter("auction_permission").toCharArray();
 				char[] direct_permission = request.getParameter("direct_permission").toCharArray();
 				char[] out_of_stock = request.getParameter("out_of_stock").toCharArray();
-				int category_id = Integer.parseInt(request.getParameter("category_id"));
-				int sc_id = Integer.parseInt(request.getParameter("sc_id"));
 
 
 				ProductDao dao= new ProductDao();

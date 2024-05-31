@@ -74,25 +74,22 @@ public class Errcheck {
 		}
 	}
 	
-	public String numberCheck(String str, String str2){
-		if(str.matches("[0-9]+")){
-			if(Integer.parseInt(str)>0){
-				return null;
-			}
+	public String numberCheck(String str, String strName){
+		if(!str.matches("[0-9]+") || Integer.parseInt(str)<0){
+			return strName+"整数で入力してください";
 		}
-		return "整数で入力してください";
+		return null;
 	}
-	public String numberCheck(String[] strs){
+	
+	public String numberCheck(String[] strs, String[] strNames){
 		String str;
 		for(int i=0; i<strs.length; i++) {
 			str = strs[i];
-			if(str.matches("[0-9]+")){
-				if(Integer.parseInt(str)>0){
-					return null;
-				}
+			if(!str.matches("[0-9]+") || Integer.parseInt(str)<0){
+				return strNames[i]+"整数で入力してください";
 			}
 		}
-		return "整数で入力してください";
+		return null;
 	}
 	
 	public String idExistCheck(int id, String type){

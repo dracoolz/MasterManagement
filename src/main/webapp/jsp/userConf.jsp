@@ -95,10 +95,6 @@
 				<td align="left"><%=session.getAttribute("email") %></td>
 			</tr>
 			<tr>
-				<td align="right">パスワード</td>
-				<td align="left"><%=session.getAttribute("pass") %></td>
-			</tr>
-			<tr>
 				<td align="right">区分</td>
 				<td align="left"><%=session.getAttribute("kubun") %></td>
 			</tr>
