@@ -107,20 +107,19 @@ public class UserDao extends DBAccess{
 		}
 				
 		//ユーザテーブルに値を追加するメソッド
-		public void insert(int emp_id, String emp_name, String furigana, String emp_email, String password, int role) {
+		public void insert(String emp_name, String furigana, String emp_email, String password, int role) {
 
-			String sql = "insert into emp_info(emp_id, emp_name, furigana, emp_email, password, role) values (?,?,?,?,?,?)";
+			String sql = "insert into emp_info(emp_name, furigana, emp_email, password, role) values (?,?,?,?,?)";
 
 			try {
 				connect();
 				// ステートメントの作成
 				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, emp_id);
-				ps.setString(2, emp_name);
-				ps.setString(3, furigana);
-				ps.setString(4, emp_email);
-				ps.setString(5, password);
-				ps.setInt(6, role);
+				ps.setString(1, emp_name);
+				ps.setString(2, furigana);
+				ps.setString(3, emp_email);
+				ps.setString(4, password);
+				ps.setInt(5, role);
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -130,20 +129,19 @@ public class UserDao extends DBAccess{
 		}
 		
 		//ユーザを更新（アップデート）するメソッド
-		public void update(int emp_id, int new_id, String emp_name, String furigana, String emp_email, int role) {
+		public void update(int emp_id, String emp_name, String furigana, String emp_email, int role) {
 
-			String sql = "update emp_info set emp_id=?,emp_name=?, furigana=?, emp_email=? role=? where emp_id=?";
+			String sql = "update emp_info set emp_name=?, furigana=?, emp_email=? role=? where emp_id=?";
 
 			try {
 				connect();
 				// ステートメントの作成
 				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, new_id);
-				ps.setString(2, emp_name);
-				ps.setString(3, furigana);
-				ps.setString(4,emp_email);
-				ps.setInt(5, role);
-				ps.setInt(6, emp_id);
+				ps.setString(1, emp_name);
+				ps.setString(2, furigana);
+				ps.setString(3,emp_email);
+				ps.setInt(4, role);
+				ps.setInt(5, emp_id);
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();

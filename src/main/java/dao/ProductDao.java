@@ -295,6 +295,30 @@ public class ProductDao extends DBAccess{
 				return list;
 			}
 			
+			public ProductBean select(String pro_id) {
+
+				ProductBean bean = new ProductBean();
+
+				String sql = "select * from product where pro_id=?";
+
+				try {
+					connect();
+					// ステートメントの作成
+					PreparedStatement ps = getConnection().prepareStatement(sql);
+					ps.setString(1, pro_id);
+
+					ResultSet rs = ps.executeQuery();
+					
+					bean.setPro_id(rs.getString("pro_id"));
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					disconnect();
+				}
+				return bean;
+			}
+			
 			
 			//商品情報を追加するメソッド
 			public void insert(String pro_id, int sp_id, String pi_id, String pi_name, int bc_id_1, int sc_id_1, int bc_id_2, int sc_id_2, int bc_id_3, int sc_id_3, String shop_name, String descr, String detail, String jan_code, int branch_no, String itemization, String ref_type, int retail_price, int wholesale, int set_quantity, int tax_rate_class, String shipping_term, String image_1, String image_2, String image_3, String image_4, String image_5, String image_6, String image_7, String image_8, String image_9, String image_10, char image_permission, char sell_permisson, char auction_permission, char direct_permission, char out_of_stock) {
@@ -356,6 +380,7 @@ public class ProductDao extends DBAccess{
 					ps.setInt(42,sc_id_2);
 					ps.setString(43,pi_id);
 					ps.setInt(44,sc_id_3);
+					ps.executeUpdate();
 
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -437,6 +462,7 @@ public class ProductDao extends DBAccess{
 					ps.setInt(53,new_sc_id_3);
 					ps.setString(54,pi_id);
 					ps.setInt(55,sc_id_3);
+					ps.executeUpdate();
 
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -458,6 +484,7 @@ public class ProductDao extends DBAccess{
 					// ステートメントの作成
 					PreparedStatement ps = getConnection().prepareStatement(sql_1);
 					ps.setString(1, pro_id);
+					ps.executeUpdate();
 					
 					ps = getConnection().prepareStatement(sql_2);
 					ps.setString(1, pi_id);
@@ -466,6 +493,7 @@ public class ProductDao extends DBAccess{
 					if(rs.getInt("count(pi_id)") == 0){
 						ps = getConnection().prepareStatement(sql_3);
 						ps.setString(1, pi_id);
+						ps.executeUpdate();
 					}
 
 				} catch (SQLException e) {

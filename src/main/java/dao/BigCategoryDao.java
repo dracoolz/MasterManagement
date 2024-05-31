@@ -66,6 +66,31 @@ public class BigCategoryDao extends DBAccess{
 			return bean;
 		}
 		
+		
+		public BigCategoryBean select(int id) {
+
+			BigCategoryBean bean = new BigCategoryBean();
+
+			String sql = "select * from big_category where bc_id=?";
+
+			try {
+				connect();
+				// ステートメントの作成
+				PreparedStatement ps = getConnection().prepareStatement(sql);
+				ps.setInt(1, id);
+
+				ResultSet rs = ps.executeQuery();
+
+				bean.setBc_id(rs.getInt("bc_id"));
+				bean.setBc_category(rs.getString("bc_category"));
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				disconnect();
+			}
+			return bean;
+		}
 
 		//大カテゴリテーブルに値を追加するメソッド
 		public void insert(int id ,String name) {
@@ -78,6 +103,7 @@ public class BigCategoryDao extends DBAccess{
 				PreparedStatement ps = getConnection().prepareStatement(sql);
 				ps.setInt(1, id);
 				ps.setString(2, name);
+				ps.executeUpdate();
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -99,6 +125,7 @@ public class BigCategoryDao extends DBAccess{
 				ps.setInt(1, new_id);
 				ps.setString(2, name);
 				ps.setInt(3, id);
+				ps.executeUpdate();
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -118,6 +145,7 @@ public class BigCategoryDao extends DBAccess{
 				// ステートメントの作成
 				PreparedStatement ps = getConnection().prepareStatement(sql);
 				ps.setInt(1, id);
+				ps.executeUpdate();
 
 			} catch (SQLException e) {
 				e.printStackTrace();
