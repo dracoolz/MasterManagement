@@ -82,5 +82,15 @@
 		<servlet-name>DetailServlet</servlet-name>
 		<url-pattern>/detail</url-pattern>
 	</servlet-mapping>
+	
+	<!-- Servlet (test) -->
+	<servlet>
+		<servlet-name>Servlet</servlet-name>
+		<servlet-class>order.Servlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Servlet</servlet-name>
+		<url-pattern>/servlet</url-pattern>
+	</servlet-mapping>
 
 </web-app>

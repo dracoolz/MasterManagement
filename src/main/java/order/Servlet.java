@@ -24,7 +24,7 @@ public class Servlet extends HttpServlet {
 	
 	
 	//jump
-	RequestDispatcher rd = req.getRequestDispatcher("/jsp/userupdate.jsp");
+	RequestDispatcher rd = req.getRequestDispatcher("/jsp/order_add.jsp");
 	rd.forward(req, res);
 	}
 }

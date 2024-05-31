@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="pakege.class" %>
 
 
 <!DOCTYPE html>
@@ -10,6 +9,16 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<!-- title -->
+	<h1 align="center"></h1>
+	
+	<div align="right">
+		<p><%="ようこそ、"+session.getAttribute("username")+"さん" %></p>
+		<a href="/first">ログアウト</a>
+	</div>
+	
+	
+	
 	<!-- mojicode siteisitemiru -->
 	<%request.setCharacterEncoding("UTF-8"); %>
 	<%response.setContentType("text/html;charset=UTF-8"); %>
