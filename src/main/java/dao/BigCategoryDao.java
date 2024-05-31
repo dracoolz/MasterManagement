@@ -41,7 +41,7 @@ public class BigCategoryDao extends DBAccess{
 		
 		
 		//大カテゴリテーブルで条件をつけて検索するメソッド
-		public BigCategoryBean jouken(String name) {
+		public BigCategoryBean selectIf(String name) {
 
 			BigCategoryBean bean = new BigCategoryBean();
 
@@ -88,7 +88,7 @@ public class BigCategoryDao extends DBAccess{
 		
 
 		//大カテゴリを更新（アップデート）するメソッド
-		public void update(int id ,String name) {
+		public void update(int id ,int new_id ,String name) {
 
 			String sql = "update big_category set bc_id=?,bc_category=? where bc_id=?";
 
@@ -96,7 +96,7 @@ public class BigCategoryDao extends DBAccess{
 				connect();
 				// ステートメントの作成
 				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, id);
+				ps.setInt(1, new_id);
 				ps.setString(2, name);
 				ps.setInt(3, id);
 

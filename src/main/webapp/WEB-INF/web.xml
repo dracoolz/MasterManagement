@@ -83,4 +83,34 @@
 		<url-pattern>/detail</url-pattern>
 	</servlet-mapping>
 
+	<!--DUControl -->
+	<servlet>
+		<servlet-name>DUControl</servlet-name>
+		<servlet-class>master.DUControlServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DUControl</servlet-name>
+		<url-pattern>/DUControl</url-pattern>
+	</servlet-mapping>
+
+	<!-- ControlServlet -->
+	<servlet>
+		<servlet-name>Control</servlet-name>
+		<servlet-class>master.ControlServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Control</servlet-name>
+		<url-pattern>/control</url-pattern>
+	</servlet-mapping>
+
+	<!-- CheckControlServlet -->
+	<servlet>
+		<servlet-name>CheckControl</servlet-name>
+		<servlet-class>master.CheckControlServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CheckControl</servlet-name>
+		<url-pattern>/checkControl</url-pattern>
+	</servlet-mapping>
+
 </web-app>

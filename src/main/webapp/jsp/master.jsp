@@ -15,9 +15,9 @@
 		</div>
 	</div>
 	<div align="center">
-		<a href="./managecontrol?no=0">ユーザ管理</a><br><br>
-		<a href="./managecontrol?no=1">カテゴリ管理</a><br><br>
-		<a href="./managecontrol?no=2">商品管理</a><br><br>
+		<a href="../managecontrol?no=0">ユーザ管理</a><br><br>
+		<a href="../managecontrol?no=1">カテゴリ管理</a><br><br>
+		<a href="../managecontrol?no=2">商品管理</a><br><br>
 		<a href="../managecontrol?no=3">取引先別売上一覧表</a><br><br>
 		<a href="../managecontrol?no=4">商品別売上一覧表</a><br><br>
 		<a href="./managecontrol?no=5">受注管理システムへ</a><br><br>
