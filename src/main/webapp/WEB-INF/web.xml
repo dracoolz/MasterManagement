@@ -1,68 +1,114 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd" id="WebApp_ID" version="5.0">
-  <display-name>Master</display-name>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-  </welcome-file-list>
-  
-  
-  <servlet>
-    <servlet-name>FirstServlet</servlet-name>
-    <servlet-class>master.FirstServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>FirstServlet</servlet-name>
-    <url-pattern>/first</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>LoginServlet</servlet-name>
-    <servlet-class>master.LoginServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>LoginServlet</servlet-name>
-    <url-pattern>/login</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>MasterServlet</servlet-name>
-    <servlet-class>master.MasterServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MasterServlet</servlet-name>
-    <url-pattern>/master</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>ManageControlServlet</servlet-name>
-    <servlet-class>master.ManageControlServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ManageControlServlet</servlet-name>
-    <url-pattern>/managecontrol</url-pattern>
-  </servlet-mapping>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="https://jakarta.ee/xml/ns/jakartaee"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+	id="WebApp_ID" version="5.0">
+	<display-name>Master</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+	</welcome-file-list>
 
-  <servlet>
-    <servlet-name>MailServlet</servlet-name>
-    <servlet-class>master.MailServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MailServlet</servlet-name>
-    <url-pattern>/mail</url-pattern>
-  </servlet-mapping> 
-  
-  <servlet>
-    <servlet-name>PasswordServlet</servlet-name>
-    <servlet-class>master.PasswordServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>PasswordServlet</servlet-name>
-    <url-pattern>/password</url-pattern>
-  </servlet-mapping> 
+	<!-- FirstServlet -->
+	<servlet>
+		<servlet-name>FirstServlet</servlet-name>
+		<servlet-class>master.FirstServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FirstServlet</servlet-name>
+		<url-pattern>/first</url-pattern>
+	</servlet-mapping>
 
+	<!-- LoginServlet -->
+	<servlet>
+		<servlet-name>LoginServlet</servlet-name>
+		<servlet-class>master.LoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+
+	<!-- MasterServlet -->
+	<servlet>
+		<servlet-name>MasterServlet</servlet-name>
+		<servlet-class>master.MasterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MasterServlet</servlet-name>
+		<url-pattern>/master</url-pattern>
+	</servlet-mapping>
+
+	<!-- ManageControlServlet -->
+	<servlet>
+		<servlet-name>ManageControlServlet</servlet-name>
+		<servlet-class>master.ManageControlServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ManageControlServlet</servlet-name>
+		<url-pattern>/managecontrol</url-pattern>
+	</servlet-mapping>
+
+	<!-- MailServlet -->
+	<servlet>
+		<servlet-name>MailServlet</servlet-name>
+		<servlet-class>master.MailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MailServlet</servlet-name>
+		<url-pattern>/mail</url-pattern>
+	</servlet-mapping>
+
+	<!-- ListServlet (Product & Company) -->
+	<servlet>
+		<servlet-name>ListServlet</servlet-name>
+		<servlet-class>master.ListServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ListServlet</servlet-name>
+		<url-pattern>/list</url-pattern>
+	</servlet-mapping>
+
+	<!-- DetailServlet (Product & Company) -->
+	<servlet>
+		<servlet-name>DetailServlet</servlet-name>
+		<servlet-class>master.DetailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DetailServlet</servlet-name>
+		<url-pattern>/detail</url-pattern>
+	</servlet-mapping>
+
+	<!--DUControl -->
+	<servlet>
+		<servlet-name>DUControl</servlet-name>
+		<servlet-class>master.DUControlServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DUControl</servlet-name>
+		<url-pattern>/DUControl</url-pattern>
+	</servlet-mapping>
+
+	<!-- ControlServlet -->
+	<servlet>
+		<servlet-name>Control</servlet-name>
+		<servlet-class>master.ControlServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Control</servlet-name>
+		<url-pattern>/control</url-pattern>
+	</servlet-mapping>
+
+	<!-- CheckControlServlet -->
+	<servlet>
+		<servlet-name>CheckControl</servlet-name>
+		<servlet-class>master.CheckControlServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CheckControl</servlet-name>
+		<url-pattern>/checkControl</url-pattern>
+	</servlet-mapping>
 </web-app>

@@ -153,7 +153,7 @@ public class ProductDao extends DBAccess{
 			
 
 			//大カテゴリ名で条件をつけて商品情報を検索するメソッド
-			public ArrayList<ProductBean> selectBigCategory(String name) {
+			public ArrayList<ProductBean> selectBc(String name) {
 
 				ArrayList<ProductBean> list = new ArrayList<ProductBean>();
 
@@ -225,7 +225,7 @@ public class ProductDao extends DBAccess{
 			
 			
 			//小カテゴリ名で条件をつけて商品情報を検索するメソッド
-			public ArrayList<ProductBean> selectSmallCategory(String name) {
+			public ArrayList<ProductBean> selectSc(String name) {
 
 				ArrayList<ProductBean> list = new ArrayList<ProductBean>();
 
