@@ -41,8 +41,6 @@ public class PasswordServlet extends HttpServlet {
 			pwb = (String)request.getParameter("passb");
 			if((err =  e.injectionCheck(pwb,"以前のパスワード")) == null) {
 				err = e.inputCheck(pwb,"以前のパスワード");
-			} else {
-				pwb = pwb.replace("'", "");
 			}
 		}
 		if(err == null) {
@@ -50,7 +48,7 @@ public class PasswordServlet extends HttpServlet {
 			String[] names = {"新しいパスワード","新しいパスワード(確認)"};
 			
 			if((err =  e.injectionCheck(input,names)) == null) {
-				if((err = e.inputCheck(input,names)) == null) {
+				if((err = e.inputCheck(input,input,names,names)) == null) {
 					UserDao dao = new UserDao();
 					if(no == 2) {
 						UserBean bean = dao.select(userid);
@@ -71,9 +69,6 @@ public class PasswordServlet extends HttpServlet {
 						err = e.sameCheck(pw1, pw2);
 					}
 				}
-			} else {
-				pw1 = pw1.replace("'", "");
-				pw2 = pw2.replace("'", "");
 			}
 		}
 		request.setAttribute("err", err);
