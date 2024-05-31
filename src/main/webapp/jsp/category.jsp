@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
+<%@ page import="bean.BigCategoryBean"%>
+<%@ page import="dao.BigCategoryDao"%>
+<%@ page import="bean.SmallCategoryBean"%>
 <!DOCTYPE html>
 <html>
 
@@ -13,8 +17,8 @@
 </head>
 
 <body>
-<script src="../js/sc_category.js"></script>
-<script src="../js/tableSorter.js"></script>
+<script src="./js/sc_category.js"></script>
+<script src="./js/tableSorter.js"></script>
 <% ArrayList<BigCategoryBean> bcList = (ArrayList<BigCategoryBean>)request.getAttribute("bclist"); %>
 <% ArrayList<SmallCategoryBean> scList = (ArrayList<SmallCategoryBean>)request.getAttribute("sclist"); %>
 <form action ="Master/DUcontrol?type=category" method="post">
@@ -39,9 +43,9 @@
        		<table>
        			<tr>
        				<td align="right">大カテゴリ:</td>
-       				<td><select name = "bc">
+       				<td><select id = "bc" name = "bc">
 						<option value="">選択してください</option>
-						<% for(int i=0; i < bcList.length; i++){ %>
+						<% for(int i=0; i < bcList.size(); i++){ %>
 						<option value="<%=i+1 %>"><%=bcList.get(i).getBc_category() %></option>
 						<%} %>
 						</select></td>
@@ -52,7 +56,7 @@
        			</tr>
        			<tr>
        				<td align="right">小カテゴリ:</td>
-       				<td>:<select id ="sc1" name = "sc_1">
+       				<td><select id ="sc" name = "sc">
 						<option value=""></option>
 						</select></td>
        			</tr>
@@ -72,12 +76,15 @@
 	       			<td colspan="2"></td>
        			</tr>
        		</thead>
-       		<% for(int i=0; i < scList.length; i++)} %>
+       		<% for(int i=0; i < scList.size(); i++) { %>
        			<tr>
-	       			<td><%=scList(i).getBc_id() %></td>
-	       			<td><%=bcList(i).getBc_category() %></td>
-	       			<td><%=scList(i).getSc_id() %></td>
-	       			<td><%=scList(i).getSc_category() %></td>
+	       			<td><%=scList.get(i).getBc_id() %></td>
+	       				<% BigCategoryDao dao = new BigCategoryDao(); %>	       			
+	       			<td>
+	       				<%=dao.select(scList.get(i).getBc_id()).getBc_category() %>
+	       			</td>
+	       			<td><%=scList.get(i).getSc_id() %></td>
+	       			<td><%=scList.get(i).getSc_category() %></td>
 	       			<td><input type ="submit"  name="submit" value="変更"></td>
 	       			<td><input type ="submit"  name="submit" value="削除"></td>
        			</tr>
@@ -94,7 +101,7 @@
 		<table>
 			<tr>
 				<td><a class="pagetop" href="#"><div class="pagetop__arrow"></div></a></td>
-				<td><input type ="submit"  name="submit" value="戻る"></form>
+				<td><button type="button" onclick="location.href='./master?no=1'">戻る</button>
 				</td>
 			</tr>
 		</table>

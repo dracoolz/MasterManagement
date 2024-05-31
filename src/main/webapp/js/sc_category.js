@@ -3,14 +3,14 @@
  */
 var array = new Array();
 array[''] = new Array({cd:"0", label:""});
-array["1"] = [
+array["1"] = new Array(
   {cd:"1", label:"鉛筆"},
   {cd:"2", label:"ペン"},
   {cd:"3", label:"ボールペン"},
   {cd:"4", label:"中性ペン"},
   {cd:"5", label:"シャーペン"},
   {cd:"6", label:"カラーペン"}
-];
+);
 array["2"] = [
   {cd:"7", label:"メモ用紙"},
   {cd:"8", label:"メモ帳"},
@@ -80,7 +80,7 @@ array["18"] = [
   {cd:"40", label:"その他"},
 ];
 
-document.getElementById('bc').onchange = function(){
+document.getElementById("bc").onchange = function(){
   sc = document.getElementById("sc");
   sc.options.length = 0
   var changedPref = bc.value;
