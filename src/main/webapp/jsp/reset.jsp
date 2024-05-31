@@ -4,28 +4,29 @@
 <% String state = request.getParameter("state"); %>
 <title><%="パスワード"+state%></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
 </head>
 
 <body>
 	<div align="center">
-		<strong style="font-size: 30px;">
+		<strong>
 			<%="パスワード"+state%>
 		</strong>
 			<% if(state.equals("リセット")) {%>
-				<form action= "./login.jsp" method="post">
+				<form action= "./first" method="post">
 			<% } else {%>
 				<div align="right">
-					<p>ようこそ、*****さん</p>
-					<a href="./login.jsp">ログアウト</a>
+					<p><%="ようこそ、"+session.getAttribute("username")+"さん" %></p>
+					<a href="./first">ログアウト</a>
 				</div>
-				<form action= "./main.jsp" method="post">
+				<form action= "./login" method="post">
 		<% } %>
 			<p><%="パスワードを"+state+"しました"%></p>
 			
 		<% if(state.equals("リセット")) { %>
-			<input type="button" name="back" onclick="location.href='./login.jsp'" value="ログイン画面へ">
+			<input type="submit" name="submit" value="ログイン画面へ">
 		<% } else { %>
-			<input type="button" name="back" onclick="location.href='./main.jsp'" value="メインメニューへ">
+			<input type="submit" name="submit" value="メインメニューに戻る">
 		<% } %>
 	</div>
 	</form>

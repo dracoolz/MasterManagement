@@ -55,5 +55,14 @@
     <servlet-name>MailServlet</servlet-name>
     <url-pattern>/mail</url-pattern>
   </servlet-mapping> 
+  
+  <servlet>
+    <servlet-name>PasswordServlet</servlet-name>
+    <servlet-class>master.PasswordServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PasswordServlet</servlet-name>
+    <url-pattern>/password</url-pattern>
+  </servlet-mapping> 
 
 </web-app>

@@ -70,7 +70,6 @@ public class UserDao extends DBAccess{
 			} finally {
 				disconnect();
 			}
-			System.out.println("Role is " +bean.getRole());
 			return bean;
 		}
 				
@@ -122,6 +121,7 @@ public class UserDao extends DBAccess{
 				ps.setString(4, emp_email);
 				ps.setString(5, password);
 				ps.setInt(6, role);
+				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -144,7 +144,7 @@ public class UserDao extends DBAccess{
 				ps.setString(4,emp_email);
 				ps.setInt(5, role);
 				ps.setInt(6, emp_id);
-
+				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -163,7 +163,7 @@ public class UserDao extends DBAccess{
 				PreparedStatement ps = getConnection().prepareStatement(sql);
 				ps.setString(1, password);
 				ps.setInt(2, emp_id);
-
+				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -182,6 +182,7 @@ public class UserDao extends DBAccess{
 				// ステートメントの作成
 				PreparedStatement ps = getConnection().prepareStatement(sql);
 				ps.setInt(1, id);
+				ps.executeUpdate();
 
 			} catch (SQLException e) {
 				e.printStackTrace();

@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-
+		
 		//文字コードの設定
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
@@ -36,37 +36,43 @@ public class LoginServlet extends HttpServlet {
 					String pw = (String)request.getParameter("pass");
 					String err = null;
 					Errcheck e = new Errcheck();
+					String[] input = {id,pw};
+					String[] names = {"社員番号","パスワード"};
 					
-					if(e.inputCheck(id,pw) == 1) {
-						err = "社員番号が入力されていません";
-					} else if(e.inputCheck(id, pw) == 2){
-						err = "パスワードが入力されていません";
-					} else if(e.numberCheck(id) == false) {
-						err = "社員番号が数字で入力されていません";
-					} else {
-						int iid = Integer.parseInt(id);
-						UserDao dao = new UserDao();
-						UserBean bean = dao.select(iid);
-						String correct = bean.getPassword();
-						if(e.correctCheck(pw, correct) == false) {
-							err = "社員番号またはパスワードが違います";
-						} else {
-							session.setAttribute("username", bean.getEmp_name());
-							session.setAttribute("userrole", bean.getRole());
-							rd = request.getRequestDispatcher("/jsp/main.jsp");
-							rd.forward(request, response);
+					if((err =  e.injectionCheck(input,names)) == null) {
+						if((err = e.inputCheck(input,names)) == null) {
+							if(e.numberCheck(id) != null) {
+								err = "社員番号は"+e.numberCheck(id);
+							} else {
+								int iid = Integer.parseInt(id);
+								UserDao dao = new UserDao();
+								UserBean bean = dao.select(iid);
+								String correct = bean.getPassword();
+								if(e.correctCheck(pw, correct) != null) {
+									err = "社員番号または"+e.correctCheck(pw, correct);
+								} else {
+									session.setAttribute("userid", bean.getEmp_id());
+									session.setAttribute("username", bean.getEmp_name());
+									session.setAttribute("userrole", bean.getRole());
+									rd = request.getRequestDispatcher("/jsp/main.jsp");
+								}
+							}
 						}
+					} else {
+						id = id.replace("'", "");
+						pw = pw.replace("'", "");
 					}
-					request.setAttribute("id", id);
-					request.setAttribute("pass", pw);
-					request.setAttribute("err", err);
-					rd = request.getRequestDispatcher("/jsp/login.jsp");
+					if(rd == null) {
+						request.setAttribute("id", id);
+						request.setAttribute("pass", pw);
+						request.setAttribute("err", err);
+						rd = request.getRequestDispatcher("/jsp/login.jsp");
+					}
 				} catch (Exception e) {
 					rd = request.getRequestDispatcher("/jsp/main.jsp");
 				}
 			}
 		} catch (Exception e2) {
-			e2.printStackTrace();
 			rd = request.getRequestDispatcher("/jsp/forget.jsp");
 		}
 		rd.forward(request, response);

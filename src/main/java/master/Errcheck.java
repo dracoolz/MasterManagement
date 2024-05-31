@@ -5,72 +5,78 @@ import dao.UserDao;
 
 public class Errcheck {
 
-	public int inputCheck(String str) {
+	public String inputCheck(String str, String strnames) {
 		if(str.length() == 0) {
-			return 1;
+			return strnames+"が入力されていません";
 		}
-		return 0;
+		return null;
 	}
 	
-	public int inputCheck(String str1, String str2) {
-		if(str1.length() == 0) {
-			return 1;
-		} else if(str2.length() == 0) {
-			return 2;
-		}
-		return 0;
-	}
-	
-	public Boolean correctCheck(String pass1, String pass2){
-		if(pass1.equals(pass2)){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	
-	public Boolean numberCheck(String str){
-		if(str.matches("[0-9]+")){
-			if(Integer.parseInt(str)>0){
-				return true;
+	public String inputCheck(String[] strs, String[] strnames) {
+		for(int i = 0; i < strs.length; ++i) {
+			if(strs[i].length() == 0) {
+				return strnames[i]+"が入力されていません";
 			}
 		}
-		return false;
+		return null;
 	}
 
-	public Boolean existId(int id){
+	public String injectionCheck(String str, String strname) {
+		if(str.contains("'")) {
+			return  strname + "に\'は使用しないでください";
+		}
+		return null;
+	}
+	
+	public String injectionCheck(String[] strs, String[] strnames) {
+		String place = null;
+		for(int i = 0; i < strs.length; ++i) {
+			if(strs[i].contains("'")) {
+				if(place == null) {
+					place = strnames[i];
+				}
+				else {
+					place = place + "、" + strnames[i];
+				}
+			}
+		}
+		if(place != null) {
+			return  place + "に\'は使用しないでください";
+		}
+		return null;
+	}
+	
+	public String sameCheck(String pass1, String pass2){
+		if(pass1.equals(pass2)){
+			return null;
+		}else{
+			return "新しいパスワードが確認と一致していません";
+		}
+	}
+	
+	public String correctCheck(String pass1, String pass2){
+		if(pass1.equals(pass2)){
+			return null;
+		}else{
+			return "パスワードが違います";
+		}
+	}
+	
+	public String numberCheck(String str){
+		if(str.matches("[0-9]+")){
+			if(Integer.parseInt(str)>0){
+				return null;
+			}
+		}
+		return "整数で入力してください";
+	}
+	
+	public String existId(int id){
 		UserDao dao = new UserDao();
 		UserBean bean = dao.select(id);
 		if(id == bean.getEmp_id()){
-			return true;
+			return null;
 		}
-		return false;
+		return "存在しない社員番号です";
 	}
-	
-	/*
-	 * 	public String numCheck(String id,String kakaku){
-		String msg;
-		if(id.matches("[0-9]+") && kakaku.matches("[0-9]+")){
-			if(Integer.parseInt(id)>0 && Integer.parseInt(kakaku)>0){
-				msg=null;
-			}else{
-				msg="IDと価格には整数を入力して下さい";
-			}
-		}else{
-			msg="IDと価格には数字を入力して下さい";
-		}
-		return msg;
-	}
-
-	public String notExitId(String id){
-		String msg=null;
-		UserDao dao = new UserDao();
-
-		ArrayList<UserBean> list = dao.jouken(id);
-		if(0==list.size()){
-			msg="対象データはありません";
-		}
-		return msg;
-	}
-	*/
 }
