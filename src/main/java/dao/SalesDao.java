@@ -11,10 +11,11 @@ public class SalesDao extends DBAccess {
 	public ArrayList<SalesBean> selectProSales() {
 		ArrayList<SalesBean> list = new ArrayList<SalesBean>();
 
-		String sql = "SELECT s.pro_id, pi.pi_name, sc.name AS category, s.sale_price, " +
+		String sql = "SELECT s.pro_id, pi.pi_name, sc.sc_category AS category, s.sale_price, " +
 	             "(s.sale_price * 5 / 6) AS stock_price, s.sale_amount, " +
 	             "((s.sale_price * s.sale_amount) - ((s.sale_price * 5 / 6) * s.sale_amount)) AS profit, " +
-	             "((s.sale_price * s.sale_amount) / (SELECT SUM(sale_price * sale_amount) FROM sale_list WHERE YEAR(date) = YEAR(CURDATE()) - 1)) AS comparison " +
+	             "((s.sale_price * s.sale_amount) / " +
+	             "(SELECT SUM(sale_price * sale_amount) FROM sale_list WHERE YEAR(date) = YEAR(CURDATE()) - 1)) AS comparison " +
 	             "FROM sale_list s " +
 	             "JOIN product p ON s.pro_id = p.pro_id " +
 	             "JOIN product_info pi ON p.pi_id = pi.pi_id " +
@@ -220,12 +221,13 @@ public class SalesDao extends DBAccess {
 	public ArrayList<SalesBean> selectCusSales() {
 		ArrayList<SalesBean> list = new ArrayList<SalesBean>();
 
-		// SQL文を作成する
-		String sql = "SELECT sl.cus_id, c.cus_name, sl.sale_amount, (((sl.sale_price * sl.sale_amount) - (sl.sale_price * 5/6)) * 0.01) AS gross_profit " +
+		String sql = "SELECT sl.cus_id, c.cus_name, sl.sale_amount, " +
+	             "((sl.sale_price * sl.sale_amount - sl.sale_price * 5 / 6) * 0.01) AS gross_profit " +
 	             "FROM sale_list sl " +
 	             "JOIN customer c ON sl.cus_id = c.cus_id " +
 	             "JOIN product p ON sl.pro_id = p.pro_id " +
 	             "ORDER BY sl.cus_id";
+
 
 
 		try {
