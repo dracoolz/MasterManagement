@@ -35,14 +35,14 @@ public class ManageControlServlet extends HttpServlet {
 		int no = Integer.parseInt(request.getParameter("no"));
 		RequestDispatcher rd = null;
 		switch(no) {
-			case 0:
+			case 1:
 				UserDao dao = new UserDao();
 				ArrayList<UserBean> uarr = new ArrayList<UserBean>();
 				uarr = dao.selectAll();
 				request.setAttribute("list", uarr);
 				rd = request.getRequestDispatcher("/jsp/user.jsp");
 				break;
-			case 1:
+			case 2:
 				BigCategoryDao bdao = new BigCategoryDao();
 				ArrayList<BigCategoryBean> barr = new ArrayList<BigCategoryBean>();
 				barr = bdao.selectAll();
@@ -55,20 +55,20 @@ public class ManageControlServlet extends HttpServlet {
 				
 				rd = request.getRequestDispatcher("./jsp/category.jsp");
 				break;
-			case 2:
+			case 3:
 				ProductDao pdao = new ProductDao();
 				ArrayList<ProductBean> parr = new ArrayList<ProductBean>();
 				parr = pdao.selectAll();
 				request.setAttribute("list", parr);
 				rd = request.getRequestDispatcher("./jsp/product.jsp");
 				break;
-			case 3:
+			case 4:
 				rd = request.getRequestDispatcher("/list?no=1");
 				break;
-			case 4:
+			case 5:
 				rd = request.getRequestDispatcher("/list?no=2");
 				break;
-			case 5:
+			case 6:
 				rd = request.getRequestDispatcher("/totalmenu");
 				break;
 		}

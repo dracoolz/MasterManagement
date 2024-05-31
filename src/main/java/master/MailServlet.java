@@ -32,7 +32,6 @@ public class MailServlet extends HttpServlet {
 			if(e.numberCheck(id) != null) {
 				err = "社員番号は"+e.numberCheck(id);
 			} else {
-<<<<<<< HEAD
 				int iid = Integer.parseInt(id);
 				if(e.existId(iid) != null) {
 					err = e.existId(iid);
@@ -85,58 +84,6 @@ public class MailServlet extends HttpServlet {
 					RequestDispatcher rd = request.getRequestDispatcher("/jsp/password.jsp?no=1");
 					rd.forward(request, response);
 				}
-=======
-				UserDao dao = new UserDao();
-				String to = dao.select(iid).getEmp_email();
-				System.out.println("宛先："+to);
-		        // メールサーバーのホスト名
-		        String host = "smtp.gmail.com";
-		        // ポート番号（SSLを使用する場合）
-		        int port = 465;
-		        // 送信元メールアドレスとパスワード
-		        String from = "gksi.kenshu.202405@gmail.com";
-		        String password = "Pa$$w0rd12345";
-
-		        // メールプロパティの設定
-		        Properties props = new Properties();
-		        props.put("mail.smtp.socketFactory.port", port);
-		        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		        props.put("mail.smtp.socketFactory.fallback", "false");
-		        props.put("mail.smtp.ssl.enable", "true");
-		        props.put("mail.smtp.ssl.trust", host);
-		        
-		        Session session = Session.getInstance(props, new Authenticator() {
-		            protected PasswordAuthentication getPasswordAuthentication() {
-		                return new PasswordAuthentication(from, password);
-		            }
-		        });
-		        System.out.println("props ok");
-		        // セッションの取得
-		        System.out.println("ike");
-		        try {
-		            // メッセージの作成
-		        	System.out.println("start");
-		            MimeMessage message = new MimeMessage(session);
-		            message.setFrom(new InternetAddress(from));
-		            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-		            message.setSubject("パスワードリセット");
-		            message.setText("以下のリンクからパスワードをリセットしてください\n"
-		            		+ "/jsp/password.jsp");
-		            session.setDebug(true);
-		            
-		            // メールの送信
-		            System.out.println("send");
-		            Transport.send(message);
-		            System.out.println("sent");
-		            // 送信成功時の処理
-		            response.getWriter().println("メールを送信しました。");
-		        } catch (MessagingException mex) {
-		            // 送信失敗時の処理
-		            mex.printStackTrace();
-		            response.getWriter().println("メールの送信に失敗しました。");
-		    }
-				err = "登録されているメールアドレスにリンクを送信しました";	
->>>>>>> 84f3d355488b36b25536380aa2df21de21b5186d
 			}
 		}
 		request.setAttribute("id", id);

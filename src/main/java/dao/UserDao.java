@@ -70,10 +70,6 @@ public class UserDao extends DBAccess{
 			} finally {
 				disconnect();
 			}
-<<<<<<< HEAD
-=======
-			System.out.println("Employee ID is " + bean.getEmp_id());
->>>>>>> 84f3d355488b36b25536380aa2df21de21b5186d
 			return bean;
 		}
 				
