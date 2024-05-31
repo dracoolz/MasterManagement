@@ -85,7 +85,7 @@
 			<tr>
 				<td></td>
 				<td align="left">カテゴリ1(大)</td>
-				<td>:<select id ="bc1" name = "bc_1">
+				<td>:<select id ="bc1" name = "bc_id_1">
 				<option value=""></option>
 				<% for(int i=0; i < bcList.length; i++){ %>
 				<option value="<%=i+1 %>"><%=bcList.get(i).getBc_category() %></option>
@@ -95,14 +95,14 @@
 			<tr>
 				<td></td>
 				<td align="left">カテゴリ1(小)</td>
-				<td>:<select id ="sc1" name = "sc_1">
+				<td>:<select id ="sc1" name = "sc_id_1">
 				<option value=""></option>
 				</select></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td align="left">カテゴリ2(大)</td>
-				<td>:<select id ="bc2" name = "bc_2">
+				<td>:<select id ="bc2" name = "bc_id_2">
 				<option value=""></option>
 				<% for(int i=0; i < bcList.length; i++){ %>
 				<option value="<%=i+1 %>"><%=bcList.get(i).getBc_category() %></option>
@@ -112,14 +112,14 @@
 			<tr>
 				<td></td>
 				<td align="left">カテゴリ2(小)</td>
-				<td>:<select id ="sc2" name = "sc_2">
+				<td>:<select id ="sc2" name = "sc_id_2">
 				<option value=""></option>
 				</select></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td align="left">カテゴリ3(大)</td>
-				<td>:<select id ="bc3" name = "bc_3">
+				<td>:<select id ="bc3" name = "bc_id_3">
 				<option value=""></option>
 				<% for(int i=0; i < bcList.length; i++){ %>
 				<option value="<%=i+1 %>"><%=bcList.get(i).getBc_category() %></option>
@@ -129,7 +129,7 @@
 			<tr>
 				<td></td>
 				<td align="left">カテゴリ3(小)</td>
-				<td>:<select id ="sc3" name = "sc_3">
+				<td>:<select id ="sc3" name = "sc_id_3">
 				<option value=""></option>
 				</select></td>
 			</tr>
