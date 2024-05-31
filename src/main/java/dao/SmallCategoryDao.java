@@ -42,7 +42,7 @@ public class SmallCategoryDao extends DBAccess{
 		
 		
 		//小カテゴリテーブルで条件をつけて検索するメソッド
-		public SmallCategoryBean jouken(String name) {
+		public SmallCategoryBean selectIf(String name) {
 
 			SmallCategoryBean bean = new SmallCategoryBean();
 
@@ -91,7 +91,7 @@ public class SmallCategoryDao extends DBAccess{
 		
 
 		//小カテゴリを更新（アップデート）するメソッド
-		public void update(int sc_id ,int bc_id ,String name) {
+		public void update(int sc_id ,int bc_id ,int new_sc_id ,String name) {
 
 			String sql = "update small_category set sc_id=?,bc_id=?,sc_category=? where sc_id=?";
 
@@ -99,7 +99,7 @@ public class SmallCategoryDao extends DBAccess{
 				connect();
 				// ステートメントの作成
 				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, sc_id);
+				ps.setInt(1, new_sc_id);
 				ps.setInt(2, bc_id);
 				ps.setString(3, name);
 				ps.setInt(4, sc_id);
