@@ -35,7 +35,7 @@
        		<table>
        			<tr>
 	       			<td><input type ="submit"  name="submit" value="登録"></td>
-	       			<td><input type ="submit"  name="submit" value="戻る"></td>
+	       			<td><button type="button" onclick="location.href='./master?no=1'">戻る</td>
        			</tr>
        		</table>
        	</div>
