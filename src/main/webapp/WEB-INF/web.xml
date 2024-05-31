@@ -92,5 +92,15 @@
 		<servlet-name>Servlet</servlet-name>
 		<url-pattern>/servlet</url-pattern>
 	</servlet-mapping>
+	
+	<!-- OrderAddServlet -->
+	<servlet>
+		<servlet-name>OrderAddServlet</servlet-name>
+		<servlet-class>order.OrderAddServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OrderAddServlet</servlet-name>
+		<url-pattern>/orderadd</url-pattern>
+	</servlet-mapping>
 
 </web-app>

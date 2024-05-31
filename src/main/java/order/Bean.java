@@ -10,5 +10,5 @@ public class Bean implements Serializable{
 	//constructor
 	Bean(){}
 
-	//getter() & setter()
+	//getter and setter
 }
