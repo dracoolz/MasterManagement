@@ -4,68 +4,70 @@ import java.io.Serializable;
 
 public class OrderSlipViewBean implements Serializable{
 	
-	    private String ProductId;
-	    private String ProductName;
-	    private int SalePrice;
-	    private int UnitCost;
-	    private int OrderQty;
-	    private int CancelQty;
-	    private int RefundQty;
-	    private int SaleAmount;
-	    private int GrossProfit;
+	    private String productId;
+	    private String productName;
+	    private int salePrice;
+	    private int unitCost;
+	    private int orderQty;
+	    private int cancelQty;
+	    private int refundQty;
+	    private int saleAmount;
+	    private int grossProfit;
 	    
 		public String getProductId() {
-			return ProductId;
+			return productId;
 		}
 		public void setProductId(String productId) {
-			ProductId = productId;
+			this.productId = productId;
 		}
 		public String getProductName() {
-			return ProductName;
+			return productName;
 		}
 		public void setProductName(String productName) {
-			ProductName = productName;
+			this.productName = productName;
 		}
 		public int getSalePrice() {
-			return SalePrice;
+			return salePrice;
 		}
 		public void setSalePrice(int salePrice) {
-			SalePrice = salePrice;
+			this.salePrice = salePrice;
 		}
 		public int getUnitCost() {
-			return UnitCost;
+			return unitCost;
 		}
 		public void setUnitCost(int unitCost) {
-			UnitCost = unitCost;
+			this.unitCost = unitCost;
 		}
 		public int getOrderQty() {
-			return OrderQty;
+			return orderQty;
 		}
 		public void setOrderQty(int orderQty) {
-			OrderQty = orderQty;
+			this.orderQty = orderQty;
 		}
 		public int getCancelQty() {
-			return CancelQty;
+			return cancelQty;
 		}
 		public void setCancelQty(int cancelQty) {
-			CancelQty = cancelQty;
+			this.cancelQty = cancelQty;
 		}
 		public int getRefundQty() {
-			return RefundQty;
+			return refundQty;
 		}
 		public void setRefundQty(int refundQty) {
-			RefundQty = refundQty;
+			this.refundQty = refundQty;
 		}
 		public int getSaleAmount() {
-			return SaleAmount;
+			return saleAmount;
 		}
 		public void setSaleAmount(int saleAmount) {
-			SaleAmount = saleAmount;
+			this.saleAmount = saleAmount;
 		}
-		public int getGrossProfit() {
-			return GrossProfit;
+		public int getGrossProfit() {s
+			return grossProfit;
 		}
 		public void setGrossProfit(int grossProfit) {
-			GrossProfit = grossProfit;
+			this.grossProfit = grossProfit;
 		}
+	    
+		
 }
