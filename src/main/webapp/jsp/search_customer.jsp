@@ -29,6 +29,8 @@
                 <th>都道府県</th>
                 <th></th>
             </tr>
+            
+            
             <%
             ArrayList<CustomerViewBean> list = (ArrayList<CustomerViewBean>) request.getAttribute("list");
             if (list != null && !list.isEmpty()) {
@@ -53,6 +55,8 @@
             }
             %>
         </table>
+        
+        
         <div align="center">
         <%
         int noOfPages = (int)request.getAttribute("noOfPages");

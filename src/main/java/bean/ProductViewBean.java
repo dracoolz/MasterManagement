@@ -3,71 +3,71 @@ package bean;
 import java.io.Serializable;
 
 public class ProductViewBean implements Serializable {
-	private String pro_id;
-	private String pi_id;
-	private String pd_id;
-	private int wholesale;
-	private int set_quantity;
+	
+	private int scId;
+	private String scCategory;
+	private int bcId ;
+	private String bcCategory;
+	private int categoryId;
 
 
-	public String getProId() {
-		return pro_id;
+
+	public int getScId() {
+		return scId;
 	}
 
-	public void setProId(String pro_id) {
-		this.pro_id = pro_id;
+	public void setScId(int scId) {
+		this.scId = scId;
 	}
 	
 	
 
+
 	
-	
-	
-	
-	
-	public String getOrderId() {
-		return pi_id;
+	public String scCategory() {
+		return scCategory;
 	}
 
-	public void setOrderId(String pi_id) {
-		this.pi_id = pi_id;
+	public void setScCategory(String scCategory) {
+		this.scCategory = scCategory;
 	}
-	
 	
 	
 	
 
-	
-	public String getPdId() {
-		return pd_id;
+	public int getBcId() {
+		return bcId;
 	}
 
-	public void setPdId(String pd_id) {
-		this.pd_id = pd_id;
+	public void setBcId(int bcId) {
+		this.bcId = bcId;
 	}
 	
 	
+
 	
-	public int getWholesale() {
-		return wholesale;
+	
+	
+	
+	public String getBcCategory() {
+		return bcCategory;
 	}
 
-	public void setWholesale(int wholesale) {
-		this.wholesale = wholesale;
+	public void setBcCategory(String bcCategory) {
+		this.bcCategory = bcCategory;
 	}
 	
 	
 	
 	
-	public int getSetQuantity() {
-		return set_quantity;
+	public int getCategoryId() {
+		return categoryId;
 	}
 
-	public void setSetQuantity(int set_quantity) {
-		this.set_quantity = set_quantity;
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
 	}
 	
-	/////////////////////////////////////////////////////////////////////
 	
 	
 }

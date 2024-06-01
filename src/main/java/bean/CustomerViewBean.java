@@ -3,28 +3,28 @@ package bean;
 import java.io.Serializable;
 
 public class CustomerViewBean implements Serializable {
-	private int cus_id;
-	private String cus_name;
-	private String contact_name;
+	private int cusId;
+	private String cusName;
+	private String contactName;
 	private String district;
 
 
 	public int getCusId() {
-		return cus_id;
+		return cusId;
 	}
 
-	public void setCusId(int cus_id) {
-		this.cus_id = cus_id;
+	public void setCusId(int cusId) {
+		this.cusId = cusId;
 	}
 	
 	
 
 	public String getCusName() {
-		return cus_name;
+		return cusName;
 	}
 
-	public void setCusName(String cus_name) {
-		this.cus_name = cus_name;
+	public void setCusName(String cusName) {
+		this.cusName = cusName;
 	}
 	
 	
@@ -33,11 +33,11 @@ public class CustomerViewBean implements Serializable {
 	
 	
 	public String getContactName() {
-		return contact_name;
+		return contactName;
 	}
 
-	public void setContactName(String contact_name) {
-		this.contact_name = contact_name;
+	public void setContactName(String contactName) {
+		this.contactName = contactName;
 	}
 	
 	
