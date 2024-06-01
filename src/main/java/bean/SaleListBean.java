@@ -4,35 +4,37 @@ import java.io.Serializable;
 
 public class SaleListBean implements Serializable{
 	
-	    private int CusId;
-	    private String CusName;
-	    private String Date;
-	    private int TotalPrice;
+	    private int cusId;
+	    private String cusName;
+	    private String date;
+	    private int totalPrice;
 	    
 		public int getCusId() {
-			return CusId;
+			return cusId;
 		}
 		public void setCusId(int cusId) {
-			CusId = cusId;
+			this.cusId = cusId;
 		}
 		public String getCusName() {
-			return CusName;
+			return cusName;
 		}
 		public void setCusName(String cusName) {
-			CusName = cusName;
+			this.cusName = cusName;
 		}
 		public String getDate() {
-			return Date;
+			return date;
 		}
 		public void setDate(String date) {
-			Date = date;
+			this.date = date;
 		}
 		public int getTotalPrice() {
-			return TotalPrice;
+			return totalPrice;
 		}
 		public void setTotalPrice(int totalPrice) {
-			TotalPrice = totalPrice;
+			this.totalPrice = totalPrice;
 		}
+	    
+		
 	    
 
 }

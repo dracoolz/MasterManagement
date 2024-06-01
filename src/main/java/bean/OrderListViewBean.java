@@ -4,34 +4,35 @@ import java.io.Serializable;
 
 public class OrderListViewBean implements Serializable{
 	
-	    private int OrderId;
-	    private String Date;
-	    private String CustomerName;
-	    private int TotalAmountMoney;
+	    private int orderId;
+	    private String date;
+	    private String customerName;
+	    private int totalAmountMoney;
 	    
 		public int getOrderId() {
-			return OrderId;
+			return orderId;
 		}
 		public void setOrderId(int orderId) {
-			OrderId = orderId;
+			this.orderId = orderId;
 		}
 		public String getDate() {
-			return Date;
+			return date;
 		}
 		public void setDate(String date) {
-			Date = date;
+			this.date = date;
 		}
 		public String getCustomerName() {
-			return CustomerName;
+			return customerName;
 		}
 		public void setCustomerName(String customerName) {
-			CustomerName = customerName;
+			this.customerName = customerName;
 		}
 		public int getTotalAmountMoney() {
-			return TotalAmountMoney;
+			return totalAmountMoney;
 		}
 		public void setTotalAmountMoney(int totalAmountMoney) {
-			TotalAmountMoney = totalAmountMoney;
+			this.totalAmountMoney = totalAmountMoney;
 		}
-
+	    
+		
 }
