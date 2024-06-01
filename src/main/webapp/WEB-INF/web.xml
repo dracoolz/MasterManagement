@@ -102,5 +102,15 @@
 		<servlet-name>OrderAddServlet</servlet-name>
 		<url-pattern>/orderAdd</url-pattern>
 	</servlet-mapping>
+	
+	<!-- OrderCancelServlet -->
+	<servlet>
+		<servlet-name>OrderCancelServlet</servlet-name>
+		<servlet-class>order.OrderCancelServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OrderCancelServlet</servlet-name>
+		<url-pattern>/orderCancel</url-pattern>
+	</servlet-mapping>
 
 </web-app>

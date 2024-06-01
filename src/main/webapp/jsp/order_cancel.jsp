@@ -15,10 +15,10 @@
 
 	<!-- getAttribute from OrderCancelServlet-->
 	<%-- ArrayList<HumanBean> beanList = (ArrayList<HumanBean>) request.getAttribute("users");--%>
-	<%String orderId = (String)session.getAttribute("orderId"); %>
-	<%String customerName = (String)session.getAttribute("customerName"); %>
-	<%String orderDate = (String)session.getAttribute("orderDate"); %> 
-	<%ArrayList<OrderSlipViewBean> orderSlipList = (ArrayList<OrderSlipViewBean>)session.getAttribute("orderSlipViewList");%>
+	<%int orderId = (int)request.getAttribute("orderId"); %>
+	<%String customerName = (String)request.getAttribute("customerName"); %>
+	<%String orderDate = (String)request.getAttribute("orderDate"); %> 
+	<%ArrayList<OrderSlipViewBean> orderSlipList = (ArrayList<OrderSlipViewBean>)request.getAttribute("orderSlipViewList");%>
 	
 	<!-- title -->
 	<h1 align="center">キャンセル処理</h1>
@@ -28,10 +28,8 @@
 		<a href="/first">ログアウト</a>
 	</div>
 	
-	<form>
-		<input type="submit" name="" value="受注内容全てをキャンセルする">
-	</form>
-	
+	<form action="?" method="post">
+		<input type="submit" name="pageFlag" value="受注内容全てをキャンセルする" formaction="confirm/?code=">
 	<table>
 		<tr><td>注文番号</td></tr>
 		<tr><td><%= orderId%></td></tr>
@@ -45,7 +43,7 @@
 		<tr><td><%= orderDate %></td></tr>
 	</table>
 	
-	<table>
+	<table border="1">
 		<tr>
 			<td>商品ID</td>
 			<td>商品名</td>
@@ -56,21 +54,21 @@
 		<%if(orderSlipList != null){ %>
 			<%for(OrderSlipViewBean item:orderSlipList){%>
 				<tr>
-					<td><%= item.getProId()%></td>
-					<td><%= item.getPiName() %></td>
+					<td><%= item.getProductId()%></td>
+					<td><%= item.getProductName() %></td>
 					<td><%= item.getOrderQty() %></td>
-					<td><input type="number" name="CancelQty" value="0" min="0" max="<% item.getOrderQty - item.getCancelQty - item.getRefundQty%>"></td>
+					<td><input type="number" name="cancelQty" value="0" min="0" max="<%= item.getOrderQty() - item.getCancelQty() - item.getRefundQty()%>"></td>
 					<td><%= item.getRefundQty() %></td>
-					<td><input type="submit" name="submit" value="削除"></td>
 				</tr>
-				<% }%>
+			<% }%>
 		<%} %>
 	</table>
-	<!-- getParameter from html or jsp 's form?-->
-	<% String str = request.getParameter(""); %>
-
-	<!-- form link -->
-	<form action="/NockWeb/control" method="post">
+	<br>
+	キャンセル理由
+	<textarea name="cancelComment" cols="100" rows="10"></textarea><br><br>
+	<input type="submit" name="pageFlag" value="確認" formaction="confirm/?code=">
+	<input type="button" name="back" value="戻る" formaction="manageMenu">
 	</form>
+	
 </body>
 </html>
