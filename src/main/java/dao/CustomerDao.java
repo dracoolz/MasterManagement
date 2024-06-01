@@ -2,12 +2,36 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import bean.CustomerViewBean;
 
 public class CustomerDao extends DBAccess {
 
+	public String selectCustomerId(int cusId) {
+		String sql="select cus_name from customer where cus_id = ?";
+		ResultSet rs = null;
+		String customerName = null;
+		
+		try {
+			connect();
+			//create statement
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setInt(1, cusId);
+			//execute
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				customerName=rs.getString("cus_name");
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return customerName;
+	}
+	
     public ArrayList<CustomerViewBean> selectMultipleCustomer(String cus_name, String contact_name, String district) {
 
         ArrayList<CustomerViewBean> list = new ArrayList<CustomerViewBean>();

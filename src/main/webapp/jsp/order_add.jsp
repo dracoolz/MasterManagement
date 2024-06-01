@@ -24,10 +24,10 @@
 	
 	<form action="?" method="post">
 		<input type="textbox" name="customerId" placeholder="取引先ID検索へ">
-		<input type="submit" name="pageFlag" value="追加" formaction="orderadd">
-		<input type="submit" name="pageFlag" value="取引先検索へ" formaction="">
+		<input type="submit" name="pageFlag" value="追加" formaction="orderAdd">
+		<input type="submit" name="pageFlag" value="取引先検索へ" formaction="searchCustomer/?url=orderAdd">
 		<br>取引先名：<input type="textbox" name="customer_name" value="<%if(customerName != null){%><%=customerName%><%} %>" readonly>
-		<input type="submit" name="pageFlag" value="削除" formaction="orderadd">
+		<input type="submit" name="pageFlag" value="削除" formaction="orderAdd">
 	</form>
 	<br>
 	
@@ -51,7 +51,7 @@
 				<tr>
 					<td><%= product.getPro_id()%></td>
 					<td><%= product.getPi_name() %></td>
-					<td><input type="number" name="order_qty" value="1" min="1" max=""></td>
+					<td><input type="number" name="orderQty" value="1" min="1" max=""></td>
 					<td><input type="submit" name="submit" value="削除"></td>
 				</tr>
 				<% }%>

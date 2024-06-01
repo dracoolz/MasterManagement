@@ -474,5 +474,7 @@ public class ProductDao extends DBAccess{
 					disconnect();
 				}
 			}
+			
+			
 	
 }

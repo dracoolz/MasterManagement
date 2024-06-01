@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bean.ProductBean;
+import dao.CustomerDao;
 
 public class OrderAddServlet extends HttpServlet {
 	
@@ -51,8 +52,9 @@ public class OrderAddServlet extends HttpServlet {
 			req.setAttribute("errMsg", errMsg);
 			session.setAttribute("customerName", null);
 		}else {
-			
-			session.setAttribute("customerName", "babadayo");
+			CustomerDao cusDao = new CustomerDao();
+			String customerName = cusDao.selectCustomerId(Integer.parseInt(customerId));
+			session.setAttribute("customerName", customerName);
 		}
 	}
 	

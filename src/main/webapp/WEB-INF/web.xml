@@ -100,7 +100,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>OrderAddServlet</servlet-name>
-		<url-pattern>/orderadd</url-pattern>
+		<url-pattern>/orderAdd</url-pattern>
 	</servlet-mapping>
 
 </web-app>
