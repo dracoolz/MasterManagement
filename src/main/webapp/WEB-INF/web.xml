@@ -112,5 +112,35 @@
 		<servlet-name>CheckControl</servlet-name>
 		<url-pattern>/checkControl</url-pattern>
 	</servlet-mapping>
+	
+	<!-- TotalMenuServle -->
+	<servlet>
+		<servlet-name>TotalMenuServlet</servlet-name>
+		<servlet-class>order.TotalMenuServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TotalMenuServlet</servlet-name>
+		<url-pattern>/total</url-pattern>
+	</servlet-mapping>
+	
+		<!-- ManageMenuServlet -->
+	<servlet>
+		<servlet-name>ManageMenuServlet</servlet-name>
+		<servlet-class>order.ManageMenuServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ManageMenuServlet</servlet-name>
+		<url-pattern>/manage</url-pattern>
+	</servlet-mapping>
+	
+			<!-- OrderListServlet -->
+	<servlet>
+		<servlet-name>OrderListServlet</servlet-name>
+		<servlet-class>order.OrderListServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OrderListServlet</servlet-name>
+		<url-pattern>/orderList</url-pattern>
+	</servlet-mapping>
 
 </web-app>
