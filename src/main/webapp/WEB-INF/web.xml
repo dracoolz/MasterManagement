@@ -130,7 +130,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ManageMenuServlet</servlet-name>
-		<url-pattern>/manage</url-pattern>
+		<url-pattern>/manageMenu</url-pattern>
 	</servlet-mapping>
 	
 			<!-- OrderListServlet -->
@@ -141,6 +141,16 @@
 	<servlet-mapping>
 		<servlet-name>OrderListServlet</servlet-name>
 		<url-pattern>/orderList</url-pattern>
+	</servlet-mapping>
+
+			<!-- OrderSlipServlet -->
+	<servlet>
+		<servlet-name>OrderSlipServlet</servlet-name>
+		<servlet-class>order.OrderSlipServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OrderSlipServlet</servlet-name>
+		<url-pattern>/orderSlip</url-pattern>
 	</servlet-mapping>
 
 </web-app>

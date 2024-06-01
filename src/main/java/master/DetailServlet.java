@@ -21,9 +21,11 @@ public class DetailServlet extends HttpServlet {
 		int idValue = Integer.parseInt(req.getParameter("idValue"));
 		
 		if(no == 1) {
+			
 			//最初に移動
 			// DAOをインスタンス化する
 			SalesDao dao = new SalesDao();
+			
 			// リクエストにDAOで取得したユーザ情報をセットする
 			req.setAttribute("companylist", dao.selectCusSalesById(idValue));
 			

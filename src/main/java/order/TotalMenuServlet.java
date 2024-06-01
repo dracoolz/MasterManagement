@@ -25,7 +25,6 @@ public class TotalMenuServlet extends HttpServlet {
 		
 		
 		
-		
 		// HttpSession session = request.getSession(true);
 		forward="/jsp/totalMenu.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(forward);

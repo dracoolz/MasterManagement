@@ -62,7 +62,7 @@ public class OrderSlipViewBean implements Serializable{
 		public void setSaleAmount(int saleAmount) {
 			this.saleAmount = saleAmount;
 		}
-		public int getGrossProfit() {s
+		public int getGrossProfit() {
 			return grossProfit;
 		}
 		public void setGrossProfit(int grossProfit) {

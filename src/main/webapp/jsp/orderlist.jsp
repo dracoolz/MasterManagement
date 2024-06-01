@@ -27,9 +27,11 @@
             <td><%= bean.getDate() %></td>
             <td><%= bean.getCustomerName() %></td>
             <td>
-                <form action="OrderSlip" method="GET"> <!-- 詳細ボタンのフォーム -->
-                    <input type="hidden" name="orderId" value="<%= bean.getOrderId() %>"> <!-- 注文番号をhiddenで送信 -->
-                    <input type="submit" value="詳細">
+                <form action="orderSlip" method="GET"> <!-- 詳細ボタンのフォーム -->
+                     <input type="hidden" name="orderId" value="<%= bean.getOrderId() %>">
+                     <input type="hidden" name="orderDate" value="<%= bean.getDate() %>">
+                     <input type="hidden" name="customerName" value="<%= bean.getCustomerName() %>">
+                     <input type="submit" value="詳細">
                 </form>
             </td>
         </tr>

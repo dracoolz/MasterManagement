@@ -19,7 +19,7 @@
 	</div>
 	<div align="center">
 		
-		<a href="./manage">受注管理</a><br><br>
+		<a href="./manageMenu">受注管理</a><br><br>
 		<a href="./master?no=2">売上日計一覧</a><br><br>
 		
 		<td><input type="button" name="submit"onclick="location.href='./login'" value="メインメニューに戻る"></td>
