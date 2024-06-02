@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="bean.OrderSlipViewBean" %>
+<%@ page import="bean.OrderSlipBean" %>
 
 <!DOCTYPE html>
 <html>
@@ -14,29 +14,34 @@
 	<%response.setContentType("text/html;charset=UTF-8"); %>
 	
 	<!-- session getAttribute -->
-	<%String orderId = (String)session.getAttribute("orderId"); %>
+	<%int orderId = (int)session.getAttribute("orderId"); %>
 	<%String customerName = (String)session.getAttribute("customerName"); %>
 	<%String orderDate = (String)session.getAttribute("orderDate"); %>
-	<%ArrayList<OrderSlipViewBean> cancelList = (ArrayList<OrderSlipViewBean>)session.getAttribute("cancelList"); %>
+	<%ArrayList<OrderSlipBean> cancelList = (ArrayList<OrderSlipBean>)session.getAttribute("cancelList"); %>
 	<%String cancelComment = (String)session.getAttribute("cancelComment"); %>
 	<!-- getAttribute from ConfirmServlet-->
 	<%String message = (String)request.getAttribute("message"); %>
-	<%String code = (String)request.getAttribute("code"); %>
+	<%String code = (String)session.getAttribute("code"); %>
 	
 	<!-- title -->
 	<h1 align="center">
 	<%if(("add").equals(code)){ %>
-		<%="" %>
-	<%}else if(("orderChange").equals(code){ %>
-		<%="" %>
-	<%}else if(("cancelChange").equals(code){ %>
-		<%="" %>
-	<%}else if(("refundChange").equals(code){ %>
-	キャンセル確認</h1>
+		<%="受注追加" %>
+	<%}else if(("orderChange").equals(code)){ %>
+		<%="受注内容変更" %>
+	<%}else if(("cancelChange").equals(code)){ %>
+		<%="キャンセル変更" %>
+	<%}else if(("refundChange").equals(code)){ %>
+		<%="返品変更" %>
+	<%}else if(("newCancel").equals(code)){ %>
+		<%="キャンセル確認" %>
+	<%}else if(("newRefund").equals(code)){ %>
+		<%="返品確認" %>
+	<%} %>
+	</h1>
+	
 	<!-- キャンセル確認 code=cancel -->
 	<!-- 返品確認 code=refund -->
-	
-	
 	
 	<div align="right">
 		<p><%="ようこそ、"+session.getAttribute("username")+"さん" %></p>
@@ -67,7 +72,7 @@
 				<td>最終注文数</td>
 			</tr>
 			<%if(cancelList != null){ %>
-			<%for(OrderSlipViewBean cancelItem:cancelList){%>
+			<%for(OrderSlipBean cancelItem:cancelList){%>
 				<tr>
 					<td><%= cancelItem.getProductId()%></td>
 					<td><%= cancelItem.getProductName() %></td>
@@ -85,7 +90,7 @@
 			</tr>
 			<tr>
 				<td>
-					<%if(cancelComment != null){ %>
+					<%if(cancelComment != ""){ %>
 						<%=cancelComment %>
 					<%}else {%>
 						<%="コメントはありません" %>

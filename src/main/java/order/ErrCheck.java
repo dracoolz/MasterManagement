@@ -1,5 +1,9 @@
 package order;
 
+import java.util.ArrayList;
+
+import bean.OrderSlipBean;
+
 public class ErrCheck {
 	private String E010 = "値を入力してください";
 	private String E012 = "商品IDが入力されていません";
@@ -16,9 +20,18 @@ public class ErrCheck {
 	
 	//キャンセル数と返品数の合計が受注数を超えないか
 	public boolean decrementQtyOverCheck(int orderQty, int cancelQty ,int refundQty) {
-		boolean result = false;
+		boolean result = true;
 		if(orderQty < (cancelQty+refundQty)) {
-			result = true;
+			result = false;
+		}
+		return result;
+	}
+	
+	//商品が追加されているか（キャンセル商品返品商品でも使えそう
+	public boolean addProductCheck(ArrayList<OrderSlipBean> productList) {
+		boolean result = true;
+		if(productList.size() == 0) {
+			result = false;
 		}
 		return result;
 	}

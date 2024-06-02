@@ -5,13 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import bean.OrderListViewBean;
+import bean.OrderListBean;
 
 public class OrderListDao extends DBAccess{
 	
 	 // 顧客番号を条件として、キャンセルや返品のない注文情報のリストを取得する処理
-    public ArrayList<OrderListViewBean> selectLookOrderList(int cusId) {
-    	ArrayList<OrderListViewBean> list = new ArrayList<OrderListViewBean>();
+    public ArrayList<OrderListBean> selectLookOrderList(int cusId) {
+    	ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
     	
     	String sql = "select * from small_category;";
 
@@ -22,9 +22,9 @@ public class OrderListDao extends DBAccess{
 		        ResultSet rs = ps.executeQuery();
 		        
 			while (rs.next()) {
-				OrderListViewBean bean = new OrderListViewBean();
+				OrderListBean bean = new OrderListBean();
 				bean.setOrderId(rs.getInt("order_id"));
-				bean.setDate(rs.getString("date"));
+				bean.setOrderDate(rs.getString("date"));
 				bean.setCustomerName(rs.getString("cus_name"));
 				list.add(bean);
 			}
@@ -39,23 +39,23 @@ public class OrderListDao extends DBAccess{
     
     
      // 顧客番号を条件として、キャンセルがある注文情報のリストを取得する処理
-    public ArrayList<OrderListViewBean> selectCancelOrderList(int cusId) {
-    	ArrayList<OrderListViewBean> list = new ArrayList<OrderListViewBean>();
+    public ArrayList<OrderListBean> selectCancelOrderList(int cusId) {
+    	ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
 		return list;
     }
     
     
     // 顧客番号を条件として、返品がある注文情報のリストを取得する処理
-    public ArrayList<OrderListViewBean> selectRefundOrderList(int cusId) {
-    	ArrayList<OrderListViewBean> list = new ArrayList<OrderListViewBean>();
+    public ArrayList<OrderListBean> selectRefundOrderList(int cusId) {
+    	ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
 		return list;
     }
     
     
     // 日付降順で全ての受注情報を取得し、注文情報のリストを返す処理
-    public ArrayList<OrderListViewBean> orderList() {
+    public ArrayList<OrderListBean> orderList() {
     	
-        ArrayList<OrderListViewBean> list = new ArrayList<>();
+        ArrayList<OrderListBean> list = new ArrayList<>();
 
         // データベースから受注情報を取得するSQLクエリ
         String sql = "SELECT o.order_id, o.order_date, c.cus_name " +
@@ -69,9 +69,9 @@ public class OrderListDao extends DBAccess{
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                OrderListViewBean bean = new OrderListViewBean();
+                OrderListBean bean = new OrderListBean();
                 bean.setOrderId(rs.getInt("order_id"));
-                bean.setDate(rs.getString("order_date"));
+                bean.setOrderDate(rs.getString("order_date"));
                 bean.setCustomerName(rs.getString("cus_name"));
                 list.add(bean);
             }
@@ -86,15 +86,15 @@ public class OrderListDao extends DBAccess{
     
     
      // 日付降順で全てのキャンセルがある受注情報を取得し、注文情報のリストを返す処理
-    public ArrayList<OrderListViewBean> cancelOrderList() {
-    	ArrayList<OrderListViewBean> list = new ArrayList<OrderListViewBean>();
+    public ArrayList<OrderListBean> cancelOrderList() {
+    	ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
 		return list;
     }
     
     
     // 日付降順で全ての返品がある受注情報を取得し、注文情報のリストを返す処理
-    public ArrayList<OrderListViewBean> refundOrderList() {
-    	ArrayList<OrderListViewBean> list = new ArrayList<OrderListViewBean>();
+    public ArrayList<OrderListBean> refundOrderList() {
+    	ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
 		return list;
     }
     

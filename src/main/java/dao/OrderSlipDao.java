@@ -4,14 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import bean.OrderSlipViewBean;
+import bean.OrderSlipBean;
 
 public class OrderSlipDao extends DBAccess{
 	
 	//キャンセル処理,返品処理画面に必要な情報取得
-	public ArrayList<OrderSlipViewBean> selectSlipForCancelAndRefund(int orderId){
+	public ArrayList<OrderSlipBean> selectSlipForCancelAndRefund(int orderId){
 		String sql="""
-				select order_slip.pro_id ,product_info.pi_name,order_slip.order_qty, order_slip.cancel_qty, order_slip.refund_qty
+				select order_slip.order_slip_id, order_slip.pro_id ,product_info.pi_name,order_slip.order_qty, order_slip.cancel_qty, order_slip.refund_qty
 				from order_slip, product, product_info
 				where order_slip.pro_id = product.pro_id and
 				product.pi_id = product_info.pi_id and
@@ -19,7 +19,7 @@ public class OrderSlipDao extends DBAccess{
 				""";
 
 		ResultSet rs = null;
-		ArrayList<OrderSlipViewBean> orderSlip = new ArrayList<OrderSlipViewBean>();
+		ArrayList<OrderSlipBean> orderSlip = new ArrayList<OrderSlipBean>();
 		try {
 			connect();
 			//create statement
@@ -28,7 +28,8 @@ public class OrderSlipDao extends DBAccess{
 			//execute
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				OrderSlipViewBean bean = new OrderSlipViewBean();
+				OrderSlipBean bean = new OrderSlipBean();
+				bean.setOrderSlipId(rs.getInt("order_slip.order_slip_id"));
 				bean.setProductId(rs.getString("order_slip.pro_id"));
 				bean.setProductName(rs.getString("product_info.pi_name"));
 				bean.setOrderQty(rs.getInt("order_slip.order_qty"));

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.OrderSlipViewBean;
+import bean.OrderSlipBean;
 import dao.ListLogDao;
 import dao.OrderSlipDao;
 
@@ -34,6 +34,7 @@ public class OrderCancelServlet extends HttpServlet {
 	//int orderId = Integer.parseInt(req.getParameter("orderId"));
 	//String orderDate = req.getParameter("orderDate");
 	//String customerName = req.getParameter("customerName");
+	String errMsg = (String) req.getAttribute("errMsg");
 	
 	int orderId = 2;
 	String customerName = "馬場";
@@ -51,13 +52,14 @@ public class OrderCancelServlet extends HttpServlet {
 	if(isFirst) {
 		// 受注詳細からデータ取得
 		OrderSlipDao dao2 = new OrderSlipDao();
-		ArrayList<OrderSlipViewBean> slips = dao2.selectSlipForCancelAndRefund(orderId);
+		ArrayList<OrderSlipBean> slips = dao2.selectSlipForCancelAndRefund(orderId);
 		System.out.println(slips.get(0).getProductName());
 		//set
 		session.setAttribute("orderId",orderId);
 		session.setAttribute("customerName", customerName);
 		session.setAttribute("orderDate", orderDate);
-		session.setAttribute("orderSlipViewList", slips);
+		session.setAttribute("orderSlipList", slips);
+		req.setAttribute("errMsg", errMsg);
 		
 	//追加キャンセル時　受注内容変更のキャンセル変更へ
 	}else {
