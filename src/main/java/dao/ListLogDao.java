@@ -1,68 +1,65 @@
 package dao;
 import java.sql.PreparedStatement;
-import dao.DBAccess;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class ListLogDao extends DBAccess{
 	
 	//履歴追加
-	public void insertListLog(int String String String String) {
-		
-	}
-	
-	
-	//select method
-	public ArrayList<> select(){
-		String sql="select from where";
-		ResultSet rs = null;
-		ArrayList<> beanList = new ArrayList<>();
-
-		try {
-			connect();
-			//create statement
-			PreparedStatement ps = getConnection().prepareStatement(sql);
-			//execute
-			result = ps.executeQuery();
-			while(result.next()) {
-				ShohinBean bean = new ShohinBean();
-				bean.set(result.getString(""));
-				bean.set(result.getInt(""));
-				
-				beanList.add(bean);
-			}
-		}catch(SQLException e){
-			e.printStackTrace();
-		}finally {
-			disconnect();
-		}
-		return beanList;
-	}
-	
-	
-	// update insert delete
-	public int something(){
-		String sql = "update tabel set ";
-		//ResultSet result = null;
-		int numOfRecord = 0;
+	public void insertListLog(int orderId, String changeDate, String flag, String cancelComment, String refundComment) {
+		String sql="""
+				insert into
+				list_log(order_id,change_date,flag,cancel_comment,refund_comment)
+				values(?,?,?,?,?)
+				""" ;
 		
 		try {
 			connect();
 			//create statment
 			PreparedStatement ps = getConnection().prepareStatement(sql);
-			ps.setString(1, );
-			ps.setString(2, );
-			ps.setInt(3, );
+			ps.setInt(1, orderId);
+			ps.setString(2, changeDate);
+			ps.setString(3, flag);
+			ps.setString(4, cancelComment);
+			ps.setString(5, refundComment);
+			
 			//execute
-			numOfRecord = ps.executeUpdate();
+			ps.executeUpdate();
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
 			disconnect();
 		}
-		return numOfRecord;
 	}
+	
+	//追加キャンセルか
+	public int checkListLogExists(int orderId) {
+		String sql="""
+				select count(*)
+				from list_log
+				where order_id = ?
+				""";
+		ResultSet rs = null;
+		int num = 0;
+		
+    	try {
+			connect();
+			//create statement
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setInt(1, orderId);
+			//execute
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				num = rs.getInt("count(*)");
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return num;
+	}
+	
 	
 }

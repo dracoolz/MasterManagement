@@ -9,8 +9,6 @@ import bean.OrderListViewBean;
 
 public class OrderListDao extends DBAccess{
 	
-	
-	
 	 // 顧客番号を条件として、キャンセルや返品のない注文情報のリストを取得する処理
     public ArrayList<OrderListViewBean> selectLookOrderList(int cusId) {
     	ArrayList<OrderListViewBean> list = new ArrayList<OrderListViewBean>();
@@ -125,6 +123,7 @@ public class OrderListDao extends DBAccess{
 		return cancelComment;
     	
     }
+    
     // 対象注文の返品理由を返す
     public String selectRefundComment(int orderId) {
     	String sql = "select refund_comment from order_list where order_id = ?"; 
@@ -147,8 +146,9 @@ public class OrderListDao extends DBAccess{
 			disconnect();
 		}
 		return cancelComment;
-    	
     }
+    
+    //
 }
 	
 

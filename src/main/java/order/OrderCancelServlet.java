@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bean.OrderSlipViewBean;
+import dao.ListLogDao;
 import dao.OrderSlipDao;
 
 public class OrderCancelServlet extends HttpServlet {
@@ -39,25 +40,34 @@ public class OrderCancelServlet extends HttpServlet {
 	String orderDate = "2024-01-23";
 	
 	//初回キャンセルか追加キャンセルか判定
-	boolean result = true;
+	//boolean result = true;
+	boolean isFirst = true;
+	ListLogDao dao1 = new ListLogDao();
+	if(dao1.checkListLogExists(orderId) > 0) {
+		isFirst=false;
+	}
 			
 	//初回キャンセル時
-	if(result) {
+	if(isFirst) {
 		// 受注詳細からデータ取得
-		OrderSlipDao dao = new OrderSlipDao();
-		ArrayList<OrderSlipViewBean> slips = dao.selectSlipForCancelAndRefund(orderId);
+		OrderSlipDao dao2 = new OrderSlipDao();
+		ArrayList<OrderSlipViewBean> slips = dao2.selectSlipForCancelAndRefund(orderId);
 		System.out.println(slips.get(0).getProductName());
+		//set
+		session.setAttribute("orderId",orderId);
+		session.setAttribute("customerName", customerName);
+		session.setAttribute("orderDate", orderDate);
+		session.setAttribute("orderSlipViewList", slips);
+		
+	//追加キャンセル時　受注内容変更のキャンセル変更へ
+	}else {
+		System.out.println("not first");
+		//url = "orderChange";
 		//setAttribute
 		req.setAttribute("orderId",orderId);
 		req.setAttribute("customerName", customerName);
 		req.setAttribute("orderDate", orderDate);
-		req.setAttribute("orderSlipViewList", slips);
-		
-	//追加キャンセル時	
-	}else {
-		url = "henkou";
 	}
-	
 	
 	//jump
 	RequestDispatcher rd = req.getRequestDispatcher(url);

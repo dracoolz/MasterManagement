@@ -15,10 +15,10 @@
 
 	<!-- getAttribute from OrderCancelServlet-->
 	<%-- ArrayList<HumanBean> beanList = (ArrayList<HumanBean>) request.getAttribute("users");--%>
-	<%int orderId = (int)request.getAttribute("orderId"); %>
-	<%String customerName = (String)request.getAttribute("customerName"); %>
-	<%String orderDate = (String)request.getAttribute("orderDate"); %> 
-	<%ArrayList<OrderSlipViewBean> orderSlipList = (ArrayList<OrderSlipViewBean>)request.getAttribute("orderSlipViewList");%>
+	<%int orderId = (int)session.getAttribute("orderId"); %>
+	<%String customerName = (String)session.getAttribute("customerName"); %>
+	<%String orderDate = (String)session.getAttribute("orderDate"); %> 
+	<%ArrayList<OrderSlipViewBean> orderSlipList = (ArrayList<OrderSlipViewBean>)session.getAttribute("orderSlipViewList");%>
 	
 	<!-- title -->
 	<h1 align="center">キャンセル処理</h1>
@@ -60,13 +60,16 @@
 					<td><input type="number" name="cancelQty" value="0" min="0" max="<%= item.getOrderQty() - item.getCancelQty() - item.getRefundQty()%>"></td>
 					<td><%= item.getRefundQty() %></td>
 				</tr>
+				<input type="hidden" name="productId" value="<%= item.getProductId()%>">
+				<input type="hidden" name="productName" value="<%= item.getProductName()%>">
+				<input type="hidden" name="orderQty"
 			<% }%>
 		<%} %>
 	</table>
 	<br>
 	キャンセル理由
 	<textarea name="cancelComment" cols="100" rows="10"></textarea><br><br>
-	<input type="submit" name="pageFlag" value="確認" formaction="confirm/?code=">
+	<input type="submit" name="pageFlag" value="確認" formaction="confirm">
 	<input type="button" name="back" value="戻る" formaction="manageMenu">
 	</form>
 	

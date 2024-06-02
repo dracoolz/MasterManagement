@@ -44,10 +44,9 @@ public class OrderAddServlet extends HttpServlet {
 	}else if(("追加").equals(pageFlag)) {
 		ErrCheck errChecker = new ErrCheck();
 		boolean result = errChecker.IsEnteredCheck(customerId);
-		System.out.println(result);
 		
 		String errMsg;
-		if(result) {
+		if(!result) {
 			errMsg = errChecker.getE013();
 			req.setAttribute("errMsg", errMsg);
 			session.setAttribute("customerName", null);

@@ -7,8 +7,17 @@ public class ErrCheck {
 	
 	//入力されているかチェック
 	public boolean IsEnteredCheck(String str) {
-		boolean result = false;
+		boolean result = true;
 		if(str == "") {
+			result = false;
+		}
+		return result;
+	}
+	
+	//キャンセル数と返品数の合計が受注数を超えないか
+	public boolean decrementQtyOverCheck(int orderQty, int cancelQty ,int refundQty) {
+		boolean result = false;
+		if(orderQty < (cancelQty+refundQty)) {
 			result = true;
 		}
 		return result;

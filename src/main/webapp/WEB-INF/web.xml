@@ -112,5 +112,15 @@
 		<servlet-name>OrderCancelServlet</servlet-name>
 		<url-pattern>/orderCancel</url-pattern>
 	</servlet-mapping>
+	
+	<!-- ConfirmServlet -->
+	<servlet>
+		<servlet-name>ConfirmServlet</servlet-name>
+		<servlet-class>order.ConfirmServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ConfirmServlet</servlet-name>
+		<url-pattern>/confirm</url-pattern>
+	</servlet-mapping>
 
 </web-app>
