@@ -26,7 +26,7 @@
 	<script src="./js/tableSorter.js"></script>
 	<% ArrayList<BigCategoryBean> bcList = (ArrayList<BigCategoryBean>)request.getAttribute("bclist"); %>
 	<% ArrayList<SmallCategoryBean> scList = (ArrayList<SmallCategoryBean>)request.getAttribute("sclist"); %>
-	<form action="Master/DUcontrol?type=category" method="post">
+	<form action="./DUcontrol?type=category" method="post">
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -68,10 +68,10 @@
 								<% ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>(); %>
 								<% SmallCategoryDao dao = new SmallCategoryDao(); %>
 								<% list = dao.selectBc(i); %>
-								<% for(int j=0; j<=list.size(); j++){ %>
-								<option value="<%=j+1 %>"><%=list[j].getSc_category() %></option>
+								<% for(int j=0; j < list.size(); j++){ %>
+								<option value="<%= j+1 %>"><%= list.get(j).getSc_category() %></option>
 								<%} %>
-						</select> <%} %>
+						</select> <% } %>
 						</td>
 					</tr>
 					<tr>

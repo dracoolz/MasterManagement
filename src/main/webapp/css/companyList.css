@@ -6,7 +6,7 @@ strong {
 .arrow-right {
     position: absolute;
     right: 45%;
-    top: 19%;
+    top: 21%;
     width: 0;
     height: 0;
     border-top: 10px solid transparent;
@@ -17,7 +17,7 @@ strong {
 .arrow-left {
     position: absolute;
     left: 45%;
-    top: 19%;
+    top: 21%;
     width: 0;
     height: 0;
     border-top: 10px solid transparent;

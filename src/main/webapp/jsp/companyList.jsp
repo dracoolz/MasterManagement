@@ -53,7 +53,7 @@
 			<p>
 				<%="ようこそ、"+session.getAttribute("username")+"さん" %>
 			</p>
-			<a href="/first">ログアウト</a>
+			<a href="./first">ログアウト</a>
 		</div>
 		<a href="javascript:decrementMonth();">
 			<div class="arrow-left"></div>
