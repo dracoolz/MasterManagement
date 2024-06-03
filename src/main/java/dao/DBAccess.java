@@ -33,10 +33,8 @@ public class DBAccess {
 			if (this.connection != null) {
 				this.connection.close();
 			}
-		
 		} catch (SQLException e) {
 			e.printStackTrace();
-		
 		} finally {
 			this.connection = null;
 		}

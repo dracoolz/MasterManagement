@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class SalesBean implements Serializable {
+	
     private int sale_id;
     private int cus_id;
     private String pro_id;
@@ -17,9 +18,11 @@ public class SalesBean implements Serializable {
     private int stock_price;
     private int profit;
     private double comparison;
+    private String district;
 
-    // Getters and Setters
-    public int getSale_id() {
+    
+
+	public int getSale_id() {
         return sale_id;
     }
 
@@ -115,13 +118,19 @@ public class SalesBean implements Serializable {
         this.profit = profit;
     }
 
-	public double getComparison() {
-		return comparison;
+    public double getComparison() {
+        return comparison;
+    }
+
+    public void setComparison(double comparison) {
+        this.comparison = comparison;
+    }
+    
+    public String getDistrict() {
+		return district;
 	}
 
-	public void setComparison(double comparison) {
-		this.comparison = comparison;
+	public void setDistrict(String district) {
+		this.district = district;
 	}
-    
-    
 }

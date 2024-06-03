@@ -27,6 +27,18 @@ try {
 	pass1 = "";
 	pass2 = "";
 }%>
+
+<script>
+	function blank() {
+		var no = <%= no %>;
+		if(no == 2) {
+			document.getElementById("bp").value = "";
+		}
+		document.getElementById("np1").value = "";
+		document.getElementById("np2").value = "";
+	}
+</script>
+
 <body>
 	<div align="center">
 		<strong>
@@ -45,16 +57,16 @@ try {
 				<table>
 						<tr>
 							<td>以前のパスワード :</td>
-							<td><input type="password" size="20" maxlength="100" name="passb" value=<%=passb%>></td>
+							<td><input type="password" size="20" maxlength="100" id="bp" name="passb" value="<%=passb%>"></td>
 						</tr>
 			<% } %>
 					<tr>
 						<td>新しいパスワード：</td>
-						<td><input type="password" size="20" maxlength="100" name="pass1" value=<%=pass1%>></td>
+						<td><input type="password" size="20" maxlength="100" id="np1" name="pass1" value="<%=pass1%>"></td>
 					</tr>
 					<tr>
 						<td>新しいパスワード(確認)：</td>
-						<td><input type="password" size="20" maxlength="100" name="pass2" value=<%=pass2%>></td>
+						<td><input type="password" size="20" maxlength="100" id="np2" name="pass2" value="<%=pass2%>"></td>
 					</tr>
 				</table>
 		<% try {
@@ -66,7 +78,7 @@ try {
 		<table>
 			<tr>
 				<td><input type="submit" name="submit" value="確定"></td>
-				<td><input type="reset" name="reset" value="リセット"></td>
+				<td><input type="button" name="reset" value="リセット" onclick="blank()"></td>
 				<% if(no == 2) { %>
 					<td><input type="submit" name="submit" formaction="./login" value="メインメニューに戻る"></td>
 				<% } %>

@@ -7,10 +7,11 @@ strong {
     display: flex;
     gap: 1vw;
     margin-left: 5vw;
+    margin-bottom: 1vh;
 }
 
 .table {
-    margin-top: 3vh auto;
+    margin-top: 3vh;
 }
 
 table, th, td {
