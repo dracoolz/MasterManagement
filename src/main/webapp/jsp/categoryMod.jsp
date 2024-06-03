@@ -101,7 +101,7 @@ window.onload = function(){
 						<td align="right">大カテゴリID：</td>
 						<td>:<select id ="bc1" name = "bc_1">
 							<option value=""></option>
-							<% for(int i=0; i < bcList.length; i++){ %>
+							<% for(int i=0; i < bcList.size(); i++){ %>
 							<option value="<%=i %>"><%=bcList.get(i).getBc_category() %></option>
 							<%} %>
 							</select></td>
@@ -213,7 +213,7 @@ window.onload = function(){
 						<td align="right">大カテゴリID：</td>
 						<td>:<select id ="bc1" name = "bc_1">
 							<option value=""></option>
-							<% for(int i=0; i < bcList.length; i++){ %>
+							<% for(int i=0; i < bcList.size(); i++){ %>
 							<option value="<%=i %>"><%=bcList.get(i).getBc_category() %></option>
 							<%} %>
 							</select></td>

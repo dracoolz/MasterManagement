@@ -38,16 +38,16 @@ public class ProductBean implements Serializable {
 	private String descr;
 	private String detail;
 	
-	private String images_1;
-	private String images_2;
-	private String images_3;
-	private String images_4;
-	private String images_5;
-	private String images_6;
-	private String images_7;
-	private String images_8;
-	private String images_9;
-	private String images_10;
+	private String image_1;
+	private String image_2;
+	private String image_3;
+	private String image_4;
+	private String image_5;
+	private String image_6;
+	private String image_7;
+	private String image_8;
+	private String image_9;
+	private String image_10;
 	
 	private String shop_name;
 	
@@ -244,84 +244,84 @@ public class ProductBean implements Serializable {
 		this.detail = detail;
 	}
 
-	public String getImages_1() {
-		return images_1;
+	public String getImage_1() {
+		return image_1;
 	}
 
-	public void setImages_1(String images_1) {
-		this.images_1 = images_1;
+	public void setImage_1(String image_1) {
+		this.image_1 = image_1;
 	}
 
-	public String getImages_2() {
-		return images_2;
+	public String getImage_2() {
+		return image_2;
 	}
 
-	public void setImages_2(String images_2) {
-		this.images_2 = images_2;
+	public void setImage_2(String image_2) {
+		this.image_2 = image_2;
 	}
 
-	public String getImages_3() {
-		return images_3;
+	public String getImage_3() {
+		return image_3;
 	}
 
-	public void setImages_3(String images_3) {
-		this.images_3 = images_3;
+	public void setImage_3(String image_3) {
+		this.image_3 = image_3;
 	}
 
-	public String getImages_4() {
-		return images_4;
+	public String getImage_4() {
+		return image_4;
 	}
 
-	public void setImages_4(String images_4) {
-		this.images_4 = images_4;
+	public void setImage_4(String image_4) {
+		this.image_4 = image_4;
 	}
 
-	public String getImages_5() {
-		return images_5;
+	public String getImage_5() {
+		return image_5;
 	}
 
-	public void setImages_5(String images_5) {
-		this.images_5 = images_5;
+	public void setImage_5(String image_5) {
+		this.image_5 = image_5;
 	}
 
-	public String getImages_6() {
-		return images_6;
+	public String getImage_6() {
+		return image_6;
 	}
 
-	public void setImages_6(String images_6) {
-		this.images_6 = images_6;
+	public void setImage_6(String image_6) {
+		this.image_6 = image_6;
 	}
 
-	public String getImages_7() {
-		return images_7;
+	public String getImage_7() {
+		return image_7;
 	}
 
-	public void setImages_7(String images_7) {
-		this.images_7 = images_7;
+	public void setImage_7(String image_7) {
+		this.image_7 = image_7;
 	}
 
-	public String getImages_8() {
-		return images_8;
+	public String getImage_8() {
+		return image_8;
 	}
 
-	public void setImages_8(String images_8) {
-		this.images_8 = images_8;
+	public void setImage_8(String image_8) {
+		this.image_8 = image_8;
 	}
 
-	public String getImages_9() {
-		return images_9;
+	public String getImage_9() {
+		return image_9;
 	}
 
-	public void setImages_9(String images_9) {
-		this.images_9 = images_9;
+	public void setImage_9(String image_9) {
+		this.image_9 = image_9;
 	}
 
-	public String getImages_10() {
-		return images_10;
+	public String getImage_10() {
+		return image_10;
 	}
 
-	public void setImages_10(String images_10) {
-		this.images_10 = images_10;
+	public void setImage_10(String image_10) {
+		this.image_10 = image_10;
 	}
 
 	public String getShop_name() {
