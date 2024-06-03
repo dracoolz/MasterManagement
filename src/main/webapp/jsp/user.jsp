@@ -17,7 +17,7 @@
 <body>
 <script src="../js/tableSorter.js"></script>
 <%ArrayList<UserBean> userList =(ArrayList<UserBean>)request.getAttribute("list"); %>
-<form action ="Master/DUcontrol?type=user" method="post">
+<form action ="./DUControl?type=user" method="post">
 	<div align="center">
 		<div align="left">
 			<p>ユーザ管理</p>
@@ -39,7 +39,8 @@
        		<table>
        			<tr>
 	       			<td><input type ="submit"  name="submit" value="登録"></td>
-	       			<td><input type ="submit"  name="submit" value="戻る"></td>
+	       			<td><button type="button"
+								onclick="location.href='./master?no=1'">戻る</td>
        			</tr>
        		</table>
        	</div>

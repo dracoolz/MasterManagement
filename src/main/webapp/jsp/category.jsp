@@ -4,6 +4,7 @@
 <%@ page import="bean.BigCategoryBean"%>
 <%@ page import="dao.BigCategoryDao"%>
 <%@ page import="bean.SmallCategoryBean"%>
+<%@ page import="dao.SmallCategoryDao"%>
 <!DOCTYPE html>
 <html>
 

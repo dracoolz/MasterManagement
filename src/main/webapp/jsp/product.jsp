@@ -20,7 +20,7 @@
 <script src="../js/tableSorter.js"></script>
 <%ArrayList<ProductBean> proList =(ArrayList<ProductBean>)request.getAttribute("list"); %>
 <% ArrayList<BigCategoryBean> bcList = (ArrayList<BigCategoryBean>)request.getAttribute("bclist"); %>
-<form action ="Master/DUcontrol?type=product" method="post">
+<form action ="./DUcontrol?type=product" method="post">
 	<div align="center">
 		<div align="left">
 			<p>商品管理</p>
@@ -34,7 +34,8 @@
        		<table>
        			<tr>
 	       			<td><input type ="submit"  name="submit" value="登録"></td>
-	       			<td><input type ="submit"  name="submit" value="戻る"></td>
+	       			<td><button type="button"
+								onclick="location.href='./master?no=1'">戻る</td></td>
        			</tr>
        		</table>
        	</div>
@@ -60,7 +61,7 @@
 						</select></td>
        			</tr>
        			<tr>
-       				<td><input type ="submit"  name="submit" value="検索"></td>
+       				<td align="center"><input type ="submit"  name="submit" value="検索"></td>
        			</tr>
        		</table>
     	</div>
