@@ -89,12 +89,17 @@
 	
 
 	
+	
+	
 		<servlet>
 		<servlet-name>SearchCustomerServlet</servlet-name>
-		<servlet-class>master.SearchCustomerServlet
+		<servlet-class>order.SearchCustomerServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>SearchCustomerServlet</servlet-name>
 		<url-pattern>/searchCustomer</url-pattern>
 	</servlet-mapping>
-
+	
+	
+	
 </web-app>

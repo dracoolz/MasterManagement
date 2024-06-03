@@ -35,14 +35,7 @@ public class SlipLogBean implements Serializable {
 	
 	
 	
-	public int getProId() {
-		return proId;
-	}
 
-	public void setProId(int proId) {
-		this.proId = proId;
-	}
-	
 	
 	
 	
