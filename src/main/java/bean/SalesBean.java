@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class SalesBean implements Serializable {
+	
     private int sale_id;
     private int cus_id;
     private String pro_id;

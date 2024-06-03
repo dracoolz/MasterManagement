@@ -27,7 +27,7 @@ public class MasterServlet extends HttpServlet {
 		if(no == 1) {
 			rd = request.getRequestDispatcher("/jsp/master.jsp");
 		} else if(no == 2) {
-			rd = request.getRequestDispatcher("/totalmenu");
+			rd = request.getRequestDispatcher("/totalMenu");
 		} else if(no == 3) {
 			rd = request.getRequestDispatcher("/jsp/password.jsp?state=change");
 		}
