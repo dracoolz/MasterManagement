@@ -3,71 +3,59 @@ package bean;
 import java.io.Serializable;
 
 public class ProductViewBean implements Serializable {
-	
-	private int scId;
-	private String scCategory;
-	private int bcId ;
-	private String bcCategory;
-	private int categoryId;
+    
+    private int productId;   
+    private String productName; 
+    private int scId;           
+    private String scCategory;  
+    private int bcId;           
+    private String bcCategory;  
 
+    public int getProductId() {
+        return productId;
+    }
 
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
 
-	public int getScId() {
-		return scId;
-	}
+    public String getProductName() {
+        return productName;
+    }
 
-	public void setScId(int scId) {
-		this.scId = scId;
-	}
-	
-	
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
+    public int getScId() {
+        return scId;
+    }
 
-	
-	public String scCategory() {
-		return scCategory;
-	}
+    public void setScId(int scId) {
+        this.scId = scId;
+    }
 
-	public void setScCategory(String scCategory) {
-		this.scCategory = scCategory;
-	}
-	
-	
-	
+    public String getScCategory() {
+        return scCategory;
+    }
 
-	public int getBcId() {
-		return bcId;
-	}
+    public void setScCategory(String scCategory) {
+        this.scCategory = scCategory;
+    }
 
-	public void setBcId(int bcId) {
-		this.bcId = bcId;
-	}
-	
-	
+    public int getBcId() {
+        return bcId;
+    }
 
-	
-	
-	
-	
-	public String getBcCategory() {
-		return bcCategory;
-	}
+    public void setBcId(int bcId) {
+        this.bcId = bcId;
+    }
 
-	public void setBcCategory(String bcCategory) {
-		this.bcCategory = bcCategory;
-	}
-	
-	
-	
-	
-	public int getCategoryId() {
-		return categoryId;
-	}
+    public String getBcCategory() {
+        return bcCategory;
+    }
 
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
-	}
-	
-	
-	
+    public void setBcCategory(String bcCategory) {
+        this.bcCategory = bcCategory;
+    }
 }

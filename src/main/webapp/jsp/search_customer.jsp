@@ -8,19 +8,20 @@
 </head>
 <body>
     <main>
-		<div align="right">
-			<p>
-				<%="ようこそ、"+session.getAttribute("username")+"さん" %>
-			</p>
-			<a href="/first">ログアウト</a>
-		</div>
+        <div align="right">
+            <p>
+                <%="ようこそ、"+session.getAttribute("username")+"さん" %>
+            </p>
+            <a href="/first">ログアウト</a>
+        </div>
         <h1 align="center">取引先検索</h1>
         <form action="CustomerSearchServlet" method="post">
-        <input 111 type="hidden" name="action" value="search">
-        取引先名：<input type="text" name="cus_name" placeholder="取引先名">
-        担当者：<input type="text" name="contact_name" placeholder="担当者">
-        都道府県：<input type="text" name="district" placeholder="都道府県">
-        <input type="submit" name="customerSearch" value="検索">
+            <input type="hidden" name="action" value="search">
+            取引先名：<input type="text" name="cus_name" placeholder="取引先名">
+            担当者：<input type="text" name="contact_name" placeholder="担当者">
+            都道府県：<input type="text" name="district" placeholder="都道府県">
+            <input type="submit" name="customerSearch" value="検索">
+            <input type="hidden" name="referer" value="<%= request.getHeader("Referer") %>">
         </form>
         <table align="center" border="1">
             <tr align="center">
@@ -29,8 +30,6 @@
                 <th>都道府県</th>
                 <th></th>
             </tr>
-            
-            
             <%
             ArrayList<CustomerViewBean> list = (ArrayList<CustomerViewBean>) request.getAttribute("list");
             if (list != null && !list.isEmpty()) {
@@ -40,11 +39,15 @@
                 <td><%= cus.getCusName() %></td>
                 <td><%= cus.getContactName() %></td>
                 <td><%= cus.getDistrict() %></td>
-                <td>                    
-                		<form action="SearchCustomerServlet" method="post" style="display:inline;">
+                <td>
+                    <form action="SearchCustomerServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="selectedCusId" value="<%= cus.getCusId() %>">
                         <input type="hidden" name="selectedCusName" value="<%= cus.getCusName() %>">
+                        <input type="hidden" name="referer" value="<%= request.getHeader("Referer") %>">
                         <input type="submit" value="追加" name="customerSend">
-                    </form></td>
+                  
+                    </form>
+                </td>
             </tr>
             <%
                 }
@@ -55,8 +58,6 @@
             }
             %>
         </table>
-        
-        
         <div align="center">
         <%
         int noOfPages = (int)request.getAttribute("noOfPages");
@@ -86,10 +87,10 @@
             }
             %>
         </div>
-        <form action="previousPage.jsp" method="post">
+        <form action="SearchCustomerServlet" method="post">
+            <input type="hidden" name="referer" value="<%= request.getHeader("Referer") %>">
             <input type="submit" value="戻る">
         </form>
     </main>
-    <input type="submit" value="戻る">
 </body>
 </html>

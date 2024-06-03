@@ -15,72 +15,61 @@ import dao.CustomerDao;
 
 public class SearchCustomerServlet extends HttpServlet {
 
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset= UTF-8");
-		
-		//nameが"customerSearch"ボタンを押した場合、画面で取引先を選択できる一覧画面がでる
-		if(request.getParameter("customerSearch") != null) {
-    	String cus_name = request.getParameter("cus_name");
-        String contact_name = request.getParameter("contact_name");
-        String district = request.getParameter("district");
-        
-        
-        //リストのページを遷移しるコード
-        int page = 1;
-        int recordsPerPage= 10;
-        if(request.getParameter("page") != null) {
-        	page= Integer.parseInt(request.getParameter("page"));
-        }
-        
-        
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
-        CustomerDao dao = new CustomerDao();
-        ArrayList<CustomerViewBean> list = dao.selectMultipleCustomer(cus_name, contact_name, district);
-        
-        
-        
-        
-        int noOfRecords = list.size();
-        int noOfPages = (int)Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-        int start = (page - 1)*recordsPerPage;
-        int end = Math.min(start + recordsPerPage, noOfRecords);
-        List<CustomerViewBean>paginatedList = list.subList(start, end);
-        
-        
-        
-        
+        HttpSession session = request.getSession(true);
 
-        request.setAttribute("list", paginatedList);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
-        
-        request.getRequestDispatcher("search_customer.jsp").forward(request, response);
-    }
-		
-		
-		////nameが"customerSend"ボタンを押した場合、このページは終了、遷移元にデータを送って遷移する
-		else if(request.getParameter("customerSend") != null){
-			String selectedCusName = request.getParameter("selectedCusName");
-			
-			
-			HttpSession session = request.getSession(true);
-			
-			String previousUrl = request.getParameter("url");
-			session.setAttribute("previousUrl", previousUrl);
+        if (request.getParameter("customerSearch") != null) {
+            String cus_name = request.getParameter("cus_name");
+            String contact_name = request.getParameter("contact_name");
+            String district = request.getParameter("district");
 
-			
-			
+            int page = 1;
+            int recordsPerPage = 10;
+            if (request.getParameter("page") != null) {
+                page = Integer.parseInt(request.getParameter("page"));
+            }
+
+            CustomerDao dao = new CustomerDao();
+            ArrayList<CustomerViewBean> list = dao.selectMultipleCustomer(cus_name, contact_name, district);
+
+            int noOfRecords = list.size();
+            int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+            int start = (page - 1) * recordsPerPage;
+            int end = Math.min(start + recordsPerPage, noOfRecords);
+            List<CustomerViewBean> paginatedList = list.subList(start, end);
+
+            request.setAttribute("list", paginatedList);
+            request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
+
+            request.getRequestDispatcher("search_customer.jsp").forward(request, response);
+        } 
+        
+        //追加ボタン押した時
+        else if (request.getParameter("customerSend") != null) {
+            int selectedCusId = Integer.parseInt(request.getParameter("selectedCusId"));
+            String selectedCusName = request.getParameter("selectedCusName");
+            session.setAttribute("selectedCusId", selectedCusId);
             session.setAttribute("selectedCusName", selectedCusName);
-            session.getAttribute("url", )
-            request.getRequestDispatcher("OOO.jsp").forward(request, response);
-            
+
+            // データ遷移処理後、前のページへ遷移
+            String referer = request.getParameter("referer");
+            if (referer != null && !referer.isEmpty()) {
+                response.sendRedirect(referer);
+            } else {
+                request.getRequestDispatcher("???????.jsp").forward(request, response);
+            }
+        } else if (request.getParameter("referer") != null) {
+            // '戻る'前のページへ遷移
+            String referer = request.getParameter("referer");
+            if (referer != null && !referer.isEmpty()) {
+                response.sendRedirect(referer);
+            } else {
+                request.getRequestDispatcher("???????.jsp").forward(request, response);
+            }
         }
-			
-			
-			
-			
-			
-		}
+    }
 }

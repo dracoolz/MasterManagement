@@ -12,7 +12,7 @@ public class CustomerDao extends DBAccess {
 
         ArrayList<CustomerViewBean> list = new ArrayList<CustomerViewBean>();
 
-        StringBuilder sql = new StringBuilder("SELECT cus_name, contact_name, district FROM customer WHERE 0=0");
+        StringBuilder sql = new StringBuilder("SELECT cus_id, cus_name, contact_name, district FROM customer WHERE 0=0");
 
         if (cus_name != null && !cus_name.isEmpty()) {
             sql.append(" AND cus_name = ?");
@@ -43,6 +43,7 @@ public class CustomerDao extends DBAccess {
 
             while (rs.next()) {
                 CustomerViewBean bean = new CustomerViewBean();
+                bean.setCusId(rs.getInt("cus_id"));
                 bean.setCusName(rs.getString("cus_name"));
                 bean.setContactName(rs.getString("contact_name"));
                 bean.setDistrict(rs.getString("district"));
