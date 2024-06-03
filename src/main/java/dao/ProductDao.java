@@ -14,10 +14,9 @@ public class ProductDao extends DBAccess{
 
 				ArrayList<ProductBean> list = new ArrayList<ProductBean>();
 
-				String sql = "select p.pro_id, p.sp_id, p.pi_id, pi.pi_name, bc.bc_category, sc.sc_category, bc.bc_category, sc.sc_category, bc.bc_category, sc.sc_category, sup.shop_name, pd.descr, pd.detail, pi.jan_code, pi.branch_no, p.itemization, pi.ref_type, pi.retail_price, p.wholesale, p.set_quantity, pi.tax_rate_class, pi.shipping_term, pimg.image_1, pimg.image_2, pimg.image_3, pimg.image_4, pimg.image_5, pimg.image_6, pimg.image_7, pimg.image_8, pimg.image_9, pimg.image_10, pi.image_permission, pi.sell_permission, pi.auction_permission, pi.direct_permission, pi.out_of_stock \n"
-						+ "from product as p, product_info as pi, product_description as pd, product_images as pimg, supllier as sup, big_category as bc, small_category as sc, category as c \n"
-						+ "where p.pi_id = pi.pi_id and p.pd_id = pd.pd_id and p.images_id = pimg.images_id and p.sp_id = sup.sp_id and pi.category_id = c.category_id and c.sc_id = sc.sc_id and sc.bc_id = bc.bd_id;";
-
+				String sql = "select p.pro_id, p.sp_id, p.pi_id, p.pd_id, pi.pi_name, bc.bc_category, sc.sc_category, bc.bc_category, sc.sc_category, bc.bc_category, sc.sc_category, sup.shop_name, pd.descr, pd.detail, pi.jan_code, p.branch_no, p.itemization, pi.ref_type, pi.retail_price, p.wholesale, p.set_quantity, pi.tax_rate_class, pi.shipping_term, pimg.images_id, pimg.image_1, pimg.image_2, pimg.image_3, pimg.image_4, pimg.image_5, pimg.image_6, pimg.image_7, pimg.image_8, pimg.image_9, pimg.image_10, p.image_permission, p.sell_permission, p.auction_permission, p.direct_send, p.out_of_stock, c.category_id "
+						+ "from product as p, product_info as pi, product_description as pd, product_images as pimg, supplier as sup, big_category as bc, small_category as sc, category as c "
+						+ "where p.pi_id = pi.pi_id and p.pd_id = pd.pd_id and p.images_id = pimg.images_id and p.sp_id = sup.sp_id and pi.category_id = c.category_id and c.sc_id = sc.sc_id and sc.bc_id = bc.bc_id;";
 				try {
 					connect();
 					// ステートメントの作成
@@ -37,12 +36,12 @@ public class ProductDao extends DBAccess{
 						bean.setSet_quantity(rs.getInt("set_quantity"));
 						bean.setPi_name(rs.getString("pi_name"));
 						bean.setCategory_id(rs.getInt("category_id"));
-						bean.setBc_category_1(rs.getString("bc_category_1"));
-						bean.setSc_category_1(rs.getString("sc_category_1"));
-						bean.setBc_category_2(rs.getString("bc_category_2"));
-						bean.setSc_category_2(rs.getString("sc_category_2"));
-						bean.setBc_category_3(rs.getString("bc_category_3"));
-						bean.setSc_category_3(rs.getString("sc_category_3"));
+						bean.setBc_category_1(rs.getString("bc_category"));
+						bean.setSc_category_1(rs.getString("sc_category"));
+						bean.setBc_category_2(rs.getString("bc_category"));
+						bean.setSc_category_2(rs.getString("sc_category"));
+						bean.setBc_category_3(rs.getString("bc_category"));
+						bean.setSc_category_3(rs.getString("sc_category"));
 						bean.setJan_cade(rs.getString("jan_cade"));
 						bean.setBranch_no(rs.getInt("branch_no"));
 						bean.setRef_type(rs.getString("ref_type"));
@@ -52,21 +51,21 @@ public class ProductDao extends DBAccess{
 						bean.setImage_permission(rs.getString("image_permission"));
 						bean.setSell_permission(rs.getString("sell_permission"));
 						bean.setAuction_permission(rs.getString("auction_permission"));
-						bean.setDirect_permission(rs.getString("direct_permission"));
+						bean.setDirect_permission(rs.getString("direct_send"));
 						bean.setOut_of_stock(rs.getString("out_of_stock"));
 						bean.setSc_id(rs.getInt("sc_id"));
 						bean.setDescr(rs.getString("descr"));
 						bean.setDetail(rs.getString("detail"));
-						bean.setImages_1(rs.getString("images_1"));
-						bean.setImages_2(rs.getString("images_2"));
-						bean.setImages_3(rs.getString("images_3"));
-						bean.setImages_4(rs.getString("images_4"));
-						bean.setImages_5(rs.getString("images_5"));
-						bean.setImages_6(rs.getString("images_6"));
-						bean.setImages_7(rs.getString("images_7"));
-						bean.setImages_8(rs.getString("images_8"));
-						bean.setImages_9(rs.getString("images_9"));
-						bean.setImages_10(rs.getString("images_10"));
+						bean.setImage_1(rs.getString("image_1"));
+						bean.setImage_2(rs.getString("image_2"));
+						bean.setImage_3(rs.getString("image_3"));
+						bean.setImage_4(rs.getString("image_4"));
+						bean.setImage_5(rs.getString("image_5"));
+						bean.setImage_6(rs.getString("image_6"));
+						bean.setImage_7(rs.getString("image_7"));
+						bean.setImage_8(rs.getString("image_8"));
+						bean.setImage_9(rs.getString("image_9"));
+						bean.setImage_10(rs.getString("image_10"));
 						bean.setShop_name(rs.getString("shop_name"));
 						list.add(bean);
 					}
@@ -129,16 +128,16 @@ public class ProductDao extends DBAccess{
 						bean.setSc_id(rs.getInt("sc_id"));
 						bean.setDescr(rs.getString("descr"));
 						bean.setDetail(rs.getString("detail"));
-						bean.setImages_1(rs.getString("images_1"));
-						bean.setImages_2(rs.getString("images_2"));
-						bean.setImages_3(rs.getString("images_3"));
-						bean.setImages_4(rs.getString("images_4"));
-						bean.setImages_5(rs.getString("images_5"));
-						bean.setImages_6(rs.getString("images_6"));
-						bean.setImages_7(rs.getString("images_7"));
-						bean.setImages_8(rs.getString("images_8"));
-						bean.setImages_9(rs.getString("images_9"));
-						bean.setImages_10(rs.getString("images_10"));
+						bean.setImage_1(rs.getString("images_1"));
+						bean.setImage_2(rs.getString("images_2"));
+						bean.setImage_3(rs.getString("images_3"));
+						bean.setImage_4(rs.getString("images_4"));
+						bean.setImage_5(rs.getString("images_5"));
+						bean.setImage_6(rs.getString("images_6"));
+						bean.setImage_7(rs.getString("images_7"));
+						bean.setImage_8(rs.getString("images_8"));
+						bean.setImage_9(rs.getString("images_9"));
+						bean.setImage_10(rs.getString("images_10"));
 						bean.setShop_name(rs.getString("shop_name"));
 						list.add(bean);
 					}
@@ -201,16 +200,16 @@ public class ProductDao extends DBAccess{
 						bean.setSc_id(rs.getInt("sc_id"));
 						bean.setDescr(rs.getString("descr"));
 						bean.setDetail(rs.getString("detail"));
-						bean.setImages_1(rs.getString("images_1"));
-						bean.setImages_2(rs.getString("images_2"));
-						bean.setImages_3(rs.getString("images_3"));
-						bean.setImages_4(rs.getString("images_4"));
-						bean.setImages_5(rs.getString("images_5"));
-						bean.setImages_6(rs.getString("images_6"));
-						bean.setImages_7(rs.getString("images_7"));
-						bean.setImages_8(rs.getString("images_8"));
-						bean.setImages_9(rs.getString("images_9"));
-						bean.setImages_10(rs.getString("images_10"));
+						bean.setImage_1(rs.getString("images_1"));
+						bean.setImage_2(rs.getString("images_2"));
+						bean.setImage_3(rs.getString("images_3"));
+						bean.setImage_4(rs.getString("images_4"));
+						bean.setImage_5(rs.getString("images_5"));
+						bean.setImage_6(rs.getString("images_6"));
+						bean.setImage_7(rs.getString("images_7"));
+						bean.setImage_8(rs.getString("images_8"));
+						bean.setImage_9(rs.getString("images_9"));
+						bean.setImage_10(rs.getString("images_10"));
 						bean.setShop_name(rs.getString("shop_name"));
 						list.add(bean);
 					}
@@ -273,16 +272,16 @@ public class ProductDao extends DBAccess{
 						bean.setSc_id(rs.getInt("sc_id"));
 						bean.setDescr(rs.getString("descr"));
 						bean.setDetail(rs.getString("detail"));
-						bean.setImages_1(rs.getString("images_1"));
-						bean.setImages_2(rs.getString("images_2"));
-						bean.setImages_3(rs.getString("images_3"));
-						bean.setImages_4(rs.getString("images_4"));
-						bean.setImages_5(rs.getString("images_5"));
-						bean.setImages_6(rs.getString("images_6"));
-						bean.setImages_7(rs.getString("images_7"));
-						bean.setImages_8(rs.getString("images_8"));
-						bean.setImages_9(rs.getString("images_9"));
-						bean.setImages_10(rs.getString("images_10"));
+						bean.setImage_1(rs.getString("images_1"));
+						bean.setImage_2(rs.getString("images_2"));
+						bean.setImage_3(rs.getString("images_3"));
+						bean.setImage_4(rs.getString("images_4"));
+						bean.setImage_5(rs.getString("images_5"));
+						bean.setImage_6(rs.getString("images_6"));
+						bean.setImage_7(rs.getString("images_7"));
+						bean.setImage_8(rs.getString("images_8"));
+						bean.setImage_9(rs.getString("images_9"));
+						bean.setImage_10(rs.getString("images_10"));
 						bean.setShop_name(rs.getString("shop_name"));
 						list.add(bean);
 					}

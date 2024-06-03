@@ -86,7 +86,6 @@ public class BigCategoryDao extends DBAccess{
 					bean.setBc_category(rs.getString("bc_category"));
 				}
 				
-				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {

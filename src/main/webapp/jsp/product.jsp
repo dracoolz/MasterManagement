@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
-<%@ page import="bean.ProductBean"%>
-<%@ page import="bean.BigCategoryBean"%>
+<%@ page import="bean.*"%>
+<%@ page import="dao.SmallCategoryDao"%>
 <!DOCTYPE html>
 <html>
 
@@ -16,9 +16,9 @@
 </head>
 
 <body>
-<script src="../js/sc_category.js"></script>
-<script src="../js/tableSorter.js"></script>
-<%ArrayList<ProductBean> proList =(ArrayList<ProductBean>)request.getAttribute("list"); %>
+	<script src="./js/sc_category.js"></script>
+	<script src="./js/tableSorter.js"></script>
+<% ArrayList<ProductBean> proList =(ArrayList<ProductBean>)request.getAttribute("list"); %>
 <% ArrayList<BigCategoryBean> bcList = (ArrayList<BigCategoryBean>)request.getAttribute("bclist"); %>
 <form action ="./DUcontrol?type=product" method="post">
 	<div align="center">
@@ -34,32 +34,45 @@
        		<table>
        			<tr>
 	       			<td><input type ="submit"  name="submit" value="登録"></td>
-	       			<td><button type="button"
-								onclick="location.href='./master?no=1'">戻る</td></td>
+	       			<td><button type="button"onclick="location.href='./master?no=1'">戻る</td></td>
        			</tr>
        		</table>
        	</div>
-       	<div>
+       	<div  class="pulldown">
        		<table>
        			<tr>
        				<td align="right">商品名:</td>
        				<td><input type="text" name="searchName"></td>
        			</tr>
-       			<tr>
-       				<td align="right">大カテゴリ:</td>
-       				<td><select name = "bc">
-						<option value="">選択してください</option>
-						<% for(int i=0; i < bcList.size(); i++){ %>
-						<option value="<%=i+1 %>"><%=bcList.get(i).getBc_category() %></option>
-						<%} %>
+					<tr>
+						<td align="right">大カテゴリ:</td>
+						<td><select name="bc" class="bcSelect">
+								<option value="">選択してください</option>
+								<% for(int i=0; i < bcList.size(); i++){ %>
+								<option value="<%=i+1 %>"><%=bcList.get(i).getBc_category() %></option>
+								<%} %>
 						</select></td>
-       			</tr>
-       			<tr>
-       				<td align="right">小カテゴリ:</td>
-       				<td>:<select id ="sc" name = "sc_1">
-						<option value=""></option>
-						</select></td>
-       			</tr>
+					</tr>
+					<tr>
+						<td align=right"">(必須)</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td align="right">小カテゴリ:</td>
+						<td>
+							<% for(int i=1; i<=bcList.size(); i++){ %> 
+								<% ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>(); %>
+								<% SmallCategoryDao dao = new SmallCategoryDao(); %>
+								<% list = dao.selectBc(i); %>
+							<select id="<%=i %>"class="scSelect">
+								<option value="">選択してください</option>
+								<% for(int j=0; j<list.size(); j++){ %>
+								<option value="<%=j+1 %>"><%=list.get(j).getSc_category() %></option>
+								<%} %>
+							</select> <%} %>
+						</td>
+					</tr>
+				</div>
        			<tr>
        				<td align="center"><input type ="submit"  name="submit" value="検索"></td>
        			</tr>

@@ -45,11 +45,11 @@
 					</tr>
 				</table>
 			</div>
-			<div>
+			<div class="pulldown">
 				<table>
 					<tr>
 						<td align="right">大カテゴリ:</td>
-						<td><select id="bc" name="bc">
+						<td><select name="bc" class="bcSelect">
 								<option value="">選択してください</option>
 								<% for(int i=0; i < bcList.size(); i++){ %>
 								<option value="<%=i+1 %>"><%=bcList.get(i).getBc_category() %></option>
@@ -63,13 +63,14 @@
 					<tr>
 						<td align="right">小カテゴリ:</td>
 						<td>
-							<% for(int i=0; i<=bcList.size(); i++){ %> <select id="<%=i+1 %>"
-							class="scSelect">
+							<% for(int i=1; i<=bcList.size(); i++){ %> 
 								<% ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>(); %>
 								<% SmallCategoryDao dao = new SmallCategoryDao(); %>
 								<% list = dao.selectBc(i); %>
-								<% for(int j=0; j < list.size(); j++){ %>
-								<option value="<%= j+1 %>"><%= list.get(j).getSc_category() %></option>
+							<select id="<%=i %>"class="scSelect">
+								<option value="">選択してください</option>
+								<% for(int j=0; j<list.size(); j++){ %>
+								<option value="<%=j+1 %>"><%=list.get(j).getSc_category() %></option>
 								<%} %>
 						</select> <% } %>
 						</td>
@@ -80,8 +81,7 @@
 				</table>
 			</div>
 			<div>
-				<table border="1" style="border-collapse: collapse"
-					class="tablesorter" id="category_table">
+				<table border="1" style="border-collapse: collapse" class="tablesorter" id="category_table">
 					<thead>
 						<tr>
 							<td>大カテゴリID</td>
@@ -119,5 +119,6 @@
 	</table>
 	</div>
 	</div>
+	
 </body>
 </html>

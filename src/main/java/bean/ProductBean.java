@@ -38,16 +38,16 @@ public class ProductBean implements Serializable {
 	private String descr;
 	private String detail;
 	
-	private String images_1;
-	private String images_2;
-	private String images_3;
-	private String images_4;
-	private String images_5;
-	private String images_6;
-	private String images_7;
-	private String images_8;
-	private String images_9;
-	private String images_10;
+	private String image_1;
+	private String image_2;
+	private String image_3;
+	private String image_4;
+	private String image_5;
+	private String image_6;
+	private String image_7;
+	private String image_8;
+	private String image_9;
+	private String image_10;
 	
 	private String shop_name;
 	
