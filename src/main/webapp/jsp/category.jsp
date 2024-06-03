@@ -39,9 +39,9 @@
        		<table>
        			<tr>
        				<td align="right">大カテゴリ:</td>
-       				<td><select name = "bc">
+       				<td><select name = "bc" class="bcSelect">
 						<option value="">選択してください</option>
-						<% for(int i=0; i < bcList.length; i++){ %>
+						<% for(int i=0; i < bcList.length(); i++){ %>
 						<option value="<%=i+1 %>"><%=bcList.get(i).getBc_category() %></option>
 						<%} %>
 						</select></td>
@@ -52,9 +52,18 @@
        			</tr>
        			<tr>
        				<td align="right">小カテゴリ:</td>
-       				<td>:<select id ="sc1" name = "sc_1">
-						<option value=""></option>
-						</select></td>
+       				<td>
+       				<% for(int i=0; i<=bcList.size(); i++){ %>
+	       				<select id ="<%=i+1 %>" class="scSelect">
+	       				<% ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>(); %>
+	       				<% SmallCategoryDao dao = new SmallCategoryDao(); %>
+	       				<% list = dao.selectBc(i); %>
+	       					<% for(int j=0; j<=list.size(); j++){ %>
+							<option value="<%=j+1 %>"><%=list[j].getSc_category() %></option>
+							<%} %>
+						</select>
+					<%} %>
+					</td>
        			</tr>
        			<tr>
        				<td><input type ="submit"  name="submit" value="検索"></td>
