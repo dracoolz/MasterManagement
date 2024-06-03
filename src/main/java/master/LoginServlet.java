@@ -39,28 +39,21 @@ public class LoginServlet extends HttpServlet {
 					String[] input = {id,pw};
 					String[] names = {"社員番号","パスワード"};
 					
-					if((err =  e.injectionCheck(input,names)) == null) {
-						if((err = e.inputCheck(input,names)) == null) {
-							if(e.numberCheck(id) != null) {
-								err = "社員番号は"+e.numberCheck(id);
+					if((err = e.inputCheck(input,input,names,names)) == null) {
+						if((err = e.numberCheck(id,"社員番号")) == null) {
+							int iid = Integer.parseInt(id);
+							UserDao dao = new UserDao();
+							UserBean bean = dao.select(iid);
+							String correct = bean.getPassword();
+							if(e.correctCheck(pw, correct) != null) {
+								err = "社員番号または"+e.correctCheck(pw, correct);
 							} else {
-								int iid = Integer.parseInt(id);
-								UserDao dao = new UserDao();
-								UserBean bean = dao.select(iid);
-								String correct = bean.getPassword();
-								if(e.correctCheck(pw, correct) != null) {
-									err = "社員番号または"+e.correctCheck(pw, correct);
-								} else {
-									session.setAttribute("userid", bean.getEmp_id());
-									session.setAttribute("username", bean.getEmp_name());
-									session.setAttribute("userrole", bean.getRole());
-									rd = request.getRequestDispatcher("/jsp/main.jsp");
-								}
+								session.setAttribute("userid", bean.getEmp_id());
+								session.setAttribute("username", bean.getEmp_name());
+								session.setAttribute("userrole", bean.getRole());
+								rd = request.getRequestDispatcher("/jsp/main.jsp");
 							}
 						}
-					} else {
-						id = id.replace("'", "");
-						pw = pw.replace("'", "");
 					}
 					if(rd == null) {
 						request.setAttribute("id", id);

@@ -16,10 +16,10 @@
 	</div>
 	<div align="center">
 		<% if ((int)(session.getAttribute("userrole")) == 0) { %>
-			<a href="./master?no=0">マスタ管理</a><br><br>
+			<a href="./master?no=1">マスタ管理</a><br><br>
 		<% } %>
-		<a href="./master?no=1">受注管理</a><br><br>
-		<a href="./master?no=2">パスワード変更</a>
+		<a href="./master?no=2">受注管理</a><br><br>
+		<a href="./master?no=3">パスワード変更</a>
 	</div>
 </body>
 </html>
