@@ -53,7 +53,7 @@
 			<p>
 				<%="ようこそ、" + session.getAttribute("username") + "さん"%>
 			</p>
-			<a href="/first">ログアウト</a>
+			<a href="./first">ログアウト</a>
 		</div>
 		<a href="javascript:decrementMonth();">
 			<div class="arrow-left"></div>
@@ -105,42 +105,41 @@
 		<button type="button">検索</button>
 		<!-- table -->
 		<div class="table">
-
-			<table border="1">
-				<tr align="center">
-					<th class="thead">商品ID▽</th>
-					<th class="thead">商品名▽</th>
-					<th class="thead">カテゴリ▽</th>
-					<th class="thead">販売単価 ▽</th>
-					<th class="thead">仕入単価 ▽</th>
-					<th class="thead">販売数▽</th>
-					<th class="thead">粗利▽</th>
-					<th class="thead">先年度比(%)▽</th>
-					<th></th>
-				</tr>
-				<% for (int i = 0; i < list.size(); i++) { %>
-				<tr align="center">
-					<td><%= list.get(i).getPro_id() %></td>
-					<td><%= list.get(i).getPi_name() %></td>
-					<td><%= list.get(i).getCategory() %></td>
-					<td><%= list.get(i).getSale_price() %>円</td>
-					<td><%= list.get(i).getStock_price() %>円</td>
-					<td><%= list.get(i).getSale_amount() %></td>
-					<td><%= list.get(i).getProfit() %>円</td>
-					<td><%= list.get(i).getComparison() %></td>
-					<form method="post" action="./detail?no=2">
-					<td>
-						<button type="submit" name="idValue" value="<%= list.get(i).getPro_id() %>">詳細</button>
-					</td>
-					</form>
-				</tr>
-				<% } %>
-			</table>
+			<form method="post" action="./detail?no=2">
+				<table border="1">
+					<tr align="center">
+						<th class="thead">商品ID▽</th>
+						<th class="thead">商品名▽</th>
+						<th class="thead">カテゴリ▽</th>
+						<th class="thead">販売単価 ▽</th>
+						<th class="thead">仕入単価 ▽</th>
+						<th class="thead">販売数▽</th>
+						<th class="thead">粗利▽</th>
+						<th class="thead">先年度比(%)▽</th>
+						<th></th>
+					</tr>
+					<% for (int i = 0; i < list.size(); i++) { %>
+					<tr align="center">
+						<td><%= list.get(i).getPro_id() %></td>
+						<td style="word-break: break-all;"><%= list.get(i).getPi_name() %></td>
+						<td><%= list.get(i).getCategory() %></td>
+						<td><%= list.get(i).getSale_price() %>円</td>
+						<td><%= list.get(i).getStock_price() %>円</td>
+						<td><%= list.get(i).getSale_amount() %></td>
+						<td><%= list.get(i).getProfit() %>円</td>
+						<td><%= list.get(i).getComparison() %></td>
+						<td>
+							<button type="submit" name="idValue"
+								value="<%= list.get(i).getPro_id() %>">詳細</button>
+						</td>
+					</tr>
+					<% } %>
+				</table>
+			</form>
 		</div>
-
 		<div class="footer_button">
 			<button type="button">トップページ</button>
-			<button type="button" onclick="location.href='./master'">戻る</button>
+			<button type="button" onclick="location.href='./master?no=1'">戻る</button>
 		</div>
 	</div>
 </body>

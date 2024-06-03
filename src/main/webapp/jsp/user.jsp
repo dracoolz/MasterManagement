@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
+<%@ page import="bean.UserBean"%>
 <!DOCTYPE html>
 <html>
 
@@ -15,7 +17,7 @@
 <body>
 <script src="../js/tableSorter.js"></script>
 <%ArrayList<UserBean> userList =(ArrayList<UserBean>)request.getAttribute("list"); %>
-<form action ="Master/DUcontrol?type=user" method="post">
+<form action ="./DUControl?type=user" method="post">
 	<div align="center">
 		<div align="left">
 			<p>ユーザ管理</p>
@@ -37,7 +39,8 @@
        		<table>
        			<tr>
 	       			<td><input type ="submit"  name="submit" value="登録"></td>
-	       			<td><input type ="submit"  name="submit" value="戻る"></td>
+	       			<td><button type="button"
+								onclick="location.href='./master?no=1'">戻る</td>
        			</tr>
        		</table>
        	</div>
@@ -53,17 +56,17 @@
 	       			<td colspan="2"></td>
        			</tr>
        		</thead>
-       		<% for(int i=0; i < userList.length; i++)} %>
+       		<% for(int i=0; i < userList.size(); i++) { %>
        			<tr>
-	       			<td><%=userList(i).getEmp_id() %></td>
-	       			<td><%=userList(i).getEmp_name() %></td>
-	       			<td><%=userList(i).getFurigana() %></td>
-	       			<td><%=userList(i).getEmp_email() %></td>
-	       			<td><%=userList(i).getRole() %></td>
+	       			<td><%=userList.get(i).getEmp_id() %></td>
+	       			<td><%=userList.get(i).getEmp_name() %></td>
+	       			<td><%=userList.get(i).getFurigana() %></td>
+	       			<td><%=userList.get(i).getEmp_email() %></td>
+	       			<td><%=userList.get(i).getRole() %></td>
 	       			<td><input type ="submit"  name="submit" value="変更"></td>
 	       			<td><input type ="submit"  name="submit" value="削除"></td>
        			</tr>
-       		<%} %>
+       		<% } %>
        		</table>
        	</div>
        	<font color="red">
@@ -79,7 +82,7 @@
 		<table>
 			<tr>
 				<td><a class="pagetop" href="#"><div class="pagetop__arrow"></div></a></td>
-				<td><input type ="submit"  name="submit" value="戻る"></td>
+				<td><button type="button" onclick="location.href='./master?no=1'">戻る</button></td>
 			</tr>
 		</table>
 		</div>

@@ -121,7 +121,7 @@ public class Errcheck {
 			return "存在しない大カテゴリ番号です";
 		} else if(type.equals("sc")) {
 			SmallCategoryDao dao = new SmallCategoryDao();
-			SmallCategoryBean bean = dao.select(id);
+			SmallCategoryBean bean = dao.selectSc(id);
 			if(id == bean.getSc_id()){
 				return null;
 			}

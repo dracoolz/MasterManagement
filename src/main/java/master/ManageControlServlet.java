@@ -60,6 +60,11 @@ public class ManageControlServlet extends HttpServlet {
 				ArrayList<ProductBean> parr = new ArrayList<ProductBean>();
 				parr = pdao.selectAll();
 				request.setAttribute("list", parr);
+				
+				BigCategoryDao bdao2 = new BigCategoryDao();
+				ArrayList<BigCategoryBean> barr2 = new ArrayList<BigCategoryBean>();
+				barr2 = bdao2.selectAll();
+				request.setAttribute("bclist", barr2);
 				rd = request.getRequestDispatcher("./jsp/product.jsp");
 				break;
 			case 4:

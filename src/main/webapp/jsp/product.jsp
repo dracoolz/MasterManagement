@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
+<%@ page import="bean.ProductBean"%>
+<%@ page import="bean.BigCategoryBean"%>
 <!DOCTYPE html>
 <html>
 
@@ -16,8 +19,8 @@
 <script src="../js/sc_category.js"></script>
 <script src="../js/tableSorter.js"></script>
 <%ArrayList<ProductBean> proList =(ArrayList<ProductBean>)request.getAttribute("list"); %>
-<% ArrayList<BigCategoryBean> bcList = (ArrayList<BigCategoryBean>)session.getAttribute("bclist"); %>
-<form action ="Master/DUcontrol?type=product" method="post">
+<% ArrayList<BigCategoryBean> bcList = (ArrayList<BigCategoryBean>)request.getAttribute("bclist"); %>
+<form action ="./DUcontrol?type=product" method="post">
 	<div align="center">
 		<div align="left">
 			<p>商品管理</p>
@@ -31,7 +34,8 @@
        		<table>
        			<tr>
 	       			<td><input type ="submit"  name="submit" value="登録"></td>
-	       			<td><input type ="submit"  name="submit" value="戻る"></td>
+	       			<td><button type="button"
+								onclick="location.href='./master?no=1'">戻る</td></td>
        			</tr>
        		</table>
        	</div>
@@ -45,7 +49,7 @@
        				<td align="right">大カテゴリ:</td>
        				<td><select name = "bc">
 						<option value="">選択してください</option>
-						<% for(int i=0; i < bcList.length; i++){ %>
+						<% for(int i=0; i < bcList.size(); i++){ %>
 						<option value="<%=i+1 %>"><%=bcList.get(i).getBc_category() %></option>
 						<%} %>
 						</select></td>
@@ -57,7 +61,7 @@
 						</select></td>
        			</tr>
        			<tr>
-       				<td><input type ="submit"  name="submit" value="検索"></td>
+       				<td align="center"><input type ="submit"  name="submit" value="検索"></td>
        			</tr>
        		</table>
     	</div>
@@ -73,15 +77,15 @@
 	       			<td colspan="2"></td>
        			</tr>
        		</thead>
-       		<% for(int i=0; i < userList.length; i++)} %>
+       		<% for(int i=0; i < proList.size(); i++) { %>
        			<tr>
-	       			<td><%=proList(i).getPro_id() %></td>
-	       			<td><%=proList(i).getPi_name() %></td>
-	       			<td><%=proList(i).getSc_category_1() %></td>
-	       			<td><%=proList(i).getSc_category_2() %></td>
-	       			<td><%=proList(i).getSc_category_3() %></td>
-	       			<td><%=proList(i).getWholesale() %></td>
-	       			<td><%=proList(i).getWholesale * (5/6); %></td>
+	       			<td><%=proList.get(i).getPro_id() %></td>
+	       			<td><%=proList.get(i).getPi_name() %></td>
+	       			<td><%=proList.get(i).getSc_category_1() %></td>
+	       			<td><%=proList.get(i).getSc_category_2() %></td>
+	       			<td><%=proList.get(i).getSc_category_3() %></td>
+	       			<td><%=proList.get(i).getWholesale() %></td>
+	       			<td><%=proList.get(i).getWholesale() * (5/6) %></td>
 	       			<td><input type ="submit"  name="submit" value="変更"></td>
 	       			<td><input type ="submit"  name="submit" value="削除"></td>
        			</tr>

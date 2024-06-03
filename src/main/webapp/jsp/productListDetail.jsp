@@ -70,12 +70,12 @@
             <p>
                 <%="ようこそ、"+ session.getAttribute("username") + "さん" %>
             </p>
-            <a href="/first">ログアウト</a>
+            <a href="./first">ログアウト</a>
         </div>
         <div class="top-button">
             <button type="button">年表示</button>
             <button type="button">月表示</button>
-            <button type="button" onclick="location.href='managecontrol?no=4'">戻る</button>
+            <button type="button" onclick="location.href='managecontrol?no=5'">戻る</button>
         </div>
         <!-- table -->
         <div class="table">
@@ -93,13 +93,13 @@
                 <% for (int i = 0; i < list.size(); i++) { %>
 				<tr align="center">
 					<td><%= list.get(i).getPro_id() %></td>
-					<td><%= list.get(i).getPi_name() %></td>
-					<td><%= list.get(i).getCategory() %></td>
-					<td><%= list.get(i).getSale_price() %>円</td>
-					<td><%= list.get(i).getStock_price() %>円</td>
-					<td><%= list.get(i).getSale_amount() %></td>
-					<td><%= list.get(i).getProfit() %>円</td>
-					<td><%= list.get(i).getComparison() %></td>
+						<td style="word-break: break-all;"><%= list.get(i).getPi_name() %></td>
+						<td><%= list.get(i).getCategory() %></td>
+						<td><%= list.get(i).getSale_price() %>円</td>
+						<td><%= list.get(i).getStock_price() %>円</td>
+						<td><%= list.get(i).getSale_amount() %></td>
+						<td><%= list.get(i).getProfit() %>円</td>
+						<td><%= list.get(i).getComparison() %></td>
                 <% } %>
             </table>
         </div>
@@ -181,7 +181,7 @@
         </div>
         <div class="footer_button">
 			<button type="button" onclick="window.location.href='#topPage'">トップページ</button>
-			<button type="button" onclick="location.href='managecontrol?no=4'">戻る</button>
+			<button type="button" onclick="location.href='managecontrol?no=5'">戻る</button>
 		</div>
     </div>
 </body>

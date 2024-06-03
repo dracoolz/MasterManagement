@@ -11,7 +11,7 @@
 <body>
 	
 <% if(request.getParameter("submit").equals("登録")){ %>
-<form action ="Master/control?type=user" method="post">
+<form action ="./control?type=user" method="post">
 	<div align="center">
 		<div align="left">
 			<p>ユーザ管理</p>
