@@ -14,6 +14,13 @@ try {
 } catch (Exception e) {
 	id = "";
 }%>
+
+<script>
+	function blank() {
+		document.getElementById("id").value = "";
+	}
+</script>
+
 <body>
 	<div align="center">
 		<strong>パスワードを忘れた場合</strong>
@@ -25,7 +32,7 @@ try {
 			<table>
 				<tr>
 					<td>社員番号 :</td>
-					<td><input type="text" size="20" name="id" value=<%=id%>></td>
+					<td><input type="text" size="20" id="id" name="id" maxlength="20" value=<%=id%>></td>
 				</tr>
 			</table>
 			<br>
@@ -36,8 +43,8 @@ try {
 				<% } }catch (Exception e2){
 				}%>
 				<tr>
-					<td><input type="submit" name="submit" value="メール送信"></td>
-					<td><input type="reset" name="reset" value="リセット"></td>
+					<td><input type="submit" name="submit" value="メールを送信"></td>
+					<td><input type="button" name="reset" value="リセット" onclick="blank()"></td>
 	</form>
 					<td><input type="button" name="back"
 						onclick="location.href='./first'" value="戻る"></td>
