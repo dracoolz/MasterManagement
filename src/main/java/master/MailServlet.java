@@ -29,13 +29,9 @@ public class MailServlet extends HttpServlet {
 		Errcheck e = new Errcheck();
 		
 		if((err = e.inputCheck(id,"社員番号")) == null) {
-			if(e.numberCheck(id) != null) {
-				err = "社員番号は"+e.numberCheck(id);
-			} else {
-				int iid = Integer.parseInt(id);
-				if(e.existId(iid) != null) {
-					err = e.existId(iid);
-				} else {
+			if((err = e.numberCheck(id,"社員番号")) == null) {
+			 	int iid = Integer.parseInt(id);
+				if((err = e.idExistCheck(iid,"user")) == null) {
 					/* メールの送信
 					UserDao dao = new UserDao();
 					String to = dao.select(iid).getEmp_email();

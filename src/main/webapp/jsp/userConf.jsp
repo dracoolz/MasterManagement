@@ -11,7 +11,7 @@
 <body>
 	
 <% if(request.getParameter("submit").equals("登録")){ %>
-<form action ="Master/checkControl" method="post">
+<form action ="./checkControl" method="post">
 	<div align="center">
 		<div align="left">
 			<p>ユーザ管理</p>
@@ -64,7 +64,7 @@
 <% } %>
 	
 <% if(request.getParameter("submit").equals("変更")){ %>
-<form action ="Master/checkControl" method="post">
+<form action ="./checkControl" method="post">
 	<div align="center">
 		<div align="left">
 			<p>ユーザ管理</p>
@@ -113,7 +113,7 @@
 <% } %>
 	
 <% if(request.getParameter("submit").equals("削除")){ %>
-<form action ="Master/checkControl" method="post">
+<form action ="./checkControl" method="post">
 	<div align="center">
 		<div align="left">
 			<p>ユーザ管理</p>

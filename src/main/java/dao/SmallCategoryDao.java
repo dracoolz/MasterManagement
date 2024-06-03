@@ -96,33 +96,32 @@ public class SmallCategoryDao extends DBAccess{
 		}
 		
 		public ArrayList<SmallCategoryBean> selectBc(int id) {
+            ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>();
 
-			ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>();
+            String sql = "select * from small_category where bc_id=?";
 
-			String sql = "select * from small_category where bc_id=?";
+            try {
+                connect();
+                // ステートメントの作成
+                PreparedStatement ps = getConnection().prepareStatement(sql);
+                ps.setInt(1, id);
 
-			try {
-				connect();
-				// ステートメントの作成
-				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
 
-				ResultSet rs = ps.executeQuery();
-				
-				while (rs.next()) {
-					SmallCategoryBean bean = new SmallCategoryBean();
-					bean.setSc_id(rs.getInt("sc_id"));
-					bean.setBc_id(rs.getInt("bc_id"));
-					bean.setSc_category(rs.getString("sc_category"));
-				}
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				disconnect();
-			}
-			return list;
-		}
+                while (rs.next()) {
+                    SmallCategoryBean bean = new SmallCategoryBean();
+                    bean.setSc_id(rs.getInt("sc_id"));
+                    bean.setBc_id(rs.getInt("bc_id"));
+                    bean.setSc_category(rs.getString("sc_category"));
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                disconnect();
+            }
+            return list;
+        }
 
 		//小カテゴリテーブルに値を追加するメソッド
 		public void insert(int sc_id ,int bc_id ,String name) {

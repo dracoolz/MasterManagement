@@ -80,15 +80,19 @@ public class BigCategoryDao extends DBAccess{
 				ps.setInt(1, id);
 
 				ResultSet rs = ps.executeQuery();
-
-				bean.setBc_id(rs.getInt("bc_id"));
-				bean.setBc_category(rs.getString("bc_category"));
+				
+				while (rs.next()) {
+					bean.setBc_id(rs.getInt("bc_id"));
+					bean.setBc_category(rs.getString("bc_category"));
+				}
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
 				disconnect();
 			}
+			
+			System.out.println(bean.getBc_id());
 			return bean;
 		}
 

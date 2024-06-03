@@ -24,11 +24,11 @@ public class MasterServlet extends HttpServlet {
 		
 		int no = Integer.parseInt(request.getParameter("no"));
 		RequestDispatcher rd = null;
-		if(no == 0) {
+		if(no == 1) {
 			rd = request.getRequestDispatcher("/jsp/master.jsp");
-		} else if(no == 1) {
-			rd = request.getRequestDispatcher("/totalmenu");
 		} else if(no == 2) {
+			rd = request.getRequestDispatcher("/totalmenu");
+		} else if(no == 3) {
 			rd = request.getRequestDispatcher("/jsp/password.jsp?state=change");
 		}
 		rd.forward(request, response);
