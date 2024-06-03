@@ -41,7 +41,6 @@ public class OrderCancelServlet extends HttpServlet {
 	String orderDate = "2024-01-23";
 	
 	//初回キャンセルか追加キャンセルか判定
-	//boolean result = true;
 	boolean isFirst = true;
 	ListLogDao dao1 = new ListLogDao();
 	if(dao1.checkListLogExists(orderId) > 0) {
@@ -50,15 +49,20 @@ public class OrderCancelServlet extends HttpServlet {
 			
 	//初回キャンセル時
 	if(isFirst) {
-		// 受注詳細からデータ取得
-		OrderSlipDao dao2 = new OrderSlipDao();
-		ArrayList<OrderSlipBean> slips = dao2.selectSlipForCancelAndRefund(orderId);
-		System.out.println(slips.get(0).getProductName());
-		//set
-		session.setAttribute("orderId",orderId);
-		session.setAttribute("customerName", customerName);
-		session.setAttribute("orderDate", orderDate);
-		session.setAttribute("orderSlipList", slips);
+		//confirm.jspの戻るボタンで帰ってきた場合
+		//毎回DBに接続し入力中のキャンセル数上書を防ぐ
+		@SuppressWarnings("unchecked")
+		ArrayList<OrderSlipBean> slips = (ArrayList<OrderSlipBean>) session.getAttribute("orderSlip");
+		if(slips == null) {
+			// 受注詳細からデータ取得
+			OrderSlipDao dao2 = new OrderSlipDao();
+			slips = dao2.selectSlipForCancelAndRefund(orderId);
+			//set
+			session.setAttribute("orderId",orderId);
+			session.setAttribute("customerName", customerName);
+			session.setAttribute("orderDate", orderDate);
+			session.setAttribute("orderSlip", slips);
+		}
 		req.setAttribute("errMsg", errMsg);
 		
 	//追加キャンセル時　受注内容変更のキャンセル変更へ

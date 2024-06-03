@@ -99,7 +99,7 @@
 			</tr>
 		</table>
 		<input type="submit" name="pageFlag" value="確定">
-		<input type="button" name="pageFlag" value="戻る">
+		<input type="button" name="back" value="戻る" onclick="location.href='orderCancel'">
 	</form>
 </body>
 </html>

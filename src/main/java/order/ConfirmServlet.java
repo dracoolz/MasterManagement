@@ -47,10 +47,22 @@ public class ConfirmServlet extends HttpServlet {
 		String[] orderQtyList = req.getParameterValues("orderQty");
 		String cancelComment = req.getParameter("cancelComment");
 		
+		//戻るボタン用に現在キャンセル数を格納
+		@SuppressWarnings("unchecked")
+		ArrayList<OrderSlipBean> orderSlip = (ArrayList<OrderSlipBean>) session.getAttribute("orderSlip");
+		int n=0;
+		for(OrderSlipBean item:orderSlip) {
+			item.setCancelQty(Integer.parseInt(cancelQtyList[n]));
+			System.out.println("setCancelQty to orderSlip session"+item.getCancelQty());
+			n++;
+		}
+		session.setAttribute("orderSlip", orderSlip);
+		
 		//すべてキャンセル
 		if(("受注内容全てをキャンセルする").equals(pageFlag)) {
 			System.out.println("imhere");
-			ArrayList<OrderSlipBean> cancelList = (ArrayList<OrderSlipBean>) session.getAttribute("orderSlipList");
+			@SuppressWarnings("unchecked")
+			ArrayList<OrderSlipBean> cancelList = (ArrayList<OrderSlipBean>) session.getAttribute("orderSlip");
 			for(OrderSlipBean cancelItem:cancelList) {
 				cancelItem.setCancelQty(cancelItem.getOrderQty() - cancelItem.getRefundQty());
 			}
@@ -80,7 +92,6 @@ public class ConfirmServlet extends HttpServlet {
 			if(errChecker.addProductCheck(cancelList)) {
 				//session set
 				session.setAttribute("cancelList", cancelList);
-				session.setAttribute("cancelComment", cancelComment);
 				
 			//キャンセル商品が何もない　戻る　エラー
 			}else {
@@ -90,8 +101,9 @@ public class ConfirmServlet extends HttpServlet {
 			
 		}
 		session.setAttribute("code", code);
+		session.setAttribute("cancelComment", cancelComment);
 		//session reset
-		//session.setAttribute("orderSlipList", null);
+		//session.setAttribute("orderSlip", null);
 		
 	}
 	

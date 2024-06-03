@@ -17,7 +17,8 @@
 	<%int orderId = (int)session.getAttribute("orderId"); %>
 	<%String customerName = (String)session.getAttribute("customerName"); %>
 	<%String orderDate = (String)session.getAttribute("orderDate"); %> 
-	<%ArrayList<OrderSlipBean> orderSlipList = (ArrayList<OrderSlipBean>)session.getAttribute("orderSlipList");%>
+	<%ArrayList<OrderSlipBean> orderSlip = (ArrayList<OrderSlipBean>)session.getAttribute("orderSlip");%>
+	<%String cancelComment = (String)session.getAttribute("cancelComment"); %>
 	
 	<%String errMsg = (String)request.getAttribute("errMsg"); %>
 	
@@ -29,8 +30,8 @@
 		<a href="/first">ログアウト</a>
 	</div>
 	
-	<form action="confirm" method="post">
-		<input type="submit" name="pageFlag" value="受注内容全てをキャンセルする">
+	<form action="?" method="post">
+		<input type="submit" name="pageFlag" value="受注内容全てをキャンセルする" formaction="confirm">
 	<table>
 		<tr><td>注文番号</td></tr>
 		<tr><td><%= orderId%></td></tr>
@@ -52,13 +53,13 @@
 			<td>キャンセル数</td>
 			<td>返品数</td>
 		</tr>
-		<%if(orderSlipList != null){ %>
-			<%for(OrderSlipBean item:orderSlipList){%>
+		<%if(orderSlip != null){ %>
+			<%for(OrderSlipBean item:orderSlip){%>
 				<tr>
 					<td><%= item.getProductId()%></td>
 					<td><%= item.getProductName() %></td>
 					<td><%= item.getOrderQty() %></td>
-					<td><input type="number" name="cancelQty" value="0" min="0" max="<%= item.getOrderQty() - item.getCancelQty() - item.getRefundQty()%>"></td>
+					<td><input type="number" name="cancelQty" value="<%=item.getCancelQty() %>" min="0" max="<%= item.getOrderQty() - item.getRefundQty()%>"></td>
 					<td><%= item.getRefundQty() %></td>
 				</tr>
 				<input type="hidden" name="orderSlipId" value="<%= item.getOrderSlipId()%>">
@@ -70,14 +71,14 @@
 	</table>
 	<br>
 	キャンセル理由<br>
-	<textarea name="cancelComment" cols="100" rows="10"></textarea><br>
+	<textarea name="cancelComment" cols="100" rows="10"><%if(cancelComment != null) {%><%=cancelComment %><%} %></textarea><br>
 	<%if(errMsg != null){ %>
 		<div style="color:red;"><%=errMsg %></div><br> 
 	<%} %>
 	
 	<input type="hidden" name="code" value="newCancel">
-	<input type="submit" name="pageFlag" value="確認">
-	<input type="button" name="back" value="戻る" formaction="manageMenu">
+	<input type="submit" name="pageFlag" value="確認" formaction="confirm">
+	<input type="button" name="back" value="戻る" onclick="location.href='orderList'">
 	</form>
 	
 </body>
