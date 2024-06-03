@@ -44,4 +44,31 @@ public class OrderSlipDao extends DBAccess{
 		}
 		return orderSlip;
 	}
+	
+	//キャンセル数を更新
+	public void updateCancelQty(ArrayList<OrderSlipBean> cancelList){
+		String sql="""
+				update order_slip
+				set cancel_qty = ?
+				where order_slip_id = ?
+				""";
+		try {
+			connect();
+			//create statement
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			for(OrderSlipBean item:cancelList) {
+				ps.setInt(1, item.getCancelQty());
+				ps.setInt(2, item.getOrderSlipId());
+				//execute
+				ps.executeUpdate();
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+
+	}
+	//返品数を更新
+	
 }

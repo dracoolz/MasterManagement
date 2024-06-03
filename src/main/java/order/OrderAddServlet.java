@@ -47,7 +47,7 @@ public class OrderAddServlet extends HttpServlet {
 		
 		String errMsg;
 		if(!result) {
-			errMsg = errChecker.getE013();
+			errMsg = errChecker.getE017();
 			req.setAttribute("errMsg", errMsg);
 			session.setAttribute("customerName", null);
 		}else {

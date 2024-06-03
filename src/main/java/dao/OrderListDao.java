@@ -148,7 +148,56 @@ public class OrderListDao extends DBAccess{
 		return cancelComment;
     }
     
-    //
+    //キャンセルによる更新
+    public void updateCancelData(int orderId,String cancelComment) {
+    	String sql ="""
+    			update order_list
+    			set cancel_comment = ?
+    			where order_id = ?
+    			""";
+    	
+    	try {
+			connect();
+			//create statement
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			//コメントなし
+			if(cancelComment == "") {
+				ps.setString(1, null);
+			}else {
+				ps.setString(1, cancelComment);
+			}
+			ps.setInt(2, orderId);
+			//execute
+			ps.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+    }
+    
+    //返品による更新
+    public void updateRefundData(int orderId,String refundComment) {
+    	String sql ="""
+    			update order_list
+    			set refund_comment = ?
+    			where order_id = ?
+    			""";
+    	
+    	try {
+			connect();
+			//create statement
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setString(1, refundComment);
+			ps.setInt(2, orderId);
+			//execute
+			ps.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+    }
 }
 	
 

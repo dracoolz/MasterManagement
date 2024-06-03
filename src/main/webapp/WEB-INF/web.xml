@@ -122,5 +122,15 @@
 		<servlet-name>ConfirmServlet</servlet-name>
 		<url-pattern>/confirm</url-pattern>
 	</servlet-mapping>
+	
+	<!-- DBUpdateServlet -->
+	<servlet>
+		<servlet-name>DBUpdateServlet</servlet-name>
+		<servlet-class>order.DBUpdateServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DBUpdateServlet</servlet-name>
+		<url-pattern>/dbUpdate</url-pattern>
+	</servlet-mapping>
 
 </web-app>

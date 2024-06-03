@@ -11,7 +11,7 @@ public class ListLogDao extends DBAccess{
 				insert into
 				list_log(order_id,change_date,flag,cancel_comment,refund_comment)
 				values(?,?,?,?,?)
-				""" ;
+				""";
 		
 		try {
 			connect();

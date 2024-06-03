@@ -60,7 +60,6 @@ public class ConfirmServlet extends HttpServlet {
 		
 		//すべてキャンセル
 		if(("受注内容全てをキャンセルする").equals(pageFlag)) {
-			System.out.println("imhere");
 			@SuppressWarnings("unchecked")
 			ArrayList<OrderSlipBean> cancelList = (ArrayList<OrderSlipBean>) session.getAttribute("orderSlip");
 			for(OrderSlipBean cancelItem:cancelList) {
@@ -96,7 +95,7 @@ public class ConfirmServlet extends HttpServlet {
 			//キャンセル商品が何もない　戻る　エラー
 			}else {
 				url="orderCancel";
-				req.setAttribute("errMsg", errChecker.getE010());
+				req.setAttribute("errMsg", errChecker.getE011());
 			}
 			
 		}
