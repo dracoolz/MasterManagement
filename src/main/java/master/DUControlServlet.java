@@ -70,7 +70,16 @@ public class DUControlServlet extends HttpServlet {
 				session.setAttribute("role", bean.getRole());
 				
 				forward="/jsp/userConf.jsp?submit=削除";
-			 } else if(request.getParameter("submit").equals("戻る")){
+			 } else if(request.getParameter("submit").equals("検索")){
+				
+				UserDao dao = new UserDao();
+				ArrayList<UserBean> list = new ArrayList<UserBean>();
+				
+				list = dao.selectPart(request.getParameter("searchWord"));
+				request.setAttribute("list", list);
+				
+				forward="/jsp/user.jsp";
+			 }else if(request.getParameter("submit").equals("戻る")){
 				forward="/jsp/userMod.jsp?submit=登録";
 			}
 	    }
