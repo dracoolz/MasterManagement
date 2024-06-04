@@ -31,7 +31,6 @@ public class DBUpdateServlet extends HttpServlet {
 	//get
 	String code = (String)session.getAttribute("code");
 	int orderId = (int) session.getAttribute("orderId");
-	String cancelComment = (String) session.getAttribute("cancelComment");
 	
 	//jump url
 	String url = "";
@@ -43,26 +42,28 @@ public class DBUpdateServlet extends HttpServlet {
 	//キャンセル処理
 	if(("newCancel").equals(code)) {
 		@SuppressWarnings("unchecked")
-		ArrayList<OrderSlipBean> cancelList = (ArrayList<OrderSlipBean>) session.getAttribute("cancelList");
+		ArrayList<OrderSlipBean> cancelSlip = (ArrayList<OrderSlipBean>) session.getAttribute("cancelSlip");
+		String cancelComment = (String) session.getAttribute("cancelComment");
 		
 		//order_listの更新
 		OrderListDao orderListDao = new OrderListDao();
 		orderListDao.updateCancelData(orderId,cancelComment);
 		//order_slipの更新
-		OrderSlipDao orderSlipDao = new OrderSlipDao();
-		orderSlipDao.updateCancelQty(cancelList);
+		OrderSlipDao cancelSlipDao = new OrderSlipDao();
+		cancelSlipDao.updateCancelQty(cancelSlip);
+		
 		
 		//order_slipの取得
 		//list_logの追加 二次開発
 		//slip_logの追加 二次開発
 		
 		//set
-		req.setAttribute("msg", "キャンセル処理完了しました");
+		req.setAttribute("msssage", "キャンセル処理完了しました");
 		url = "orderList";
 		
 		//session reset
-		session.setAttribute("orderSlip", null);
-		session.setAttribute("cancelList", null);
+		session.setAttribute("code", null);
+		session.setAttribute("cancelSlip", null);
 		session.setAttribute("cancelComment", null);
 		session.setAttribute("orderId", null);
 		session.setAttribute("customerName", null);
@@ -71,7 +72,33 @@ public class DBUpdateServlet extends HttpServlet {
 		
 	//返品処理
 	}else if(("newRefund").equals(code)){
+		@SuppressWarnings("unchecked")
+		ArrayList<OrderSlipBean> refundSlip = (ArrayList<OrderSlipBean>) session.getAttribute("refundSlip");
+		String refundComment = (String) session.getAttribute("refundComment");
 		
+		//order_listの更新
+		OrderListDao orderListDao = new OrderListDao();
+		orderListDao.updateRefundData(orderId,refundComment);
+		//order_slipの更新
+		OrderSlipDao cancelSlipDao = new OrderSlipDao();
+		cancelSlipDao.updateRefundQty(refundSlip);
+		
+		
+		//order_slipの取得
+		//list_logの追加 二次開発
+		//slip_logの追加 二次開発
+		
+		//set
+		req.setAttribute("message", "キャンセル処理完了しました");
+		url = "orderList";
+		
+		//session reset
+		session.setAttribute("code", null);
+		session.setAttribute("refundSlip", null);
+		session.setAttribute("refundComment", null);
+		session.setAttribute("orderId", null);
+		session.setAttribute("customerName", null);
+		session.setAttribute("orderDate", null);
 	}
 	
 	

@@ -46,7 +46,7 @@ public class OrderSlipDao extends DBAccess{
 	}
 	
 	//キャンセル数を更新
-	public void updateCancelQty(ArrayList<OrderSlipBean> cancelList){
+	public void updateCancelQty(ArrayList<OrderSlipBean> cancelSlip){
 		String sql="""
 				update order_slip
 				set cancel_qty = ?
@@ -56,7 +56,7 @@ public class OrderSlipDao extends DBAccess{
 			connect();
 			//create statement
 			PreparedStatement ps = getConnection().prepareStatement(sql);
-			for(OrderSlipBean item:cancelList) {
+			for(OrderSlipBean item:cancelSlip) {
 				ps.setInt(1, item.getCancelQty());
 				ps.setInt(2, item.getOrderSlipId());
 				//execute
@@ -69,6 +69,29 @@ public class OrderSlipDao extends DBAccess{
 		}
 
 	}
-	//返品数を更新
 	
+	//返品数を更新
+	public void updateRefundQty(ArrayList<OrderSlipBean> refundSlip){
+		String sql="""
+				update order_slip
+				set refund_qty = ?
+				where order_slip_id = ?
+				""";
+		try {
+			connect();
+			//create statement
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			for(OrderSlipBean item:refundSlip) {
+				ps.setInt(1, item.getRefundQty());
+				ps.setInt(2, item.getOrderSlipId());
+				//execute
+				ps.executeUpdate();
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+
+	}
 }

@@ -17,7 +17,7 @@
 	<%int orderId = (int)session.getAttribute("orderId"); %>
 	<%String customerName = (String)session.getAttribute("customerName"); %>
 	<%String orderDate = (String)session.getAttribute("orderDate"); %> 
-	<%ArrayList<OrderSlipBean> orderSlip = (ArrayList<OrderSlipBean>)session.getAttribute("orderSlip");%>
+	<%ArrayList<OrderSlipBean> cancelSlip = (ArrayList<OrderSlipBean>)session.getAttribute("cancelSlip");%>
 	<%String cancelComment = (String)session.getAttribute("cancelComment"); %>
 	
 	<%String errMsg = (String)request.getAttribute("errMsg"); %>
@@ -53,8 +53,8 @@
 			<td>キャンセル数</td>
 			<td>返品数</td>
 		</tr>
-		<%if(orderSlip != null){ %>
-			<%for(OrderSlipBean item:orderSlip){%>
+		<%if(cancelSlip != null){ %>
+			<%for(OrderSlipBean item:cancelSlip){%>
 				<tr>
 					<td><%= item.getProductId()%></td>
 					<td><%= item.getProductName() %></td>
@@ -62,10 +62,6 @@
 					<td><input type="number" name="cancelQty" value="<%=item.getCancelQty() %>" min="0" max="<%= item.getOrderQty() - item.getRefundQty()%>"></td>
 					<td><%= item.getRefundQty() %></td>
 				</tr>
-				<input type="hidden" name="orderSlipId" value="<%= item.getOrderSlipId()%>">
-				<input type="hidden" name="productId" value="<%= item.getProductId()%>">
-				<input type="hidden" name="productName" value="<%= item.getProductName()%>">
-				<input type="hidden" name="orderQty" value="<%= item.getOrderQty() %>">
 			<% }%>
 		<%} %>
 	</table>

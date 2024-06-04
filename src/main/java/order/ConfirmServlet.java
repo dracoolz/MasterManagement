@@ -13,101 +13,160 @@ import javax.servlet.http.HttpSession;
 import bean.OrderSlipBean;
 
 public class ConfirmServlet extends HttpServlet {
-	
+
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		doPost(req,res);
+		doPost(req, res);
 	}
-	
+
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-	//mojicode
-	req.setCharacterEncoding("UTF-8");
-	res.setContentType("text/html;charset=UTF-8");
-	
-	//session
-	HttpSession session = req.getSession();
-	
-	//session initialize
-	session.setAttribute("cancelList", null);
-	
-	//get session para
-	
-	//get para
-	String code = req.getParameter("code");
-	String pageFlag = req.getParameter("pageFlag");
-	
-	//jumpurl
-	String url = "/jsp/confirm.jsp";
-	
-	//キャンセル処理order_cancel.jspから
-	if(("newCancel").equals(code)) {
-		String[] orderSlipIdList = req.getParameterValues("orderSlipId");
-		String[] productIdList = req.getParameterValues("productId");
-		String[] productNameList = req.getParameterValues("productName");
-		String[] cancelQtyList = req.getParameterValues("cancelQty");
-		String[] orderQtyList = req.getParameterValues("orderQty");
-		String cancelComment = req.getParameter("cancelComment");
-		
-		//戻るボタン用に現在キャンセル数を格納
-		@SuppressWarnings("unchecked")
-		ArrayList<OrderSlipBean> orderSlip = (ArrayList<OrderSlipBean>) session.getAttribute("orderSlip");
-		int n=0;
-		for(OrderSlipBean item:orderSlip) {
-			item.setCancelQty(Integer.parseInt(cancelQtyList[n]));
-			System.out.println("setCancelQty to orderSlip session"+item.getCancelQty());
-			n++;
-		}
-		session.setAttribute("orderSlip", orderSlip);
-		
-		//すべてキャンセル
-		if(("受注内容全てをキャンセルする").equals(pageFlag)) {
-			@SuppressWarnings("unchecked")
-			ArrayList<OrderSlipBean> cancelList = (ArrayList<OrderSlipBean>) session.getAttribute("orderSlip");
-			for(OrderSlipBean cancelItem:cancelList) {
-				cancelItem.setCancelQty(cancelItem.getOrderQty() - cancelItem.getRefundQty());
-			}
-			
-			//session set
-			session.setAttribute("cancelList", cancelList);
-			session.setAttribute("cancelComment", cancelComment);
-		}
-		//部分キャンセル
-		if(("確認").equals(pageFlag)) {
-			ArrayList<OrderSlipBean> cancelList = new ArrayList<OrderSlipBean>();
-			for(int i=0;i<orderSlipIdList.length;i++) {
-				if(!cancelQtyList[i].equals("0")) {
-					OrderSlipBean bean = new OrderSlipBean();
-					bean.setOrderSlipId(Integer.parseInt(orderSlipIdList[i]));
-					bean.setOrderId((int)session.getAttribute("orderId"));
-					bean.setProductId(productIdList[i]);
-					bean.setProductName(productNameList[i]);
-					bean.setOrderQty(Integer.parseInt(orderQtyList[i]));
-					bean.setCancelQty(Integer.parseInt(cancelQtyList[i]));
-					cancelList.add(bean);
+		//mojicode
+		req.setCharacterEncoding("UTF-8");
+		res.setContentType("text/html;charset=UTF-8");
+
+		//session
+		HttpSession session = req.getSession();
+
+		//get para
+		String code = req.getParameter("code");
+		String pageFlag = req.getParameter("pageFlag");
+
+		//jumpurl
+		String url = "/jsp/confirm.jsp";
+
+		ErrCheck errChecker = new ErrCheck();
+
+		//キャンセル処理order_cancel.jspから
+		if (("newCancel").equals(code)) {
+			String[] cancelQtyList = req.getParameterValues("cancelQty");
+			String cancelComment = req.getParameter("cancelComment");
+
+			//入力チェック
+			boolean isAllEntered = true;
+			for (String cancelQty : cancelQtyList) {
+				System.out.println(cancelQty);
+				isAllEntered = errChecker.IsEnteredCheck(cancelQty);
+				System.out.println(isAllEntered);
+				if (!isAllEntered) {
+					break;
 				}
 			}
-			
-			//キャンセル商品一つ以上ある場合
-			ErrCheck errChecker = new ErrCheck();
-			if(errChecker.addProductCheck(cancelList)) {
-				//session set
-				session.setAttribute("cancelList", cancelList);
-				
-			//キャンセル商品が何もない　戻る　エラー
-			}else {
-				url="orderCancel";
+
+			//キャンセル数入力漏れなし
+			if (isAllEntered) {
+				@SuppressWarnings("unchecked")
+				ArrayList<OrderSlipBean> cancelSlip = (ArrayList<OrderSlipBean>) session.getAttribute("cancelSlip");
+
+				//すべてキャンセル
+				if (("受注内容全てをキャンセルする").equals(pageFlag)) {
+					for (OrderSlipBean item : cancelSlip) {
+						item.setCancelQty(item.getOrderQty() - item.getRefundQty());
+					}
+
+					//session set
+					session.setAttribute("cancelSlip", cancelSlip);
+					//set req
+					req.setAttribute("message", "すべての商品をキャンセルしますか？");
+
+					//部分キャンセル
+				} else if (("確認").equals(pageFlag)) {
+					int i = 0;
+					for (OrderSlipBean item : cancelSlip) {
+						item.setCancelQty(Integer.parseInt(cancelQtyList[i]));
+						i++;
+					}
+
+					//キャンセル商品一つ以上ある場合
+					if (errChecker.existsCancelProduct(cancelSlip)) {
+						//set req
+						req.setAttribute("message", "キャンセルしますか？");
+						//session set
+						session.setAttribute("cancelSlip", cancelSlip);
+
+						//キャンセル商品が何もない　戻る　エラー
+					} else {
+						url = "orderCancel";
+						req.setAttribute("errMsg", errChecker.getE011());
+					}
+
+				}
+				session.setAttribute("code", code);
+				session.setAttribute("cancelComment", cancelComment);
+
+			//キャンセル数未入力が存在
+			} else {
+				url = "orderCancel";
 				req.setAttribute("errMsg", errChecker.getE011());
+				System.out.println("no field!");
 			}
-			
 		}
-		session.setAttribute("code", code);
-		session.setAttribute("cancelComment", cancelComment);
-		//session reset
-		//session.setAttribute("orderSlip", null);
-		
-	}
-	
-	//jump
-	RequestDispatcher rd = req.getRequestDispatcher(url);
-	rd.forward(req, res);
+
+		//返品処理order_refund.jspから
+		if (("newRefund").equals(code)) {
+			String[] refundQtyList = req.getParameterValues("refundQty");
+			String refundComment = req.getParameter("refundComment");
+
+			//入力チェック
+			boolean isAllEntered = true;
+			for (String refundQty : refundQtyList) {
+				System.out.println(refundQty);
+				isAllEntered = errChecker.IsEnteredCheck(refundQty);
+				System.out.println(isAllEntered);
+				if (!isAllEntered) {
+					break;
+				}
+			}
+
+			//返品数入力漏れなし
+			if (isAllEntered) {
+				@SuppressWarnings("unchecked")
+				ArrayList<OrderSlipBean> refundSlip = (ArrayList<OrderSlipBean>) session.getAttribute("refundSlip");
+
+				//すべて返品
+				if (("受注内容全てを返品する").equals(pageFlag)) {
+					for (OrderSlipBean item : refundSlip) {
+						item.setRefundQty(item.getOrderQty() - item.getCancelQty());
+					}
+
+					//session set
+					session.setAttribute("refundSlip", refundSlip);
+					//set req
+					req.setAttribute("message", "すべての商品を返品しますか？");
+
+					//部分返品
+				} else if (("確認").equals(pageFlag)) {
+					int i = 0;
+					for (OrderSlipBean item : refundSlip) {
+						item.setRefundQty(Integer.parseInt(refundQtyList[i]));
+						i++;
+					}
+
+					errChecker = new ErrCheck();
+					//返品商品一つ以上ある場合
+					if (errChecker.existsRefundProduct(refundSlip)) {
+						//set req
+						req.setAttribute("message", "返品しますか？");
+						//session set
+						session.setAttribute("refundSlip", refundSlip);
+
+						//返品商品が何もない　戻る　エラー
+					} else {
+						url = "orderRefund";
+						req.setAttribute("errMsg", errChecker.getE012());
+					}
+
+				}
+				session.setAttribute("code", code);
+				session.setAttribute("refundComment", refundComment);
+			//返品数入力漏れあり
+			} else {
+				System.out.println("not enterd");
+				url = "orderRefund";
+				req.setAttribute("errMsg", errChecker.getE012());
+			}
+		}
+
+		//jump
+		RequestDispatcher rd = req.getRequestDispatcher(url);
+		rd.forward(req, res);
 	}
 }

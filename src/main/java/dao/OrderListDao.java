@@ -128,7 +128,7 @@ public class OrderListDao extends DBAccess{
     public String selectRefundComment(int orderId) {
     	String sql = "select refund_comment from order_list where order_id = ?"; 
     	ResultSet rs = null;
-    	String cancelComment = null;
+    	String refundComment = null;
     	
     	try {
 			connect();
@@ -138,18 +138,18 @@ public class OrderListDao extends DBAccess{
 			//execute
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				cancelComment = rs.getString("refund_comment");
+				refundComment = rs.getString("refund_comment");
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally {
 			disconnect();
 		}
-		return cancelComment;
+		return refundComment;
     }
     
     //キャンセルによる更新
-    public void updateCancelData(int orderId,String cancelComment) {
+    public void updateCancelData(int orderId, String cancelComment) {
     	String sql ="""
     			update order_list
     			set cancel_comment = ?
@@ -177,7 +177,7 @@ public class OrderListDao extends DBAccess{
     }
     
     //返品による更新
-    public void updateRefundData(int orderId,String refundComment) {
+    public void updateRefundData(int orderId, String refundComment) {
     	String sql ="""
     			update order_list
     			set refund_comment = ?
@@ -189,6 +189,12 @@ public class OrderListDao extends DBAccess{
 			//create statement
 			PreparedStatement ps = getConnection().prepareStatement(sql);
 			ps.setString(1, refundComment);
+			//コメントなし
+			if(refundComment == "") {
+				ps.setString(1, null);
+			}else {
+				ps.setString(1, refundComment);
+			}
 			ps.setInt(2, orderId);
 			//execute
 			ps.executeUpdate();

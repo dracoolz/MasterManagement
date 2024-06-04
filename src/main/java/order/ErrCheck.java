@@ -46,7 +46,7 @@ public class ErrCheck {
 		return result;
 	}
 	
-	//商品が追加されているか（キャンセル商品返品商品でも使えそう
+	//商品が追加されているか
 	public boolean addProductCheck(ArrayList<OrderSlipBean> productList) {
 		boolean result = true;
 		if(productList.size() == 0) {
@@ -54,6 +54,35 @@ public class ErrCheck {
 		}
 		return result;
 	}
+	
+	//キャンセル商品が選択されているか
+	public boolean existsCancelProduct(ArrayList<OrderSlipBean> orderSlip){
+		boolean result = true;
+		int totalCancelQty = 0;
+		for(OrderSlipBean item:orderSlip) {
+			//キャンセル数の合計が0だったら全部キャンセルなし
+			totalCancelQty = totalCancelQty + item.getCancelQty();
+		}
+		if(totalCancelQty == 0) {
+			result = false;
+		}
+		return result;
+	}
+	
+	//返品商品が選択されているか
+	public boolean existsRefundProduct(ArrayList<OrderSlipBean> orderSlip){
+		boolean result = true;
+		int totalRefundQty = 0;
+		for(OrderSlipBean item:orderSlip) {
+			//返品数の合計が0だったら全部返品なし
+			totalRefundQty = totalRefundQty + item.getRefundQty();
+		}
+		if(totalRefundQty == 0) {
+			result = false;
+		}
+		return result;
+	}
+
 
 	//errmsg getter
 	public String getE001() {

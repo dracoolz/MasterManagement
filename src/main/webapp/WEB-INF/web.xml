@@ -113,6 +113,16 @@
 		<url-pattern>/orderCancel</url-pattern>
 	</servlet-mapping>
 	
+	<!-- OrderRefundServlet -->
+	<servlet>
+		<servlet-name>OrderRefundServlet</servlet-name>
+		<servlet-class>order.OrderRefundServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OrderRefundServlet</servlet-name>
+		<url-pattern>/orderRefund</url-pattern>
+	</servlet-mapping>
+	
 	<!-- ConfirmServlet -->
 	<servlet>
 		<servlet-name>ConfirmServlet</servlet-name>

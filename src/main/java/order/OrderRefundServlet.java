@@ -15,7 +15,7 @@ import dao.ListLogDao;
 import dao.OrderListDao;
 import dao.OrderSlipDao;
 
-public class OrderCancelServlet extends HttpServlet {
+public class OrderRefundServlet extends HttpServlet {
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req,res);
@@ -30,7 +30,7 @@ public class OrderCancelServlet extends HttpServlet {
 	HttpSession session = req.getSession();
 		
 	//url
-	String url = "/jsp/order_cancel.jsp";
+	String url = "/jsp/order_refund.jsp";
 	
 	//get request parameter from OrderListServlet
 	//int orderId = Integer.parseInt(req.getParameter("orderId"));
@@ -42,35 +42,35 @@ public class OrderCancelServlet extends HttpServlet {
 	String customerName = "馬場";
 	String orderDate = "2024-01-23";
 	
-	//初回キャンセルか追加キャンセルか判定
+	//初回返品か追加返品か判定
 	boolean isFirst = true;
 	ListLogDao dao1 = new ListLogDao();
 	if(dao1.checkListLogExists(orderId) > 0) {
 		isFirst=false;
 	}
 			
-	//初回キャンセル時
+	//初回返品時
 	if(isFirst) {
 		//confirm.jspの戻るボタンで帰ってきた場合
-		//毎回DBに接続し入力中のキャンセル数上書を防ぐ
+		//毎回DBに接続し入力中の返品数上書を防ぐ
 		@SuppressWarnings("unchecked")
-		ArrayList<OrderSlipBean> cancelSlip = (ArrayList<OrderSlipBean>) session.getAttribute("cancelSlip");
+		ArrayList<OrderSlipBean> refundSlip = (ArrayList<OrderSlipBean>) session.getAttribute("refundSlip");
 		//DBから1回も取得していなかったら
-		if(cancelSlip == null) {
+		if(refundSlip == null) {
 			// 受注詳細からデータ取得
 			OrderSlipDao dao2 = new OrderSlipDao();
-			cancelSlip = dao2.selectSlipForCancelAndRefund(orderId);
+			refundSlip = dao2.selectSlipForCancelAndRefund(orderId);
 			
-			//受注一覧からキャンセル理由取得
+			//受注一覧から返品理由取得
 			OrderListDao dao3 = new OrderListDao();
-			String cancelComment = dao3.selectCancelComment(orderId);
+			String refundComment = dao3.selectRefundComment(orderId);
 			
 			//set
 			session.setAttribute("orderId",orderId);
 			session.setAttribute("customerName", customerName);
 			session.setAttribute("orderDate", orderDate);
-			session.setAttribute("cancelSlip", cancelSlip);
-			session.setAttribute("cancelComment", cancelComment);
+			session.setAttribute("refundSlip", refundSlip);
+			session.setAttribute("refundComment", refundComment);
 		}
 		req.setAttribute("errMsg", errMsg);
 		
