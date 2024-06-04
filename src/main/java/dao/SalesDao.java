@@ -61,7 +61,7 @@ public class SalesDao extends DBAccess {
 
         // SQL文を作成する
         String sql = "SELECT s.pro_id, pi.pi_name, sc.sc_category AS category, s.sale_price, " +
-	                "(s.sale_price * 5 / 6) AS stock_price, s.sale_qty, cus.district,  " +
+	                "(s.sale_price * 5 / 6) AS stock_price, s.sale_qty, s.order_date, cus.district, " +
 	                "((s.sale_price * s.sale_qty) - ((s.sale_price * 5 / 6) * s.sale_qty)) AS profit, " +
 	                "((s.sale_price * s.sale_qty) / " +
 	                "(SELECT SUM(sale_price * sale_qty) " +
@@ -73,7 +73,8 @@ public class SalesDao extends DBAccess {
 	                "JOIN category c ON pi.category_id = c.category_id " +
 	                "JOIN small_category sc ON c.sc_id = sc.sc_id " +
 	                "JOIN customer cus ON s.cus_id = cus.cus_id " +
-	                "WHERE s.pro_id = ?";
+	                "WHERE s.pro_id = ?" +
+        			"ORDER BY s.pro_id";
 
 
         try {
@@ -97,6 +98,7 @@ public class SalesDao extends DBAccess {
                 bean.setSale_amount(rs.getInt("sale_qty"));
                 bean.setProfit(rs.getInt("profit"));
                 bean.setDistrict(rs.getString("district"));
+	            bean.setDate(rs.getDate("order_date").toLocalDate());
                 bean.setComparison(rs.getDouble("comparison"));
                 list.add(bean);
             }
@@ -267,11 +269,20 @@ public class SalesDao extends DBAccess {
 
 	public ArrayList<SalesBean> selectCusSalesById(String id) {
 	    ArrayList<SalesBean> list = new ArrayList<SalesBean>();
-	    String sql = "SELECT sl.cus_id, c.cus_name, sl.sale_qty, sl.order_date, (((sl.sale_price * sl.sale_qty) - (sl.sale_price * 5/6)) * 0.01) AS gross_profit " +
-	                 "FROM sale_list sl " +
-	                 "JOIN customer c ON sl.cus_id = c.cus_id " +
-	                 "JOIN product p ON sl.pro_id = p.pro_id " +
-	                 "WHERE sl.cus_id = ?";
+	    String sql = "SELECT sl.cus_id, c.cus_name, sl.sale_qty, sl.order_date, " +
+		             "(((sl.sale_price * sl.sale_qty) - (sl.sale_price * 5/6)) * 0.01) AS gross_profit, " +
+		             "GROUP_CONCAT(sc.sc_category) AS category " +
+		             "FROM sale_list sl " +
+		             "JOIN customer c ON sl.cus_id = c.cus_id " +
+		             "JOIN product p ON sl.pro_id = p.pro_id " +
+		             "JOIN product_info pi ON p.pi_id = pi.pi_id " +
+		             "JOIN category cat ON pi.category_id = cat.category_id " +
+		             "JOIN small_category sc ON cat.sc_id = sc.sc_id " +
+		             "WHERE sl.cus_id = ? " +
+		             "GROUP BY sl.cus_id, c.cus_name, sl.sale_qty, sl.order_date, gross_profit " +
+		             "ORDER BY sl.order_date";
+
+
 
 	    try {
 	        connect();
@@ -285,6 +296,7 @@ public class SalesDao extends DBAccess {
 	            bean.setCus_name(rs.getString("cus_name"));
 	            bean.setSale_amount(rs.getInt("sale_qty"));
 	            bean.setGross_profit(rs.getInt("gross_profit"));
+	            bean.setCategory(rs.getString("category"));
 	            bean.setDate(rs.getDate("order_date").toLocalDate());
 	            list.add(bean);
 	        }

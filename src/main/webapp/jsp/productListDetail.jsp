@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.time.LocalDate"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
 <%@ page import="bean.SalesBean"%>
 <!DOCTYPE html>
 <html>
@@ -31,10 +34,9 @@
         function drawBarChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Year', '売上'],
-                ['2014', 400],
-                ['2015', 460],
-                ['2016', 300],
-                ['2017', 540]
+                <% for (SalesBean bean : list) { %>
+            		["・", <%= bean.getSale_amount() %>],
+            	<% } %>
             ]);
 
             var options = {
@@ -55,8 +57,7 @@
             var data = google.visualization.arrayToDataTable([
                 ['地区', '売上'],
                 <% for (SalesBean bean : list) { %>
-                <% String[] district = { %><%= bean.getDistrict() %>};
-                	[<%= district[bean] %>, <%= bean.getSale_amount() %>],
+                	[, <%= bean.getSale_amount() %>],
                 <% } %>
             ]);
 
@@ -84,7 +85,7 @@
 		<div class="top-button">
 			<button type="button">年表示</button>
 			<button type="button">月表示</button>
-			<button type="button" onclick="location.href='managecontrol?no=4'">戻る</button>
+			<button type="button" onclick="location.href='manageControl?no=5'">戻る</button>
 		</div>
 		<!-- table -->
 		<div class="table">
@@ -119,36 +120,22 @@
 				<table>
 					<thead>
 						<tr>
-							<th>年</th>
-							<th>月</th>
+							<th>年・月</th>
 							<th>売上</th>
 						</tr>
 					</thead>
 					<tbody>
+						<% for (SalesBean bean : list) { %>
 						<tr>
-							<td>2024</td>
-							<td>12</td>
-							<td>45</td>
+							<%
+					            LocalDate date = bean.getDate();
+					            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年MM月");
+					            String formattedDate = date.format(formatter);
+					        %>
+					        <td><%= formattedDate %></td>
+							<td><%= bean.getSale_amount() %></td>
 						</tr>
-						<tr>
-							<td>2024</td>
-							<td>10</td>
-							<td>0</td>
-						</tr>
-						<tr>
-							<td>2024</td>
-							<td>04</td>
-							<td>0</td>
-						</tr>
-						<tr>
-							<td>2024</td>
-							<td>02</td>
-							<td>10</td>
-						</tr>
-						<tr>
-							<td>2023</td>
-							<td>11</td>
-							<td>5</td>
+						<% } %>
 						</tr>
 					</tbody>
 				</table>
@@ -181,7 +168,7 @@
 		</div>
 		<div class="footer_button">
 			<button type="button" onclick="window.location.href='#topPage'">トップページ</button>
-			<button type="button" onclick="location.href='managecontrol?no=4'">戻る</button>
+			<button type="button" onclick="location.href='manageControl?no=5'">戻る</button>
 		</div>
 	</div>
 </body>

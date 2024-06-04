@@ -88,7 +88,7 @@ public class ProductDao extends DBAccess{
 						+ "from product as p, product_info as pi, product_description as pd, product_images as pimg, supllier as sup, big_category as bc, small_category as sc, category as c \n"
 						+ "where p.pi_id = pi.pi_id and p.pd_id = pd.pd_id and p.images_id = pimg.images_id and p.sp_id = sup.sp_id and pi.category_id = c.category_id and c.sc_id = sc.sc_id and sc.bc_id = bc.bd_id and pi.pi_name = ?;";
 
-				try {
+				try {	
 					connect();
 					// ステートメントの作成
 					PreparedStatement ps = getConnection().prepareStatement(sql);

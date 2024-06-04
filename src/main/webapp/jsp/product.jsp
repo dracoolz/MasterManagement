@@ -13,11 +13,11 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/js/jquery.tablesorter.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/css/theme.default.min.css">
+<script src="${pageContext.request.contextPath}/js/sc_category.js"></script>
+<script src="${pageContext.request.contextPath}/js/tableSorter.js"></script>
 </head>
 
 <body>
-	<script src="./js/sc_category.js"></script>
-	<script src="./js/tableSorter.js"></script>
 <% ArrayList<ProductBean> proList =(ArrayList<ProductBean>)request.getAttribute("list"); %>
 <% ArrayList<BigCategoryBean> bcList = (ArrayList<BigCategoryBean>)request.getAttribute("bclist"); %>
 <form action ="./DUcontrol?type=product" method="post">
