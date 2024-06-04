@@ -59,21 +59,13 @@
                     </select>
                 </div>
             <% } %>
-            <input type="submit" action="/Master/searchProduct" value="検索">
-            <input type="hidden" name="" value="search">
+            <input type="submit" value="検索">
+            <input type="hidden" name="action" value="search">
         </form>
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-         <table align="center" border="1">
+             <table align="center" border="1">
             <tr align="center">
                 <th>取引先名</th>
                 <th>担当者</th>
