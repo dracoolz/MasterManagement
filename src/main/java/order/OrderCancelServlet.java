@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bean.OrderSlipBean;
-import dao.ListLogDao;
 import dao.OrderListDao;
 import dao.OrderSlipDao;
 
@@ -30,58 +29,34 @@ public class OrderCancelServlet extends HttpServlet {
 	HttpSession session = req.getSession();
 		
 	//url
-	String url = "/jsp/order_cancel.jsp";
+	String url = "/jsp/orderCancel.jsp";
 	
 	//get request parameter from OrderListServlet
-	//int orderId = Integer.parseInt(req.getParameter("orderId"));
-	//String orderDate = req.getParameter("orderDate");
-	//String customerName = req.getParameter("customerName");
 	String errMsg = (String) req.getAttribute("errMsg");
-	
-	int orderId = 2;
-	String customerName = "馬場";
-	String orderDate = "2024-01-23";
-	
-	//初回キャンセルか追加キャンセルか判定
-	boolean isFirst = true;
-	ListLogDao dao1 = new ListLogDao();
-	if(dao1.checkListLogExists(orderId) > 0) {
-		isFirst=false;
+
+	@SuppressWarnings("unchecked")
+	ArrayList<OrderSlipBean> cancelSlip = (ArrayList<OrderSlipBean>) session.getAttribute("cancelSlip");
+	//DBから1回も取得していなかったら
+	if(cancelSlip == null) {
+		int orderId = Integer.parseInt(req.getParameter("orderId"));
+		String orderDate = req.getParameter("orderDate");
+		String customerName = req.getParameter("customerName");
+		// 受注詳細からデータ取得
+		OrderSlipDao dao2 = new OrderSlipDao();
+		cancelSlip = dao2.selectSlipForCancelAndRefund(orderId);
+			
+		//受注一覧からキャンセル理由取得
+		OrderListDao dao3 = new OrderListDao();
+		String cancelComment = dao3.selectCancelComment(orderId);
+			
+		//set
+		session.setAttribute("orderId",orderId);
+		session.setAttribute("customerName", customerName);
+		session.setAttribute("orderDate", orderDate);
+		session.setAttribute("cancelSlip", cancelSlip);
+		session.setAttribute("cancelComment", cancelComment);
 	}
-			
-	//初回キャンセル時
-	if(isFirst) {
-		//confirm.jspの戻るボタンで帰ってきた場合
-		//毎回DBに接続し入力中のキャンセル数上書を防ぐ
-		@SuppressWarnings("unchecked")
-		ArrayList<OrderSlipBean> cancelSlip = (ArrayList<OrderSlipBean>) session.getAttribute("cancelSlip");
-		//DBから1回も取得していなかったら
-		if(cancelSlip == null) {
-			// 受注詳細からデータ取得
-			OrderSlipDao dao2 = new OrderSlipDao();
-			cancelSlip = dao2.selectSlipForCancelAndRefund(orderId);
-			
-			//受注一覧からキャンセル理由取得
-			OrderListDao dao3 = new OrderListDao();
-			String cancelComment = dao3.selectCancelComment(orderId);
-			
-			//set
-			session.setAttribute("orderId",orderId);
-			session.setAttribute("customerName", customerName);
-			session.setAttribute("orderDate", orderDate);
-			session.setAttribute("cancelSlip", cancelSlip);
-			session.setAttribute("cancelComment", cancelComment);
-		}
-		req.setAttribute("errMsg", errMsg);
-		
-	//追加キャンセル時　受注内容変更のキャンセル変更へ
-	}else {
-		//url = "orderChange";
-		//setAttribute
-		req.setAttribute("orderId",orderId);
-		req.setAttribute("customerName", customerName);
-		req.setAttribute("orderDate", orderDate);
-	}
+	req.setAttribute("errMsg", errMsg);
 	
 	//jump
 	RequestDispatcher rd = req.getRequestDispatcher(url);

@@ -10,7 +10,7 @@
 </head>
 <body>
 	<!-- getAttribute from OrderAddservlet -->
-	<% ArrayList<ProductBean> productList = (ArrayList<ProductBean>) session.getAttribute("productList");%>
+	<% ArrayList<ProductBean> addSlip = (ArrayList<ProductBean>) session.getAttribute("addSlip");%>
 	<% String customerName = (String)session.getAttribute("customerName"); %>
 	<% String errMsg = (String)request.getAttribute("errMsg"); %>
 	
@@ -26,7 +26,7 @@
 		<input type="textbox" name="customerId" placeholder="取引先ID検索へ">
 		<input type="submit" name="pageFlag" value="追加" formaction="orderAdd">
 		<input type="submit" name="pageFlag" value="取引先検索へ" formaction="searchCustomer/?url=orderAdd">
-		<br>取引先名：<input type="textbox" name="customer_name" value="<%if(customerName != null){%><%=customerName%><%} %>" readonly>
+		<br>取引先名：<input type="textbox" name="customerName" value="<%if(customerName != null){%><%=customerName%><%} %>" readonly>
 		<input type="submit" name="pageFlag" value="削除" formaction="orderAdd">
 	</form>
 	<br>
@@ -38,7 +38,7 @@
 	</form>
 	<br>
 	
-	<form action="" method="post">
+	<form action="confirm" method="post">
 		<table border="1">
 			<tr>
 				<td>商品ID</td>
@@ -46,8 +46,7 @@
 				<td>注文数</td>
 				<td></td>
 			</tr>
-			<%if(productList != null) {%>
-				<%for(ProductBean product:productList){%>
+			<%for(ProductBean product:addSlip){%>
 				<tr>
 					<td><%= product.getPro_id()%></td>
 					<td><%= product.getPi_name() %></td>
@@ -55,7 +54,6 @@
 					<td><input type="submit" name="submit" value="削除"></td>
 				</tr>
 				<% }%>
-			<% }%>
 		</table>
 		<%if(errMsg != null){ %>
 			<%=errMsg %>
@@ -65,19 +63,6 @@
 		<input type="submit" name="submit" value="確認">
 		<input type="button" name="back" value="戻る">
 	</form>
-	
-	
-	<!-- mojicode siteisitemiru -->
-	<%--request.setCharacterEncoding("UTF-8"); --%>
-	<%--response.setContentType("text/html;charset=UTF-8"); --%>
-
-	<!-- getAttribute from servlet?-->
-	<%-- ArrayList<HumanBean> beanList = (ArrayList<HumanBean>) request.getAttribute("users");--%>
-	
-	<!-- getParameter from html or jsp 's form?-->
-	<%-- String str = request.getParameter(""); --%>
-
-	<!-- form link -->
 	
 </body>
 </html>

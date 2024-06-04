@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>返品処理</title>
+<title>キャンセル処理</title>
 </head>
 <body>
 	<!-- mojicode siteisitemiru -->
@@ -17,13 +17,13 @@
 	<%int orderId = (int)session.getAttribute("orderId"); %>
 	<%String customerName = (String)session.getAttribute("customerName"); %>
 	<%String orderDate = (String)session.getAttribute("orderDate"); %> 
-	<%ArrayList<OrderSlipBean> refundSlip = (ArrayList<OrderSlipBean>)session.getAttribute("refundSlip");%>
-	<%String refundComment = (String)session.getAttribute("refundComment"); %>
+	<%ArrayList<OrderSlipBean> cancelSlip = (ArrayList<OrderSlipBean>)session.getAttribute("cancelSlip");%>
+	<%String cancelComment = (String)session.getAttribute("cancelComment"); %>
 	
 	<%String errMsg = (String)request.getAttribute("errMsg"); %>
 	
 	<!-- title -->
-	<h1 align="center">返品処理</h1>
+	<h1 align="center">キャンセル処理</h1>
 	
 	<div align="right">
 		<p><%="ようこそ、"+session.getAttribute("username")+"さん" %></p>
@@ -31,7 +31,7 @@
 	</div>
 	
 	<form action="?" method="post">
-		<input type="submit" name="pageFlag" value="受注内容全てを返品する" formaction="confirm">
+		<input type="submit" name="pageFlag" value="受注内容全てをキャンセルする" formaction="confirm">
 	<table>
 		<tr><td>注文番号</td></tr>
 		<tr><td><%= orderId%></td></tr>
@@ -53,26 +53,26 @@
 			<td>キャンセル数</td>
 			<td>返品数</td>
 		</tr>
-		<%if(refundSlip != null){ %>
-			<%for(OrderSlipBean item:refundSlip){%>
+		<%if(cancelSlip != null){ %>
+			<%for(OrderSlipBean item:cancelSlip){%>
 				<tr>
 					<td><%= item.getProductId()%></td>
 					<td><%= item.getProductName() %></td>
 					<td><%= item.getOrderQty() %></td>
-					<td><%= item.getCancelQty() %></td>
-					<td><input type="number" name="refundQty" value="<%=item.getRefundQty() %>" min="0" max="<%= item.getOrderQty() - item.getCancelQty()%>"></td>
+					<td><input type="number" name="cancelQty" value="<%=item.getCancelQty() %>" min="0" max="<%= item.getOrderQty() - item.getRefundQty()%>"></td>
+					<td><%= item.getRefundQty() %></td>
 				</tr>
 			<% }%>
 		<%} %>
 	</table>
 	<br>
-	返品理由<br>
-	<textarea name="refundComment" cols="100" rows="10"><%if(refundComment != null) {%><%=refundComment %><%} %></textarea><br>
+	キャンセル理由<br>
+	<textarea name="cancelComment" cols="100" rows="10"><%if(cancelComment != null) {%><%=cancelComment %><%} %></textarea><br>
 	<%if(errMsg != null){ %>
 		<div style="color:red;"><%=errMsg %></div><br> 
 	<%} %>
 	
-	<input type="hidden" name="code" value="newRefund">
+	<input type="hidden" name="code" value="cancel">
 	<input type="submit" name="pageFlag" value="確認" formaction="confirm">
 	<input type="button" name="back" value="戻る" onclick="location.href='orderList'">
 	</form>

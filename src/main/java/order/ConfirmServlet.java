@@ -29,6 +29,7 @@ public class ConfirmServlet extends HttpServlet {
 		//get para
 		String code = req.getParameter("code");
 		String pageFlag = req.getParameter("pageFlag");
+		System.out.println("orderId:"+session.getAttribute("orderId")); //test
 
 		//jumpurl
 		String url = "/jsp/confirm.jsp";
@@ -36,7 +37,7 @@ public class ConfirmServlet extends HttpServlet {
 		ErrCheck errChecker = new ErrCheck();
 
 		//キャンセル処理order_cancel.jspから
-		if (("newCancel").equals(code)) {
+		if (("cancel").equals(code)) {
 			String[] cancelQtyList = req.getParameterValues("cancelQty");
 			String cancelComment = req.getParameter("cancelComment");
 
@@ -67,27 +68,17 @@ public class ConfirmServlet extends HttpServlet {
 					//set req
 					req.setAttribute("message", "すべての商品をキャンセルしますか？");
 
-					//部分キャンセル
+				//部分キャンセル
 				} else if (("確認").equals(pageFlag)) {
 					int i = 0;
 					for (OrderSlipBean item : cancelSlip) {
 						item.setCancelQty(Integer.parseInt(cancelQtyList[i]));
 						i++;
 					}
-
-					//キャンセル商品一つ以上ある場合
-					if (errChecker.existsCancelProduct(cancelSlip)) {
-						//set req
-						req.setAttribute("message", "キャンセルしますか？");
-						//session set
-						session.setAttribute("cancelSlip", cancelSlip);
-
-						//キャンセル商品が何もない　戻る　エラー
-					} else {
-						url = "orderCancel";
-						req.setAttribute("errMsg", errChecker.getE011());
-					}
-
+					
+					req.setAttribute("message", "キャンセルしますか？");
+					//session set
+					session.setAttribute("cancelSlip", cancelSlip);
 				}
 				session.setAttribute("code", code);
 				session.setAttribute("cancelComment", cancelComment);
@@ -101,7 +92,7 @@ public class ConfirmServlet extends HttpServlet {
 		}
 
 		//返品処理order_refund.jspから
-		if (("newRefund").equals(code)) {
+		if (("refund").equals(code)) {
 			String[] refundQtyList = req.getParameterValues("refundQty");
 			String refundComment = req.getParameter("refundComment");
 
@@ -132,7 +123,7 @@ public class ConfirmServlet extends HttpServlet {
 					//set req
 					req.setAttribute("message", "すべての商品を返品しますか？");
 
-					//部分返品
+				//部分返品
 				} else if (("確認").equals(pageFlag)) {
 					int i = 0;
 					for (OrderSlipBean item : refundSlip) {
@@ -140,26 +131,15 @@ public class ConfirmServlet extends HttpServlet {
 						i++;
 					}
 
-					errChecker = new ErrCheck();
-					//返品商品一つ以上ある場合
-					if (errChecker.existsRefundProduct(refundSlip)) {
-						//set req
-						req.setAttribute("message", "返品しますか？");
-						//session set
-						session.setAttribute("refundSlip", refundSlip);
-
-						//返品商品が何もない　戻る　エラー
-					} else {
-						url = "orderRefund";
-						req.setAttribute("errMsg", errChecker.getE012());
-					}
-
+					req.setAttribute("message", "返品しますか？");
+					//session set
+					session.setAttribute("refundSlip", refundSlip);
 				}
 				session.setAttribute("code", code);
 				session.setAttribute("refundComment", refundComment);
+				
 			//返品数入力漏れあり
 			} else {
-				System.out.println("not enterd");
 				url = "orderRefund";
 				req.setAttribute("errMsg", errChecker.getE012());
 			}

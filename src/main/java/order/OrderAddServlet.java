@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.ProductBean;
+import bean.OrderSlipBean;
 import dao.CustomerDao;
+import dao.ProductDao;
 
 public class OrderAddServlet extends HttpServlet {
 	
@@ -28,24 +29,30 @@ public class OrderAddServlet extends HttpServlet {
 	HttpSession session = req.getSession();
 	
 	//get_parameter
-	String pageFlag = req.getParameter("pageFlag");
+	String customerFlag = req.getParameter("customerFlag");
+	String productFlag = req.getParameter("productFlag");
 	String customerId = req.getParameter("customerId");
-	System.out.println("cus_id:"+customerId);
+	String errMsg = (String) req.getAttribute("errMsg");
+	
+	@SuppressWarnings("unchecked")
+	ArrayList<OrderSlipBean> addSlip = (ArrayList<OrderSlipBean>) req.getAttribute("addSlip");
+	
+	//何も追加されていなかったら
+	if(addSlip == null) {
+	}
 	
 	//jump_url
-	String url = "/jsp/order_add.jsp";
+	String url = "/jsp/orderAdd.jsp";
 	
-	//order_add.jsp's 削除ボタン
-	if(("削除").equals(pageFlag)) {
+	//顧客関係処理
+	if(("削除").equals(customerFlag)) {
 		//sessionの取引先IDの値を消す
 		session.setAttribute("customerName", null);
 		
-	//order_add.jsp's 追加ボタン
-	}else if(("追加").equals(pageFlag)) {
+	}else if(("追加").equals(customerFlag)) {
 		ErrCheck errChecker = new ErrCheck();
 		boolean result = errChecker.IsEnteredCheck(customerId);
 		
-		String errMsg;
 		if(!result) {
 			errMsg = errChecker.getE017();
 			req.setAttribute("errMsg", errMsg);
@@ -57,19 +64,27 @@ public class OrderAddServlet extends HttpServlet {
 		}
 	}
 	
+	//商品関係処理
+	if(("削除").equals(productFlag)) {
+		//productListから商品情報を削除 productId
+		String delProId = req.getParameter("delProId");
+		int i = 0;
+		for(OrderSlipBean item:addSlip) {
+			//削除する商品だったら
+			if(item.getProductId().equals(delProId)) {
+				addSlip.remove(i);
+			}
+			i++;
+		}
+		
+	}else if(("追加").equals(productFlag)) {
+		//productListに商品情報を追加
+		ProductDao proDao = new ProductDao();
+		
+	}
 	
-	ProductBean product1 = new ProductBean();
-	product1.setPro_id("p-1");
-	product1.setPi_name("A");
-	ProductBean product2 = new ProductBean();
-	product2.setPro_id("p-2");
-	product2.setPi_name("B");
 	
-	ArrayList<ProductBean> productList = new ArrayList<ProductBean>();
-	productList.add(product1);
-	productList.add(product2);
-	
-	session.setAttribute("productList",productList);
+	session.setAttribute("productList",addSlip);
 	
 	
 	//jump

@@ -9,46 +9,135 @@ import bean.OrderListBean;
 
 public class OrderListDao extends DBAccess{
 	
-	 // 顧客番号を条件として、キャンセルや返品のない注文情報のリストを取得する処理
-    public ArrayList<OrderListBean> selectLookOrderList(int cusId) {
-    	ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
-    	
-    	String sql = "select * from small_category;";
+	public ArrayList<OrderListBean> getOrdersByCustomerId(int customerId) {
+	    ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
+	    String sql = "SELECT o.order_id, o.order_date, c.cus_name, " +
+	             "SUM(pr.wholesale * pr.set_quantity * 1.1 * (os.order_qty - (os.cancel_qty + os.refund_qty))) AS TotalAmountMoney " +
+	             "FROM order_list o " +
+	             "JOIN customer c ON o.cus_id = c.cus_id " +
+	             "JOIN order_slip os ON o.order_id = os.order_id " +
+	             "JOIN product pr ON os.pro_id = pr.pro_id " +
+	             "WHERE c.cus_id = ? " + // 顧客IDで絞り込む
+	             "GROUP BY o.order_id, o.order_date, c.cus_name " +
+	             "ORDER BY o.order_date DESC";
 
-		try {
-			 connect();
-		        PreparedStatement ps = getConnection().prepareStatement(sql);
-		        ps.setInt(1, cusId);
-		        ResultSet rs = ps.executeQuery();
-		        
-			while (rs.next()) {
-				OrderListBean bean = new OrderListBean();
-				bean.setOrderId(rs.getInt("order_id"));
-				bean.setOrderDate(rs.getString("date"));
-				bean.setCustomerName(rs.getString("cus_name"));
-				list.add(bean);
-			}
+	    try {
+	        connect();
+	        PreparedStatement ps = getConnection().prepareStatement(sql);
+	        ps.setInt(1, customerId); // バインド変数をセット
+	        ResultSet rs = ps.executeQuery();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			disconnect();
-		}
-		return list;
-    }
-    
+	        while (rs.next()) {
+	            OrderListBean bean = new OrderListBean();
+	            bean.setOrderId(rs.getInt("order_id"));
+	            bean.setOrderDate(rs.getString("order_date"));
+	            bean.setCustomerName(rs.getString("cus_name"));
+	            bean.setTotalAmountMoney(rs.getInt("TotalAmountMoney"));
+	            list.add(bean);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        disconnect();
+	    }
+
+	    return list;
+	}
+
     
      // 顧客番号を条件として、キャンセルがある注文情報のリストを取得する処理
-    public ArrayList<OrderListBean> selectCancelOrderList(int cusId) {
-    	ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
-		return list;
+    public ArrayList<OrderListBean> selectCancelOrderList(int customerId) {
+    	 ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
+    	 ArrayList<OrderListBean> orders = new ArrayList<OrderListBean>();
+    	 
+    	 String sql = "SELECT o.order_id, o.order_date, c.cus_name, " +
+                 "SUM(pr.wholesale * pr.set_quantity * 1.1 * (os.order_qty - (os.cancel_qty + os.refund_qty))) AS TotalAmountMoney " +
+                 "FROM order_list o " +
+                 "JOIN customer c ON o.cus_id = c.cus_id " +
+                 "JOIN order_slip os ON o.order_id = os.order_id " +
+                 "JOIN product pr ON os.pro_id = pr.pro_id " +
+                 "WHERE c.cus_id = ? " + // 顧客IDをプレースホルダーに指定
+                 "GROUP BY o.order_id, o.order_date, c.cus_name " +
+                 "HAVING SUM(os.cancel_qty) > 0 " + // キャンセル数量がゼロでない受注のみ表示
+                 "ORDER BY o.order_date DESC";
+
+
+ 	    try {
+ 	        connect();
+ 	        PreparedStatement ps = getConnection().prepareStatement(sql);
+ 	        ps.setInt(1, customerId); // バインド変数をセット
+ 	        ResultSet rs = ps.executeQuery();
+
+ 	        while (rs.next()) {
+ 	            OrderListBean bean = new OrderListBean();
+ 	            bean.setOrderId(rs.getInt("order_id"));
+ 	            bean.setOrderDate(rs.getString("order_date"));
+ 	            bean.setCustomerName(rs.getString("cus_name"));
+ 	            bean.setTotalAmountMoney(rs.getInt("TotalAmountMoney"));
+ 	            orders.add(bean);
+ 	        }
+ 	    } catch (SQLException e) {
+ 	        e.printStackTrace();
+ 	    } finally {
+ 	        disconnect();
+ 	    }
+ 	    try {
+ 	        connect();
+ 	        PreparedStatement ps = getConnection().prepareStatement(sql);
+ 	        ps.setInt(1, customerId); // バインド変数をセット
+ 	        ResultSet rs = ps.executeQuery();
+
+ 	        while (rs.next()) {
+ 	            OrderListBean bean = new OrderListBean();
+ 	            bean.setOrderId(rs.getInt("order_id"));
+ 	            bean.setOrderDate(rs.getString("order_date"));
+ 	            bean.setCustomerName(rs.getString("cus_name"));
+ 	            bean.setTotalAmountMoney(rs.getInt("TotalAmountMoney"));
+ 	           list.add(bean);
+ 	        }
+ 	    } catch (SQLException e) {
+ 	        e.printStackTrace();
+ 	    } finally {
+ 	        disconnect();
+ 	    }
+ 	   return list;
     }
     
     
     // 顧客番号を条件として、返品がある注文情報のリストを取得する処理
-    public ArrayList<OrderListBean> selectRefundOrderList(int cusId) {
-    	ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
-		return list;
+    public ArrayList<OrderListBean> selectRefundOrderList(int customerId) {
+    	 ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
+    	 String sql = "SELECT o.order_id, o.order_date, c.cus_name, " +
+                 "SUM(pr.wholesale * pr.set_quantity * 1.1 * (os.order_qty - (os.cancel_qty + os.refund_qty))) AS TotalAmountMoney " +
+                 "FROM order_list o " +
+                 "JOIN customer c ON o.cus_id = c.cus_id " +
+                 "JOIN order_slip os ON o.order_id = os.order_id " +
+                 "JOIN product pr ON os.pro_id = pr.pro_id " +
+                 "WHERE c.cus_id = ? " + // 顧客IDで絞り込む
+                 "GROUP BY o.order_id, o.order_date, c.cus_name " +
+                 "HAVING SUM(os.refund_qty) > 0 " + // 返品数量がゼロでない受注のみ表示
+                 "ORDER BY o.order_date DESC";
+
+ 	    try {
+ 	        connect();
+ 	        PreparedStatement ps = getConnection().prepareStatement(sql);
+ 	        ps.setInt(1, customerId); // バインド変数をセット
+ 	        ResultSet rs = ps.executeQuery();
+
+ 	        while (rs.next()) {
+ 	            OrderListBean bean = new OrderListBean();
+ 	            bean.setOrderId(rs.getInt("order_id"));
+ 	            bean.setOrderDate(rs.getString("order_date"));
+ 	            bean.setCustomerName(rs.getString("cus_name"));
+ 	            bean.setTotalAmountMoney(rs.getInt("TotalAmountMoney"));
+ 	           list.add(bean);
+ 	        }
+ 	    } catch (SQLException e) {
+ 	        e.printStackTrace();
+ 	    } finally {
+ 	        disconnect();
+ 	    }
+ 	   return list;
     }
     
     
@@ -58,13 +147,20 @@ public class OrderListDao extends DBAccess{
         ArrayList<OrderListBean> list = new ArrayList<>();
 
         // データベースから受注情報を取得するSQLクエリ
-        String sql = "SELECT o.order_id, o.order_date, c.cus_name " +
+        String sql = "SELECT o.order_id, o.order_date, c.cus_name, " +
+                "SUM(pr.wholesale * pr.set_quantity * 1.1 * (os.order_qty - (os.cancel_qty + os.refund_qty))) AS TotalAmountMoney " +
                 "FROM order_list o " +
                 "JOIN customer c ON o.cus_id = c.cus_id " +
-                "ORDER BY o.order_date DESC;";
+                "JOIN order_slip os ON o.order_id = os.order_id " +
+                "JOIN product pr ON os.pro_id = pr.pro_id " +
+                "GROUP BY o.order_id, o.order_date, c.cus_name " +
+                "ORDER BY o.order_date DESC";
 
+
+                
         try {
             connect();
+            
             PreparedStatement ps = getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -73,6 +169,7 @@ public class OrderListDao extends DBAccess{
                 bean.setOrderId(rs.getInt("order_id"));
                 bean.setOrderDate(rs.getString("order_date"));
                 bean.setCustomerName(rs.getString("cus_name"));
+                bean.setTotalAmountMoney(rs.getInt("TotalAmountMoney"));
                 list.add(bean);
             }
         } catch (SQLException e) {
@@ -87,14 +184,79 @@ public class OrderListDao extends DBAccess{
     
      // 日付降順で全てのキャンセルがある受注情報を取得し、注文情報のリストを返す処理
     public ArrayList<OrderListBean> cancelOrderList() {
-    	ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
+    	  ArrayList<OrderListBean> list = new ArrayList<>();
+
+          // データベースから受注情報を取得するSQLクエリ
+    	  String sql = "SELECT o.order_id, o.order_date, c.cus_name, " +
+                  "SUM(pr.wholesale * pr.set_quantity * 1.1 * (os.order_qty - (os.cancel_qty + os.refund_qty))) AS TotalAmountMoney " +
+                  "FROM order_list o " +
+                  "JOIN customer c ON o.cus_id = c.cus_id " +
+                  "JOIN order_slip os ON o.order_id = os.order_id " +
+                  "JOIN product pr ON os.pro_id = pr.pro_id " +
+                  "GROUP BY o.order_id, o.order_date, c.cus_name " +
+                  "HAVING SUM(os.cancel_qty) > 0 " + // キャンセル数量がゼロでない受注のみ表示
+                  "ORDER BY o.order_date DESC";
+
+                  
+          try {
+              connect();
+              
+              PreparedStatement ps = getConnection().prepareStatement(sql);
+              ResultSet rs = ps.executeQuery();
+
+              while (rs.next()) {
+                  OrderListBean bean = new OrderListBean();
+                  bean.setOrderId(rs.getInt("order_id"));
+                  bean.setOrderDate(rs.getString("order_date"));
+                  bean.setCustomerName(rs.getString("cus_name"));
+                  bean.setTotalAmountMoney(rs.getInt("TotalAmountMoney"));
+                  list.add(bean);
+              }
+          } catch (SQLException e) {
+              e.printStackTrace();
+          } finally {
+              disconnect();
+          }
+    	
 		return list;
     }
     
     
     // 日付降順で全ての返品がある受注情報を取得し、注文情報のリストを返す処理
     public ArrayList<OrderListBean> refundOrderList() {
-    	ArrayList<OrderListBean> list = new ArrayList<OrderListBean>();
+    	ArrayList<OrderListBean> list = new ArrayList<>();
+
+        // データベースから受注情報を取得するSQLクエリ
+    	 String sql = "SELECT o.order_id, o.order_date, c.cus_name, " +
+                 "SUM(pr.wholesale * pr.set_quantity * 1.1 * (os.order_qty - (os.cancel_qty + os.refund_qty))) AS TotalAmountMoney " +
+                 "FROM order_list o " +
+                 "JOIN customer c ON o.cus_id = c.cus_id " +
+                 "JOIN order_slip os ON o.order_id = os.order_id " +
+                 "JOIN product pr ON os.pro_id = pr.pro_id " +
+                 "GROUP BY o.order_id, o.order_date, c.cus_name " +
+                 "HAVING SUM(os.refund_qty) > 0 " + // 返金数量がゼロでない受注のみ表示
+                 "ORDER BY o.order_date DESC";
+
+                
+        try {
+            connect();
+            
+            PreparedStatement ps = getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                OrderListBean bean = new OrderListBean();
+                bean.setOrderId(rs.getInt("order_id"));
+                bean.setOrderDate(rs.getString("order_date"));
+                bean.setCustomerName(rs.getString("cus_name"));
+                bean.setTotalAmountMoney(rs.getInt("TotalAmountMoney"));
+                list.add(bean);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            disconnect();
+        }
 		return list;
     }
     

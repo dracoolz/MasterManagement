@@ -40,7 +40,7 @@ public class DBUpdateServlet extends HttpServlet {
 	//変更処理
 	
 	//キャンセル処理
-	if(("newCancel").equals(code)) {
+	if(("cancel").equals(code)) {
 		@SuppressWarnings("unchecked")
 		ArrayList<OrderSlipBean> cancelSlip = (ArrayList<OrderSlipBean>) session.getAttribute("cancelSlip");
 		String cancelComment = (String) session.getAttribute("cancelComment");
@@ -60,6 +60,8 @@ public class DBUpdateServlet extends HttpServlet {
 		//set
 		req.setAttribute("msssage", "キャンセル処理完了しました");
 		url = "orderList";
+		req.setAttribute("no", "6");
+		//req.setAttribute("status","cancel_only");
 		
 		//session reset
 		session.setAttribute("code", null);
@@ -71,7 +73,7 @@ public class DBUpdateServlet extends HttpServlet {
 		
 		
 	//返品処理
-	}else if(("newRefund").equals(code)){
+	}else if(("refund").equals(code)){
 		@SuppressWarnings("unchecked")
 		ArrayList<OrderSlipBean> refundSlip = (ArrayList<OrderSlipBean>) session.getAttribute("refundSlip");
 		String refundComment = (String) session.getAttribute("refundComment");

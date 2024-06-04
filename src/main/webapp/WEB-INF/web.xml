@@ -83,15 +83,57 @@
 		<url-pattern>/detail</url-pattern>
 	</servlet-mapping>
 	
-	<!-- Servlet (test) -->
-	<servlet>
-		<servlet-name>Servlet</servlet-name>
-		<servlet-class>order.Servlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Servlet</servlet-name>
-		<url-pattern>/servlet</url-pattern>
-	</servlet-mapping>
+	
+	
+	<!-- TotalMenuServle -->
+    <servlet>
+        <servlet-name>TotalMenuServlet</servlet-name>
+        <servlet-class>order.TotalMenuServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TotalMenuServlet</servlet-name>
+        <url-pattern>/totalMenu</url-pattern>
+    </servlet-mapping>
+
+    <!-- ManageMenuServlet -->
+    <servlet>
+        <servlet-name>ManageMenuServlet</servlet-name>
+        <servlet-class>order.ManageMenuServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ManageMenuServlet</servlet-name>
+        <url-pattern>/manageMenu</url-pattern>
+    </servlet-mapping>
+
+    <!-- OrderListServlet -->
+    <servlet>
+        <servlet-name>OrderListServlet</servlet-name>
+        <servlet-class>order.OrderListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderListServlet</servlet-name>
+        <url-pattern>/orderList</url-pattern>
+    </servlet-mapping>
+
+    <!-- OrderSlipServlet -->
+    <servlet>
+        <servlet-name>OrderSlipServlet</servlet-name>
+        <servlet-class>order.OrderSlipServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderSlipServlet</servlet-name>
+        <url-pattern>/orderSlip</url-pattern>
+    </servlet-mapping>
+
+    <!-- SalesListServlet -->
+    <servlet>
+        <servlet-name>SalesListServlet</servlet-name>
+        <servlet-class>order.SalesListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SalesListServlet</servlet-name>
+        <url-pattern>/salesList</url-pattern>
+    </servlet-mapping>
 	
 	<!-- OrderAddServlet -->
 	<servlet>
