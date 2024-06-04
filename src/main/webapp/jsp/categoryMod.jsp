@@ -29,7 +29,7 @@ window.onload = function(){
 	}
 </script>
 <% if(request.getParameter("submit").equals("登録")){ %>
-<form action ="Master/control?type=category" method="post">
+<form action ="./control?type=category" method="post">
 	<div align="center">
 		<div align="left">
 			<p>カテゴリ管理</p>
@@ -147,7 +147,7 @@ window.onload = function(){
 
 	
 <% if(request.getParameter("submit").equals("変更")){ %>
-<form action ="Master/control?type=category" method="post">
+<form action ="./control?type=category" method="post">
 	<div align="center">
 		<div align="left">
 			<p>カテゴリ管理</p>

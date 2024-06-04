@@ -69,11 +69,12 @@ try {
 						<td><input type="password" size="20" maxlength="100" id="np2" name="pass2" value="<%=pass2%>"></td>
 					</tr>
 				</table>
-		<% try {
-				if(request.getAttribute("err") != null) { %>
-					<p id="err"><%=request.getAttribute("err")%></p>
-		<% } }catch (Exception e2){
-		}%>
+		<% if(request.getAttribute("errmsg1") != null) { %>
+			<p id="err"><%=request.getAttribute("errmsg1")%></p>
+		<% }
+		 if(request.getAttribute("errmsg2") != null) { %>
+			<p id="err"><%=request.getAttribute("errmsg2")%></p>
+		<% }%>
 		<br>
 		<table>
 			<tr>

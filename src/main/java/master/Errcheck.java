@@ -12,7 +12,7 @@ import dao.UserDao;
 public class Errcheck {
 	
 	public String injectionCheck(String str, String strName) {
-		if(str.contains("'")) {
+		if(str.contains("'") && str != null) {
 			return  strName + "に\'は使用しないでください";
 		}
 		return null;
@@ -21,7 +21,7 @@ public class Errcheck {
 	public String injectionCheck(String[] strs, String[] strNames) {
 		String place = null;
 		for(int i = 0; i < strs.length; ++i) {
-			if(strs[i].contains("'")) {
+			if(strs[i].contains("'") && strs[i] != null) {
 				if(place == null) {
 					place = strNames[i];
 				}
@@ -45,11 +45,20 @@ public class Errcheck {
 	}
 	
 	public String inputCheck(String[] strs, String[] necStrs, String[] strNames, String[] necStrNames) {
+		String place = null;
 		if(this.injectionCheck(strs, strNames) == null) {
 			for(int i = 0; i < necStrs.length; ++i) {
 				if(necStrs[i].length() == 0) {
-					return necStrNames[i]+"が入力されていません";
+					if(place == null) {
+						place = strNames[i];
+					}
+					else {
+						place = place + "、" + strNames[i];
+					}
 				}
+			}
+			if(place != null) {
+				return place + "が入力されていません";
 			}
 			return null;
 		}
@@ -74,7 +83,7 @@ public class Errcheck {
 	
 	public String numberCheck(String str, String strName){
 		if(!str.matches("[0-9]+") || Integer.parseInt(str)<0){
-			return strName+"整数で入力してください";
+			return strName+"は整数で入力してください";
 		}
 		return null;
 	}
@@ -91,10 +100,10 @@ public class Errcheck {
 	}
 	
 	public String fullWidthCheck(String str) {
-		if(str.matches("^[ぁ-ん] +$")) {
+		if(str.matches("^[ぁ-ん ]+$")) {
 			return null;
 		}
-		return "全角ひらがなで入力してください";
+		return "ふりがなは全角ひらがなで入力してください";
 	}
 	
 	public String emailCheck(String email) {

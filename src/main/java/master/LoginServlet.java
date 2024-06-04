@@ -13,7 +13,7 @@ import bean.UserBean;
 import dao.UserDao;
 
 public class LoginServlet extends HttpServlet {
-
+	
 	public void doGet (HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 			doPost(request, response);
@@ -34,31 +34,32 @@ public class LoginServlet extends HttpServlet {
 				try {
 					String id = (String)request.getParameter("id");
 					String pw = (String)request.getParameter("pass");
-					String err = null;
-					Errcheck e = new Errcheck();
 					String[] input = {id,pw};
 					String[] names = {"社員番号","パスワード"};
 					
-					if((err = e.inputCheck(input,input,names,names)) == null) {
-						if((err = e.numberCheck(id,"社員番号")) == null) {
+					Errcheck err = new Errcheck();
+					String errmsg1 = err.inputCheck(input,input,names,names);
+					String errmsg2 = err.numberCheck(id,"社員番号");
+					if(errmsg1 == null && errmsg2 == null) {
 							int iid = Integer.parseInt(id);
 							UserDao dao = new UserDao();
 							UserBean bean = dao.select(iid);
 							String correct = bean.getPassword();
-							if(e.correctCheck(pw, correct) != null) {
-								err = "社員番号または"+e.correctCheck(pw, correct);
-							} else {
+							errmsg1 = err.correctCheck(pw, correct);
+							if(errmsg1 == null) {
 								session.setAttribute("userid", bean.getEmp_id());
 								session.setAttribute("username", bean.getEmp_name());
 								session.setAttribute("userrole", bean.getRole());
 								rd = request.getRequestDispatcher("/jsp/main.jsp");
+							} else {
+								errmsg1 = "社員番号または"+errmsg1;
 							}
 						}
-					}
 					if(rd == null) {
 						request.setAttribute("id", id);
 						request.setAttribute("pass", pw);
-						request.setAttribute("err", err);
+						request.setAttribute("errmsg1", errmsg1);
+						request.setAttribute("errmsg2", errmsg2);
 						rd = request.getRequestDispatcher("/jsp/login.jsp");
 					}
 				} catch (Exception e) {

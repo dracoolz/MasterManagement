@@ -55,6 +55,13 @@ public class UserBean implements Serializable{
 		return role;
 	}
 	
+	public String getRoleString() {
+		if(role == 0) {
+			return "正社員";
+		}
+		return "アルバイト";
+	}
+	
 	public void setRole(int role) {
 		this.role = role;
 	}

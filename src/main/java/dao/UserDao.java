@@ -42,29 +42,21 @@ public class UserDao extends DBAccess{
 			return list;
 		}
 		
-		//ユーザテーブルで部分一致で検索するメソッド
-		public ArrayList<UserBean> selectPart(String str) {
+		
+		//ユーザテーブルで検索するメソッド
+		public int selectMax() {
 			
-			ArrayList<UserBean> list = new ArrayList<UserBean>();
-			String sql = "select * from emp_info where emp_id like %?% or emp_name like %?% or furigana like %?% or emp_email like %?% or role like %?%";
+			UserBean bean = new UserBean();
+			String sql = "select max(emp_id) as mx from emp_info";
 			
 			try {
 				connect();
 				// ステートメントの作成
 				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setString(1, str);
-				
 				ResultSet rs = ps.executeQuery();
 				
 				while (rs.next()) {
-					UserBean bean = new UserBean();
-					bean.setEmp_id(rs.getInt("emp_id"));
-					bean.setEmp_name(rs.getString("emp_name"));
-					bean.setFurigana(rs.getString("furigana"));
-					bean.setEmp_email(rs.getString("emp_email"));
-					bean.setFurigana(rs.getString("password"));
-					bean.setFurigana(rs.getString("role"));
-					list.add(bean);
+					bean.setEmp_id(rs.getInt("mx"));
 				}
 				
 			} catch (SQLException e) {
@@ -72,7 +64,7 @@ public class UserDao extends DBAccess{
 			} finally {
 				disconnect();
 			}
-			return list;
+			return bean.getEmp_id()+1;
 		}
 		
 		//ユーザテーブルで検索するメソッド
@@ -105,10 +97,47 @@ public class UserDao extends DBAccess{
 			return bean;
 		}
 				
+		//ユーザテーブルで部分一致で検索するメソッド
+		public ArrayList<UserBean> selectPart(String str) {
+			
+			ArrayList<UserBean> list = new ArrayList<UserBean>();
+			String sql = "select * from emp_info where emp_id like ? or emp_name like ? or furigana like ? or emp_email like ? or role like ?";
+
+			try {
+				connect();
+				// ステートメントの作成
+				PreparedStatement ps = getConnection().prepareStatement(sql);
+				ps.setString(1, "%" + str + "%");
+				ps.setString(2, "%" + str + "%");
+				ps.setString(3, "%" + str + "%");
+				ps.setString(4, "%" + str + "%");
+				ps.setString(5, "%" + str + "%");
+
+				ResultSet rs = ps.executeQuery();
+
+				while (rs.next()) {
+					UserBean bean = new UserBean();
+					bean.setEmp_id(rs.getInt("emp_id"));
+					bean.setEmp_name(rs.getString("emp_name"));
+					bean.setFurigana(rs.getString("furigana"));
+					bean.setEmp_email(rs.getString("emp_email"));
+					bean.setFurigana(rs.getString("password"));
+					bean.setFurigana(rs.getString("role"));
+					list.add(bean);
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				disconnect();
+			}
+			return list;
+		}
+		
 		//ユーザテーブルに値を追加するメソッド
 		public void insert(String emp_name, String furigana, String emp_email, String password, int role) {
 			
-			String sql = "insert into emp_info(emp_name, furigana, emp_email, password, role) values (?,?,?,?,?)";
+			String sql = "insert into emp_info (emp_name, furigana, emp_email, password, role) values (?,?,?,?,?)";
 			
 			try {
 				connect();
@@ -149,7 +178,7 @@ public class UserDao extends DBAccess{
 		//ユーザを更新（アップデート）するメソッド
 		public void update(int emp_id, String emp_name, String furigana, String emp_email, int role) {
 			
-			String sql = "update emp_info set emp_name=?, furigana=?, emp_email=? role=? where emp_id=?";
+			String sql = "update emp_info set emp_name=?, furigana=?, emp_email=?, role=? where emp_id=?";
 			
 			try {
 				connect();
