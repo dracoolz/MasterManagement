@@ -15,7 +15,7 @@ public class SmallCategoryDao extends DBAccess{
 
 			ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>();
 
-			String sql = "select * from small_category;";
+			String sql = "select * from small_category as sc,big_category as bc where sc.bc_id=bc.bc_id;";
 
 			try {
 				connect();
@@ -26,9 +26,10 @@ public class SmallCategoryDao extends DBAccess{
 
 				while (rs.next()) {
 					SmallCategoryBean bean = new SmallCategoryBean();
-					bean.setSc_id(rs.getInt("sc_id"));
-					bean.setBc_id(rs.getInt("bc_id"));
-					bean.setSc_category(rs.getString("sc_category"));
+					bean.setSc_id(rs.getInt("sc.sc_id"));
+					bean.setBc_id(rs.getInt("sc.bc_id"));
+					bean.setSc_category(rs.getString("sc.sc_category"));
+					bean.setBc_category(rs.getString("bc.bc_category"));
 					list.add(bean);
 				}
 

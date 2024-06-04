@@ -9,10 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bean.SmallCategoryBean;
 import bean.UserBean;
-import dao.BigCategoryDao;
-import dao.SmallCategoryDao;
 import dao.UserDao;
 
 public class DUControlServlet extends HttpServlet {
@@ -62,7 +59,6 @@ public class DUControlServlet extends HttpServlet {
 				request.setAttribute("list", list);
 				
 				forward="/jsp/user.jsp";
-
 			 }
 
 			if(request.getParameter("submit").equals("戻る")){
@@ -91,24 +87,6 @@ public class DUControlServlet extends HttpServlet {
 
 			 }
 			
-			if(request.getParameter("submit").equals("検索")){
-				
-				SmallCategoryDao scdao = new SmallCategoryDao();
-				BigCategoryDao bcdao = new BigCategoryDao();
-				SmallCategoryBean scbean = new SmallCategoryBean();
-				ArrayList<SmallCategoryBean> bclist = new ArrayList<SmallCategoryBean>();
-				
-				if(request.getParameter("sc")==null) {
-					bclist = bcdao.select(Integer.parseInt(request.getParameter("bc")));
-					request.setAttribute("bclist", bclist);
-				}else {
-					scbean = scdao.selectSc(Integer.parseInt(request.getParameter("sc")));
-					request.setAttribute("scbean", scbean);
-				}
-				
-				forward="/jsp/category.jsp";
-
-			 }
 
 			if(request.getParameter("submit").equals("戻る")){
 				forward="Master/master";

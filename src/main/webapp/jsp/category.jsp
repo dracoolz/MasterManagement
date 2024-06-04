@@ -24,12 +24,9 @@
 <body>
 	<script src="./js/sc_category.js"></script>
 	<script src="./js/tableSorter.js"></script>
+	<script src="./js/categoryFilter.js"></script>
 	<% ArrayList<SmallCategoryBean> scList = (ArrayList<SmallCategoryBean>)request.getAttribute("sclist"); %>
-	<% if(request.getAttribute("scbean")==null){
-		ArrayList<SmallCategoryBean> bcList = (ArrayList<SmallCategoryBean>)request.getAttribute("bclist");
-	}else{
-		SmallCategoryBean scBean = (SmallCategoryBean)request.getAttribute("scbean"); 
-		}%>
+	<% ArrayList<BigCategoryBean> bcList = (ArrayList<BigCategoryBean>)request.getAttribute("bclist"); %>
 	<form action="./DUControl?type=category" method="post">
 		<div align="center">
 			<div align="left">
@@ -50,10 +47,10 @@
 				</table>
 			</div>
 			<div class="pulldown">
-				<table name="search">
+				<table id="search">
 					<tr>
 						<td align="right">大カテゴリ:</td>
-						<td><select name="bc" class="bcSelect">
+						<td><select name="bc" class="bcSelect" onchange="ctrlTab()">
 								<option value="">選択してください</option>
 								<% for(int i=0; i < bcList.size(); i++){ %>
 								<option value="<%=i+1 %>"><%=bcList.get(i).getBc_category() %></option>
@@ -79,10 +76,8 @@
 						</select> <% } %>
 						</td>
 					</tr>
-					<tr>
-						<td><input type="submit" name="submit" value="検索"></td>
-					</tr>
 				</table>
+				<p><input type="button" name="categorySearch" value="検索" onclick="categoryFilter()"></p>
 			</div>
 			<div>
 				<table border="1" style="border-collapse: collapse" class="tablesorter" id="category_table">
@@ -95,27 +90,16 @@
 							<td colspan="2"></td>
 						</tr>
 					</thead>
-					<% if(scBean==null){
-						for(int i=0; i < bcList.size(); i++) { %>
+					<% for(int i=0; i<scList.size(); i++) { %>
 					<tr>
-						<td><%=bcList.get(i).getBc_id() %></td>
-						<td><%=bcList.get(i).getBc_category() %></td>
-						<td><%=bcList.get(i).getSc_id() %></td>
-						<td><%=bcList.get(i).getSc_category() %></td>
+						<td><%=scList.get(i).getBc_id() %></td>
+						<td><%=scList.get(i).getBc_category() %></td>
+						<td><%=scList.get(i).getSc_id() %></td>
+						<td><%=scList.get(i).getSc_category() %></td>
 						<td><input type="submit" name="submit" value="変更"></td>
 						<td><input type="submit" name="submit" value="削除"></td>
 					</tr>
 						<%} %>
-					<%}else{ %>
-					<tr>
-						<td><%=scBean.getBc_id() %></td>
-						<td><%=scBean.getBc_category() %></td>
-						<td><%=scBean.getSc_id() %></td>
-						<td><%=scBean.getSc_category() %></td>
-						<td><input type="submit" name="submit" value="変更"></td>
-						<td><input type="submit" name="submit" value="削除"></td>
-					</tr>
-					<%} %>
 				</table>
 			</div>
 			<font color="red"> <%if(request.getAttribute("errmsg1")!=null){ %>
