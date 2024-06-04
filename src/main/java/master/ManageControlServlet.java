@@ -57,7 +57,6 @@ public class ManageControlServlet extends HttpServlet {
 			case 3:
 				ArrayList<ProductBean> parr = new ArrayList<ProductBean>();
 				request.setAttribute("list", parr);
-				
 				BigCategoryDao bdao2 = new BigCategoryDao();
 				ArrayList<BigCategoryBean> barr2 = new ArrayList<BigCategoryBean>();
 				barr2 = bdao2.selectAll();

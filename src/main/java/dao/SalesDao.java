@@ -54,25 +54,27 @@ public class SalesDao extends DBAccess {
 
 
 
-  //商品売上情報一覧を返す
+    //商品売上情報一覧を返す
     public ArrayList<SalesBean> selectProSalesById(String id){
 
         ArrayList<SalesBean> list = new ArrayList<SalesBean>();
 
         // SQL文を作成する
         String sql = "SELECT s.pro_id, pi.pi_name, sc.sc_category AS category, s.sale_price, " +
-                "(s.sale_price * 5 / 6) AS stock_price, s.sale_qty, " +
-                "((s.sale_price * s.sale_qty) - ((s.sale_price * 5 / 6) * s.sale_qty)) AS profit, " +
-                "((s.sale_price * s.sale_qty) / " +
-                "(SELECT SUM(sale_price * sale_qty) " +
-                "FROM sale_list " +
-                "WHERE YEAR(order_date) = YEAR(CURDATE()) - 1)) AS comparison " +
-                "FROM sale_list s " +
-                "JOIN product p ON s.pro_id = p.pro_id " +
-                "JOIN product_info pi ON p.pi_id = pi.pi_id " +
-                "JOIN category c ON pi.category_id = c.category_id " +
-                "JOIN small_category sc ON c.sc_id = sc.sc_id " +
-                "WHERE s.pro_id = ?";
+	                "(s.sale_price * 5 / 6) AS stock_price, s.sale_qty, cus.district,  " +
+	                "((s.sale_price * s.sale_qty) - ((s.sale_price * 5 / 6) * s.sale_qty)) AS profit, " +
+	                "((s.sale_price * s.sale_qty) / " +
+	                "(SELECT SUM(sale_price * sale_qty) " +
+	                " FROM sale_list " +
+	                " WHERE YEAR(order_date) = YEAR(CURDATE()) - 1)) AS comparison " +
+	                "FROM sale_list s " +
+	                "JOIN product p ON s.pro_id = p.pro_id " +
+	                "JOIN product_info pi ON p.pi_id = pi.pi_id " +
+	                "JOIN category c ON pi.category_id = c.category_id " +
+	                "JOIN small_category sc ON c.sc_id = sc.sc_id " +
+	                "JOIN customer cus ON s.cus_id = cus.cus_id " +
+	                "WHERE s.pro_id = ?";
+
 
         try {
 
@@ -94,6 +96,7 @@ public class SalesDao extends DBAccess {
                 bean.setStock_price(rs.getInt("stock_price"));
                 bean.setSale_amount(rs.getInt("sale_qty"));
                 bean.setProfit(rs.getInt("profit"));
+                bean.setDistrict(rs.getString("district"));
                 bean.setComparison(rs.getDouble("comparison"));
                 list.add(bean);
             }

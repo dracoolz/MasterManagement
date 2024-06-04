@@ -7,9 +7,19 @@
 <head>
 <meta charset="UTF-8">
 <title>商品別売上詳細</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/productListDetail.css">
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
+<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("productlist"); %>
+<% if (list == null) {
+     list = new ArrayList<SalesBean>();
+   }
+	SalesBean firstBean = null;
+    if (!list.isEmpty()) {
+        firstBean = list.get(0);
+   } %>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/productListDetail.css">
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
         google.charts.load('current', { 'packages': ['corechart', 'bar'] });
         google.charts.setOnLoadCallback(drawCharts);
 
@@ -44,10 +54,10 @@
         function drawPieChart() {
             var data = google.visualization.arrayToDataTable([
                 ['地区', '売上'],
-                ['東京', 50],
-                ['京都', 25],
-                ['大阪', 20],
-                ['兵庫', 5]
+                <% for (SalesBean bean : list) { %>
+                <% String[] district = { %><%= bean.getDistrict() %>};
+                	[<%= district[bean] %>, <%= bean.getSale_amount() %>],
+                <% } %>
             ]);
 
             var options = {
@@ -63,126 +73,116 @@
     </script>
 </head>
 <body>
-	<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("productlist"); %>
-    <div align="center">
-        <strong id="topPage">商品別売上詳細</strong>
-        <div align="right">
-            <p>
-                <%="ようこそ、"+ session.getAttribute("username") + "さん" %>
-            </p>
-            <a href="./first">ログアウト</a>
-        </div>
-        <div class="top-button">
-            <button type="button">年表示</button>
-            <button type="button">月表示</button>
-            <button type="button" onclick="location.href='managecontrol?no=5'">戻る</button>
-        </div>
-        <!-- table -->
-        <div class="table">
-            <table>
-                <tr>
-                    <th>商品ID▽</th>
-                    <th>商品名▽</th>
-                    <th>小カテゴリ▽</th>
-                    <th>販売単価▽</th>
-                    <th>仕入単価▽</th>
-                    <th>販売数▽</th>
-                    <th>粗利▽</th>
-                    <th>先年度比</th>
-                </tr>
-                <% for (int i = 0; i < list.size(); i++) { %>
-				<tr align="center">
-					<td><%= list.get(i).getPro_id() %></td>
-						<td style="word-break: break-all;"><%= list.get(i).getPi_name() %></td>
-						<td><%= list.get(i).getCategory() %></td>
-						<td><%= list.get(i).getSale_price() %>円</td>
-						<td><%= list.get(i).getStock_price() %>円</td>
-						<td><%= list.get(i).getSale_amount() %></td>
-						<td><%= list.get(i).getProfit() %>円</td>
-						<td><%= list.get(i).getComparison() %></td>
-                <% } %>
-            </table>
-        </div>
-        <div class="chart-1">
-            <div id="barChart" style="width: 400px; height: 300px;"></div>
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>年</th>
-                            <th>月</th>
-                            <th>売上</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>2024</td>
-                            <td>12</td>
-                            <td>45</td>
-                        </tr>
-                        <tr>
-                            <td>2024</td>
-                            <td>10</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>2024</td>
-                            <td>04</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>2024</td>
-                            <td>02</td>
-                            <td>10</td>
-                        </tr>
-                        <tr>
-                            <td>2023</td>
-                            <td>11</td>
-                            <td>5</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="chart-2">
-            <div>
-                <p>
-                    <h3>地区別売上</h3>
-                    ランキング
-                </p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>地区</th>
-                            <th>売上</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>東京</td>
-                            <td>50</td>
-                        </tr>
-                        <tr>
-                            <td>京都</td>
-                            <td>25</td>
-                        </tr>
-                        <tr>
-                            <td>大阪</td>
-                            <td>20</td>
-                        </tr>
-                        <tr>
-                            <td>兵庫</td>
-                            <td>5</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div id="piechart" style="width: 500px; height: 300px;"></div>
-        </div>
-        <div class="footer_button">
-			<button type="button" onclick="window.location.href='#topPage'">トップページ</button>
-			<button type="button" onclick="location.href='managecontrol?no=5'">戻る</button>
+	<div align="center">
+		<strong id="topPage">商品別売上詳細</strong>
+		<div align="right">
+			<p>
+				<%= "ようこそ、" + session.getAttribute("username") + "さん" %>
+			</p>
+			<a href="/first">ログアウト</a>
 		</div>
-    </div>
+		<div class="top-button">
+			<button type="button">年表示</button>
+			<button type="button">月表示</button>
+			<button type="button" onclick="location.href='managecontrol?no=4'">戻る</button>
+		</div>
+		<!-- table -->
+		<div class="table">
+			<table>
+				<tr>
+					<th>商品ID▽</th>
+					<th>商品名▽</th>
+					<th>小カテゴリ▽</th>
+					<th>販売単価▽</th>
+					<th>仕入単価▽</th>
+					<th>販売数▽</th>
+					<th>粗利▽</th>
+					<th>先年度比</th>
+				</tr>
+				<% for (SalesBean bean : list) { %>
+				<tr align="center">
+					<td><%= bean.getPro_id() %></td>
+					<td><%= bean.getPi_name() %></td>
+					<td><%= bean.getCategory() %></td>
+					<td><%= bean.getSale_price() %>円</td>
+					<td><%= bean.getStock_price() %>円</td>
+					<td><%= bean.getSale_amount() %></td>
+					<td><%= bean.getProfit() %>円</td>
+					<td><%= bean.getComparison() %></td>
+				</tr>
+				<% } %>
+			</table>
+		</div>
+		<div class="chart-1">
+			<div id="barChart" style="width: 400px; height: 300px;"></div>
+			<div>
+				<table>
+					<thead>
+						<tr>
+							<th>年</th>
+							<th>月</th>
+							<th>売上</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>2024</td>
+							<td>12</td>
+							<td>45</td>
+						</tr>
+						<tr>
+							<td>2024</td>
+							<td>10</td>
+							<td>0</td>
+						</tr>
+						<tr>
+							<td>2024</td>
+							<td>04</td>
+							<td>0</td>
+						</tr>
+						<tr>
+							<td>2024</td>
+							<td>02</td>
+							<td>10</td>
+						</tr>
+						<tr>
+							<td>2023</td>
+							<td>11</td>
+							<td>5</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="chart-2">
+			<div>
+				<p>
+				<h3>地区別売上</h3>
+				ランキング
+				</p>
+				<table>
+					<thead>
+						<tr>
+							<th>地区</th>
+							<th>売上</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% for (SalesBean bean : list) { %>
+						<tr>
+							<td><%= bean.getDistrict() %></td>
+							<td><%= bean.getSale_amount() %></td>
+						</tr>
+						<% } %>
+					</tbody>
+				</table>
+			</div>
+			<div id="piechart" style="width: 500px; height: 300px;"></div>
+		</div>
+		<div class="footer_button">
+			<button type="button" onclick="window.location.href='#topPage'">トップページ</button>
+			<button type="button" onclick="location.href='managecontrol?no=4'">戻る</button>
+		</div>
+	</div>
 </body>
 </html>
