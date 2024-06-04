@@ -13,7 +13,6 @@ public class ControlServlet extends HttpServlet {
 
 	static final long serialVersionUID = 1L;
 
-
 	public void doGet (HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 			doPost( request, response );
@@ -24,16 +23,17 @@ public class ControlServlet extends HttpServlet {
 
 		response.setContentType("text/html;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-
+		
 		//セッションの取得
-        HttpSession session = request.getSession(true);
-
-		String forward=null;
+		HttpSession session = request.getSession(true);
+		
+		String forward = null;
 		
 		if(request.getParameter("type").equals("user")) {
-			
-			if(request.getParameter("submit").equals("登録")){
-
+			String status = request.getParameter("submit");
+			if(status.equals("戻る")){
+				forward="./manageControl?no=1";
+			} else if(request.getParameter("submit").equals("登録")){
 				String name = request.getParameter("name");
 				String furigana = request.getParameter("furigana");
 				String email = request.getParameter("email");
@@ -44,23 +44,19 @@ public class ControlServlet extends HttpServlet {
 				String[] itemName = {"ユーザ名","ふりがな","メールアドレス","パスワード","区分"};
 				String[] necItemName = {"ユーザ名","ふりがな","メールアドレス","パスワード","区分"};
 				
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
-				String errmsg4=null;
-				String errmsg5=null;
-				String errmsg6=null;
-				String errmsg7=null;
 				Errcheck err = new Errcheck();
+				String errmsg1=err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2=err.fullWidthCheck(furigana);
+				String errmsg3=err.emailCheck(email);
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.fullWidthCheck(furigana)==null && err.emailCheck(email)==null){
+				if(errmsg1 == null && errmsg2 == null && errmsg3 == null){
 					session.setAttribute("name", name);
 					session.setAttribute("furigana", furigana);
 					session.setAttribute("email", email);
 					session.setAttribute("pass", pass);
 					session.setAttribute("kubun", kubun);
 					forward="/jsp/userConf.jsp?submit=登録";
-				}else{
+				} else {
 					session.setAttribute("name", name);
 					session.setAttribute("furigana", furigana);
 					session.setAttribute("email", email);
@@ -70,73 +66,42 @@ public class ControlServlet extends HttpServlet {
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
 					request.setAttribute("errmsg3", errmsg3);
-					request.setAttribute("errmsg4", errmsg4);
-					request.setAttribute("errmsg5", errmsg5);
-					request.setAttribute("errmsg6", errmsg6);
-					request.setAttribute("errmsg7", errmsg7);
 					forward="/jsp/userMod.jsp?submit=登録";
 				}
-
-				forward="/jsp/userConf.jsp?submit=登録";
-
-			 }
-			
-			if(request.getParameter("submit").equals("変更")){
-
+			 } else {
 				String name = request.getParameter("name");
 				String furigana = request.getParameter("furigana");
 				String email = request.getParameter("email");
-				String pass = request.getParameter("pass");
 				int kubun = Integer.parseInt(request.getParameter("kubun"));
-				String[] item = {name,furigana,email,pass,String.valueOf(kubun)};
-				String[] necItem = {name,furigana,email,pass,String.valueOf(kubun)};
-				String[] itemName = {"ユーザ名","ふりがな","メールアドレス","パスワード","区分"};
-				String[] necItemName = {"ユーザ名","ふりがな","メールアドレス","パスワード","区分"};
+				String[] item = {name,furigana,email,String.valueOf(kubun)};
+				String[] necItem = {name,furigana,email,String.valueOf(kubun)};
+				String[] itemName = {"ユーザ名","ふりがな","メールアドレス","区分"};
+				String[] necItemName = {"ユーザ名","ふりがな","メールアドレス","区分"};
 				
-
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
-				String errmsg4=null;
-				String errmsg5=null;
-				String errmsg6=null;
-				String errmsg7=null;
 				Errcheck err = new Errcheck();
+				String errmsg1=err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2=err.fullWidthCheck(furigana);
+				String errmsg3=err.emailCheck(email);
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.fullWidthCheck(furigana)==null && err.emailCheck(email)==null){
+				if(errmsg1==null && errmsg2==null && errmsg3==null){
 					session.setAttribute("name", name);
 					session.setAttribute("furigana", furigana);
 					session.setAttribute("email", email);
-					session.setAttribute("pass", pass);
 					session.setAttribute("kubun", kubun);
 					forward="/jsp/userConf.jsp?submit=変更";
 				}else{
 					session.setAttribute("name", name);
 					session.setAttribute("furigana", furigana);
 					session.setAttribute("email", email);
-					session.setAttribute("pass", pass);
 					session.setAttribute("kubun", kubun);
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
 					request.setAttribute("errmsg3", errmsg3);
-					request.setAttribute("errmsg4", errmsg4);
-					request.setAttribute("errmsg5", errmsg5);
-					request.setAttribute("errmsg6", errmsg6);
-					request.setAttribute("errmsg7", errmsg7);
 					forward="/jsp/userMod.jsp?submit=変更";
 				}
-
-				forward="/jsp/userConf.jsp?submit=変更";
-
 			 }
-
-
-			if(request.getParameter("submit").equals("戻る")){
-				forward="/jsp/user";
-			}
-	    }
-		
+		}
 		
 		
 		if(request.getParameter("type").equals("category") && request.getParameter("maker").equals("bc")) {
@@ -212,7 +177,7 @@ public class ControlServlet extends HttpServlet {
 
 
 			if(request.getParameter("submit").equals("戻る")){
-				forward="/jsp/category";
+				forward="./manageControl?no=2";
 			}
 	    }
 		
@@ -296,7 +261,7 @@ public class ControlServlet extends HttpServlet {
 
 
 			if(request.getParameter("submit").equals("戻る")){
-				forward="/jsp/category";
+				forward="./manageControl?no=2";
 			}
 	    }
 		
@@ -568,20 +533,18 @@ public class ControlServlet extends HttpServlet {
 					request.setAttribute("errmsg3", errmsg3);
 					forward="/jsp/productMod.jsp?submit=変更";
 				}
-
+				
 				forward="/jsp/productConf.jsp?submit=変更";
-
+				
 			 }
-
-
+			
 			if(request.getParameter("submit").equals("戻る")){
-				forward="/jsp/product";
+				forward="./manageControl?no=3";
 			}
 	    }
 		
 		RequestDispatcher rd = request.getRequestDispatcher(forward);
 		rd.forward(request, response);
 		
-	}
-	
+	}	
 }
