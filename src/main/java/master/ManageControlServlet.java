@@ -67,7 +67,7 @@ public class ManageControlServlet extends HttpServlet {
 				rd = request.getRequestDispatcher("/list?no=2");
 				break;
 			case 6:
-				rd = request.getRequestDispatcher("/totalmenu");
+				rd = request.getRequestDispatcher("/totalMenu");
 				break;
 		}
 		rd.forward(request, response);

@@ -22,6 +22,14 @@ try {
 	id = "";
 	pass = "";
 }%>
+
+<script>
+	function blank() {
+		document.getElementById("id").value = "";
+		document.getElementById("pass").value = "";
+	}
+</script>
+
 <body>
 	<div align="center">
 		<strong>ログイン画面</strong>
@@ -30,21 +38,21 @@ try {
 			<table>
 				<tr>
 					<td>社員番号 ： </td>
-					<td><input type="text" size="20" name="id" value=<%=id%>></td>
+					<td><input type="text" size="20" id="id" name="id" maxlength="20" value=<%=id%>></td>
 				</tr>
 				<tr>
 					<td>パスワード：</td>
-					<td><input type="password" size="20" maxlength="100" name="pass" value=<%=pass%>></td>
+					<td><input type="password" size="20" id="pass" maxlength="100" name="pass" value=<%=pass%>></td>
 				</tr>
 			</table><br>
 			<a href="./login">パスワードを忘れた場合</a><br><br>
 			<% try {
 				if(request.getAttribute("err") != null) { %>
 					<p id="err"><%=request.getAttribute("err")%></p>
-			<% } }catch (Exception e2){
+			<% } } catch (Exception e2) {
 			}%>
 			<input type="submit" name="submit" value="ログイン">
-			<input type="reset" name="reset" value="リセット">
+			<input type="button" name="reset" value="リセット" onclick="blank()">
 		</form>
 	</div>
 </body>

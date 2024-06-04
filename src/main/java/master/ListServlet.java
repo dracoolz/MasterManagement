@@ -20,7 +20,6 @@ public class ListServlet extends HttpServlet {
 		int no = Integer.parseInt(req.getParameter("no"));
 		
 		if(no == 1) {
-			
 			//for companyList
 	        // DAOをインスタンス化する
 	        SalesDao dao = new SalesDao();

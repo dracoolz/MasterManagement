@@ -76,7 +76,7 @@
 								<% for(int j=0; j<list.size(); j++){ %>
 								<option value="<%=j+1 %>"><%=list.get(j).getSc_category() %></option>
 								<%} %>
-						</select> <%} %>
+						</select> <% } %>
 						</td>
 					</tr>
 					<tr>
