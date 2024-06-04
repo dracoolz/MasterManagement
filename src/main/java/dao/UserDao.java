@@ -42,38 +42,6 @@ public class UserDao extends DBAccess{
 			return list;
 		}
 		
-		//ユーザテーブルで部分一致で検索するメソッド
-		public ArrayList<UserBean> selectPart(String str) {
-			
-			ArrayList<UserBean> list = new ArrayList<UserBean>();
-			String sql = "select * from emp_info where emp_id like %?% or emp_name like %?% or furigana like %?% or emp_email like %?% or role like %?%";
-			
-			try {
-				connect();
-				// ステートメントの作成
-				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setString(1, str);
-				
-				ResultSet rs = ps.executeQuery();
-				
-				while (rs.next()) {
-					UserBean bean = new UserBean();
-					bean.setEmp_id(rs.getInt("emp_id"));
-					bean.setEmp_name(rs.getString("emp_name"));
-					bean.setFurigana(rs.getString("furigana"));
-					bean.setEmp_email(rs.getString("emp_email"));
-					bean.setFurigana(rs.getString("password"));
-					bean.setFurigana(rs.getString("role"));
-					list.add(bean);
-				}
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				disconnect();
-			}
-			return list;
-		}
 		
 		//ユーザテーブルで検索するメソッド
 		public int selectMax() {
@@ -129,6 +97,43 @@ public class UserDao extends DBAccess{
 			return bean;
 		}
 				
+		//ユーザテーブルで部分一致で検索するメソッド
+		public ArrayList<UserBean> selectPart(String str) {
+			
+			ArrayList<UserBean> list = new ArrayList<UserBean>();
+			String sql = "select * from emp_info where emp_id like ? or emp_name like ? or furigana like ? or emp_email like ? or role like ?";
+
+			try {
+				connect();
+				// ステートメントの作成
+				PreparedStatement ps = getConnection().prepareStatement(sql);
+				ps.setString(1, "%" + str + "%");
+				ps.setString(2, "%" + str + "%");
+				ps.setString(3, "%" + str + "%");
+				ps.setString(4, "%" + str + "%");
+				ps.setString(5, "%" + str + "%");
+
+				ResultSet rs = ps.executeQuery();
+
+				while (rs.next()) {
+					UserBean bean = new UserBean();
+					bean.setEmp_id(rs.getInt("emp_id"));
+					bean.setEmp_name(rs.getString("emp_name"));
+					bean.setFurigana(rs.getString("furigana"));
+					bean.setEmp_email(rs.getString("emp_email"));
+					bean.setFurigana(rs.getString("password"));
+					bean.setFurigana(rs.getString("role"));
+					list.add(bean);
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				disconnect();
+			}
+			return list;
+		}
+		
 		//ユーザテーブルに値を追加するメソッド
 		public void insert(String emp_name, String furigana, String emp_email, String password, int role) {
 			

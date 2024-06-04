@@ -46,8 +46,8 @@ public class SmallCategoryDao extends DBAccess{
 
 		SmallCategoryBean bean = new SmallCategoryBean();
 
-		String sql = "select * from small_category where sc_category=?";
-
+			String sql = "select bc.bc_id,bc.bc_category,sc.sc_id,sc.sc_category from big_category as bc,small_category as sc where bc.bc_id=sc.bc_id and sc_id=?";
+			
 		try {
 			connect();
 			// ステートメントの作成
@@ -114,9 +114,10 @@ public class SmallCategoryDao extends DBAccess{
 				bean.setSc_id(rs.getInt("sc_id"));
 				bean.setBc_id(rs.getInt("bc_id"));
 				bean.setSc_category(rs.getString("sc_category"));
+				
 				list.add(bean);
-			}
-
+				bean.setBc_category(rs.getString("bc_category"));
+			}	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

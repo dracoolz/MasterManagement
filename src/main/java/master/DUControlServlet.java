@@ -1,6 +1,7 @@
 package master;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,7 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bean.SmallCategoryBean;
 import bean.UserBean;
+import dao.BigCategoryDao;
+import dao.SmallCategoryDao;
 import dao.UserDao;
 
 public class DUControlServlet extends HttpServlet {
@@ -54,6 +58,7 @@ public class DUControlServlet extends HttpServlet {
 				session.setAttribute("role", bean.getRole());
 				
 				forward="/jsp/userMod.jsp?submit=変更";
+				
 			 } else if(request.getParameter("submit").equals("削除")){
 				int id = Integer.parseInt(request.getParameter("id"));
 				UserDao dao = new UserDao();
@@ -88,6 +93,25 @@ public class DUControlServlet extends HttpServlet {
 			if(request.getParameter("submit").equals("削除")){
 
 				forward="/jsp/categoryMod.jsp?submit=削除";
+
+			 }
+			
+			if(request.getParameter("submit").equals("検索")){
+				
+				SmallCategoryDao scdao = new SmallCategoryDao();
+				BigCategoryDao bcdao = new BigCategoryDao();
+				SmallCategoryBean scbean = new SmallCategoryBean();
+				ArrayList<SmallCategoryBean> bclist = new ArrayList<SmallCategoryBean>();
+				
+				if(request.getParameter("sc")==null) {
+					bclist = bcdao.select(Integer.parseInt(request.getParameter("bc")));
+					request.setAttribute("bclist", bclist);
+				}else {
+					scbean = scdao.selectSc(Integer.parseInt(request.getParameter("sc")));
+					request.setAttribute("scbean", scbean);
+				}
+				
+				forward="/jsp/category.jsp";
 
 			 }
 
