@@ -15,12 +15,12 @@
 		</div>
 	</div>
 	<div align="center">
-		<a href="./managecontrol?no=1">ユーザ管理</a><br><br>
-		<a href="./managecontrol?no=2">カテゴリ管理</a><br><br>
-		<a href="./managecontrol?no=3">商品管理</a><br><br>
-		<a href="./managecontrol?no=4">取引先別売上一覧表</a><br><br>
-		<a href="./managecontrol?no=5">商品別売上一覧表</a><br><br>
-		<a href="./managecontrol?no=6">受注管理システムへ</a><br><br>
+		<a href="./manageControl?no=1">ユーザ管理</a><br><br>
+		<a href="./manageControl?no=2">カテゴリ管理</a><br><br>
+		<a href="./manageControl?no=3">商品管理</a><br><br>
+		<a href="./manageControl?no=4">取引先別売上一覧表</a><br><br>
+		<a href="./manageControl?no=5">商品別売上一覧表</a><br><br>
+		<a href="./manageControl?no=6">受注管理システムへ</a><br><br>
 		<td><form method="post" action="./login">
 			<input type="submit" name="submit" value="メインメニューに戻る">
 		</form></td>

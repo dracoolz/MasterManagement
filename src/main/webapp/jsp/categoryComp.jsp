@@ -22,7 +22,7 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>登録しました</p>
-	        <form action= "Master/master?no=2" method="post">
+	        <form action= "./master?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>
@@ -41,7 +41,7 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>変更しました</p>
-	        <form action= "Master/master?no=2" method="post">
+	        <form action= "./master?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>
@@ -60,7 +60,7 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>削除しました</p>
-	        <form action= "Master/master?no=2" method="post">
+	        <form action= "./master?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>
@@ -82,7 +82,7 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>登録しました</p>
-	        <form action= "Master/master?no=2" method="post">
+	        <form action= "./master?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>
@@ -101,7 +101,7 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>変更しました</p>
-	        <form action= "Master/master?no=2" method="post">
+	        <form action= "./master?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>
@@ -120,7 +120,7 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>削除しました</p>
-	        <form action= "Master/master?no=2" method="post">
+	        <form action= "./master?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>

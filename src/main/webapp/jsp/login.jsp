@@ -46,11 +46,12 @@ try {
 				</tr>
 			</table><br>
 			<a href="./login">パスワードを忘れた場合</a><br><br>
-			<% try {
-				if(request.getAttribute("err") != null) { %>
-					<p id="err"><%=request.getAttribute("err")%></p>
-			<% } } catch (Exception e2) {
-			}%>
+			<% if(request.getAttribute("errmsg1") != null) { %>
+				<p id="err"><%=request.getAttribute("errmsg1")%></p>
+			<% }
+			if(request.getAttribute("errmsg2") != null) { %>
+			<p id="err"><%=request.getAttribute("errmsg2")%></p>
+			<% } %>
 			<input type="submit" name="submit" value="ログイン">
 			<input type="button" name="reset" value="リセット" onclick="blank()">
 		</form>
