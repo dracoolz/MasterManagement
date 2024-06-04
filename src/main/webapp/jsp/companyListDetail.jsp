@@ -191,7 +191,7 @@
 						<% for (SalesBean bean : list) { %>
 						<tr>
 							<td><%= bean.getDistrict() %></td>
-							<td><%= bean.getSale_qty() %></td>
+							<td><%= bean.getSale_amount() %></td>
 						</tr>
 						<% } %>
 					</tbody>
