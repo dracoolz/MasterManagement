@@ -8,12 +8,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import bean.ProductViewBean;
 import dao.ProductDao;
 
-public class ProductSearchServlet extends HttpServlet {
+public class SearchProductServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -25,9 +24,9 @@ public class ProductSearchServlet extends HttpServlet {
             String[] smallCategories = request.getParameterValues("small_category");
 
             ArrayList<ProductViewBean> products = productDao.selectMultipleProducts(productName, largeCategories, smallCategories);
-            List<ProductViewBean> largeCategoriesList = productDao.getLargeCategories();
-
             request.setAttribute("products", products);
+
+            List<ProductViewBean> largeCategoriesList = productDao.getLargeCategories();
             request.setAttribute("largeCategories", largeCategoriesList);
 
             for (int i = 0; i < largeCategories.length; i++) {
@@ -38,24 +37,14 @@ public class ProductSearchServlet extends HttpServlet {
                 }
             }
 
-            request.getRequestDispatcher("/search_product.jsp").forward(request, response);
-        } else if ("addProduct".equals(action)) {
-            HttpSession session = request.getSession();
-            List<ProductViewBean> selectedProducts = (List<ProductViewBean>) session.getAttribute("selectedProducts");
-            if (selectedProducts == null) {
-                selectedProducts = new ArrayList<>();
-            }
-
-            int selectedProductId = Integer.parseInt(request.getParameter("selectedProductId"));
-            String selectedProductName = request.getParameter("selectedProductName");
-            ProductViewBean selectedProduct = new ProductViewBean();
-            selectedProduct.setProductId(selectedProductId);
-            selectedProduct.setProductName(selectedProductName);
-
-            selectedProducts.add(selectedProduct);
-            session.setAttribute("selectedProducts", selectedProducts);
-
-            response.sendRedirect(request.getParameter("referer"));
+            request.getRequestDispatcher("/jsp/search_product.jsp").forward(request, response);
         }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ProductDao productDao = new ProductDao();
+        List<ProductViewBean> largeCategoriesList = productDao.getLargeCategories();
+        request.setAttribute("largeCategories", largeCategoriesList);
+        request.getRequestDispatcher("/jsp/search_product.jsp").forward(request, response);
     }
 }

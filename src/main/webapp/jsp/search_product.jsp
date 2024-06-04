@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="dao.ProductDao, bean.ProductViewBean" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,17 +16,21 @@
             <a href="/first">ログアウト</a>
         </div>
         <h1 align="center">商品検索</h1>
-        <form action="ProductSearchServlet" method="post">
-            <input type="hidden" name="action" value="search">
-            商品名：<input type="text" name="product_name" placeholder="商品名" value="<%= request.getParameter("product_name") %>">
+        <form action="/Master/searchProduct" method="post">
             
-            <% for (int i = 0; i < 3; i++) { %>
+            商品名：<input type="text" name="product_name" placeholder="商品名" >
+
+            <% 
+            ProductDao productDao = new ProductDao();
+            List<ProductViewBean> largeCategories = productDao.getLargeCategories();
+            request.setAttribute("largeCategories", largeCategories);
+            for (int i = 0; i < 3; i++) { 
+            %>
                 <div>
                     大カテゴリ：
                     <select id="large_category<%= i %>" name="large_category" onchange="this.form.submit()">
                         <option value="">選択してください</option>
-                        <%
-                        List<ProductViewBean> largeCategories = (List<ProductViewBean>) request.getAttribute("largeCategories");
+                        <% 
                         if (largeCategories != null) {
                             for (ProductViewBean category : largeCategories) {
                                 String selected = request.getParameterValues("large_category") != null && request.getParameterValues("large_category")[i] != null && request.getParameterValues("large_category")[i].equals(String.valueOf(category.getBcId())) ? "selected" : "";
@@ -38,14 +44,14 @@
                     小カテゴリ：
                     <select id="small_category<%= i %>" name="small_category">
                         <option value="">選択してください</option>
-                        <%
+                        <% 
                         String largeCategoryId = request.getParameterValues("large_category") != null ? request.getParameterValues("large_category")[i] : null;
-                        List<ProductViewBean> smallCategories = (List<ProductViewBean>) request.getAttribute("smallCategories" + largeCategoryId);
-                        if (smallCategories != null) {
+                        if (largeCategoryId != null && !largeCategoryId.isEmpty()) {
+                            List<ProductViewBean> smallCategories = productDao.getSmallCategories(Integer.parseInt(largeCategoryId));
                             for (ProductViewBean category : smallCategories) {
-                                String selected = request.getParameterValues("small_category") != null && request.getParameterValues("small_category")[i] != null && request.getParameterValues("small_category")[i].equals(category.getScCategory()) ? "selected" : "";
+                                String selected = request.getParameterValues("small_category") != null && request.getParameterValues("small_category")[i] != null && request.getParameterValues("small_category")[i].equals(String.valueOf(category.getScId())) ? "selected" : "";
                                 %>
-                                <option value="<%= category.getScCategory() %>" <%= selected %>><%= category.getScCategory() %></option>
+                                <option value="<%= category.getScId() %>" <%= selected %>><%= category.getScCategory() %></option>
                                 <%
                             }
                         }
@@ -53,33 +59,42 @@
                     </select>
                 </div>
             <% } %>
-            
-            <input type="submit" name="productSearch" value="検索">
-            <input type="hidden" name="referer" value="<%= request.getHeader("Referer") %>">
+            <input type="submit" action="/Master/searchProduct" value="検索">
+            <input type="hidden" name="" value="search">
         </form>
-        <table align="center" border="1">
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+         <table align="center" border="1">
             <tr align="center">
-                <th>商品名</th>
-                <th>大カテゴリ</th>
-                <th>小カテゴリ</th>
+                <th>取引先名</th>
+                <th>担当者</th>
+                <th>都道府県</th>
                 <th></th>
             </tr>
             <%
-            List<ProductViewBean> products = (List<ProductViewBean>) request.getAttribute("products");
-            if (products != null && !products.isEmpty()) {
-                for (ProductViewBean product : products) {
+            List<ProductViewBean> list = (List<ProductViewBean>) request.getAttribute("list");
+            if (list != null && !list.isEmpty()) {
+                for (ProductViewBean cus : list) {
             %>
             <tr>
-                <td><%= product.getProductName() %></td>
-                <td><%= product.getBcCategory() %></td>
-                <td><%= product.getScCategory() %></td>
+                <td><%= cus.getProductId() %></td>
+                <td><%= cus.getProductName() %></td>
+                <td><%= cus.getBcCategory() %></td>
                 <td>
-                    <form action="ProductSearchServlet" method="post" style="display:inline;">
-                        <input type="hidden" name="action" value="addProduct">
-                        <input type="hidden" name="selectedProductId" value="<%= product.getProductId() %>">
-                        <input type="hidden" name="selectedProductName" value="<%= product.getProductName() %>">
-                        <input type="hidden" name="referer" value="<%= request.getHeader("Referer") %>">
-                        <input type="submit" value="追加" name="productSend">
+                    <form action="/Master/searchProduct" method="post" style="display:inline;">
+                        <input type="hidden" name="getProductId" value="<%= cus.getProductId() %>">
+                        <input type="hidden" name="getProductName" value="<%= cus.getProductName() %>">
+                        <input type="hidden" name="referer" value="<%= request.getParameter("referer") %>">
+                        <input type="submit" value="追加" name="customerSend">
                     </form>
                 </td>
             </tr>
@@ -92,36 +107,6 @@
             }
             %>
         </table>
-        <h2>選択された商品</h2>
-        <table align="center" border="1">
-            <tr align="center">
-                <th>商品ID</th>
-                <th>商品名</th>
-            </tr>
-            <%
-            List<ProductViewBean> selectedProducts = (List<ProductViewBean>) session.getAttribute("selectedProducts");
-            if (selectedProducts != null && !selectedProducts.isEmpty()) {
-                for (ProductViewBean selectedProduct : selectedProducts) {
-            %>
-            <tr>
-                <td><%= selectedProduct.getProductId() %></td>
-                <td><%= selectedProduct.getProductName() %></td>
-            </tr>
-            <%
-                }
-            } else {
-            %>
-            <tr><td colspan="2" align="center">選択された商品がありません</td></tr>
-            <%
-            }
-            %>
-        </table>
-        <div align="center">
-        <form action="SearchCustomerServlet" method="post">
-            <input type="hidden" name="referer" value="<%= request.getHeader("Referer") %>">
-            <input type="submit" value="戻る">
-        </form>
-        </div>
     </main>
 </body>
 </html>

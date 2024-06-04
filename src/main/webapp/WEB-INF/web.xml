@@ -102,4 +102,21 @@
 	
 	
 	
+	
+	
+	
+			<servlet>
+		<servlet-name>SearchProductServlet</servlet-name>
+		<servlet-class>order.SearchProductServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SearchProductServlet</servlet-name>
+		<url-pattern>/searchProduct</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	
+	
+	
 </web-app>

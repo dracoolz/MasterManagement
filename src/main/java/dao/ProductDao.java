@@ -10,10 +10,12 @@ import bean.ProductViewBean;
 public class ProductDao extends DBAccess {
 
     public ArrayList<ProductViewBean> selectMultipleProducts(String product_name, String[] large_categories, String[] small_categories) {
-        ArrayList<ProductViewBean> list = new ArrayList<ProductViewBean>();
-        StringBuilder sql = new StringBuilder("SELECT pd.pi_id, pd.pi_name, sc.sc_id, sc.sc_category, bc.bc_id, bc.bc_category FROM product_description pd ");
-        sql.append("JOIN small_category sc ON pd.category_id = sc.sc_id ");
-        sql.append("JOIN big_category bc ON sc.bc_id = bc.bc_id WHERE 1=1");
+        ArrayList<ProductViewBean> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT pd.pi_id, pd.pi_name, sc1.sc_category AS sc_category1, sc2.sc_category AS sc_category2, sc3.sc_category AS sc_category3, pd.price FROM product_description pd ");
+        sql.append("JOIN small_category sc1 ON pd.category_id1 = sc1.sc_id ");
+        sql.append("JOIN small_category sc2 ON pd.category_id2 = sc2.sc_id ");
+        sql.append("JOIN small_category sc3 ON pd.category_id3 = sc3.sc_id ");
+        sql.append("JOIN big_category bc ON sc1.bc_id = bc.bc_id WHERE 1=1");
 
         if (product_name != null && !product_name.isEmpty()) {
             sql.append(" AND pd.pi_name LIKE ?");
@@ -21,7 +23,7 @@ public class ProductDao extends DBAccess {
 
         for (int i = 0; i < large_categories.length; i++) {
             if ((large_categories[i] != null && !large_categories[i].isEmpty()) && (small_categories[i] != null && !small_categories[i].isEmpty())) {
-                sql.append(" AND (sc.bc_id = ? AND sc.sc_category = ?)");
+                sql.append(" AND (sc1.bc_id = ? AND sc1.sc_category = ?)");
             }
         }
 
@@ -47,10 +49,10 @@ public class ProductDao extends DBAccess {
                 ProductViewBean bean = new ProductViewBean();
                 bean.setProductId(rs.getInt("pi_id"));
                 bean.setProductName(rs.getString("pi_name"));
-                bean.setScId(rs.getInt("sc_id"));
-                bean.setScCategory(rs.getString("sc_category"));
-                bean.setBcId(rs.getInt("bc_id"));
-                bean.setBcCategory(rs.getString("bc_category"));
+                bean.setScCategory1(rs.getString("sc_category1"));
+                bean.setScCategory2(rs.getString("sc_category2"));
+                bean.setScCategory3(rs.getString("sc_category3"));
+                bean.setPrice(rs.getInt("price"));
                 list.add(bean);
             }
 
@@ -86,14 +88,14 @@ public class ProductDao extends DBAccess {
         return list;
     }
 
-    public List<ProductViewBean> getSmallCategories(int bcId) {
+    public List<ProductViewBean> getSmallCategories(int largeCategoryId) {
         List<ProductViewBean> list = new ArrayList<>();
         String sql = "SELECT sc_id, sc_category FROM small_category WHERE bc_id = ?";
 
         try {
             connect();
             PreparedStatement ps = getConnection().prepareStatement(sql);
-            ps.setInt(1, bcId);
+            ps.setInt(1, largeCategoryId);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
