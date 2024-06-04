@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import bean.BigCategoryBean;
+import bean.SmallCategoryBean;
 
 public class BigCategoryDao extends DBAccess{
 	
@@ -67,11 +68,11 @@ public class BigCategoryDao extends DBAccess{
 		}
 		
 		
-		public BigCategoryBean select(int id) {
+		public ArrayList<SmallCategoryBean> select(int id) {
 
-			BigCategoryBean bean = new BigCategoryBean();
+			ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>();
 
-			String sql = "select * from big_category where bc_id=?";
+			String sql = "select * from small_category where bc_id=?";
 
 			try {
 				connect();
@@ -82,8 +83,12 @@ public class BigCategoryDao extends DBAccess{
 				ResultSet rs = ps.executeQuery();
 				
 				while (rs.next()) {
+					SmallCategoryBean bean = new SmallCategoryBean();
+					bean.setSc_id(rs.getInt("sc_id"));
 					bean.setBc_id(rs.getInt("bc_id"));
+					bean.setSc_category(rs.getString("sc_category"));
 					bean.setBc_category(rs.getString("bc_category"));
+					list.add(bean);
 				}
 				
 			} catch (SQLException e) {
@@ -92,8 +97,7 @@ public class BigCategoryDao extends DBAccess{
 				disconnect();
 			}
 			
-			System.out.println(bean.getBc_id());
-			return bean;
+			return list;
 		}
 
 		//大カテゴリテーブルに値を追加するメソッド
