@@ -15,7 +15,7 @@
 		</div>
 	</div>
 	<div align="center">
-		<% if ((int)(session.getAttribute("userrole")) == 0) { %>
+		<% if (((int)(session.getAttribute("userrole")) == 0)) { %>
 			<a href="./master?no=1">マスタ管理</a><br><br>
 		<% } %>
 		<a href="./master?no=2">受注管理</a><br><br>

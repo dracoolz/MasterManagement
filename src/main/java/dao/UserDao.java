@@ -76,6 +76,30 @@ public class UserDao extends DBAccess{
 		}
 		
 		//ユーザテーブルで検索するメソッド
+		public int selectMax() {
+			
+			UserBean bean = new UserBean();
+			String sql = "select max(emp_id) as mx from emp_info";
+			
+			try {
+				connect();
+				// ステートメントの作成
+				PreparedStatement ps = getConnection().prepareStatement(sql);
+				ResultSet rs = ps.executeQuery();
+				
+				while (rs.next()) {
+					bean.setEmp_id(rs.getInt("mx"));
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				disconnect();
+			}
+			return bean.getEmp_id()+1;
+		}
+		
+		//ユーザテーブルで検索するメソッド
 		public UserBean select(int id) {
 			
 			UserBean bean = new UserBean();
@@ -108,7 +132,7 @@ public class UserDao extends DBAccess{
 		//ユーザテーブルに値を追加するメソッド
 		public void insert(String emp_name, String furigana, String emp_email, String password, int role) {
 			
-			String sql = "insert into emp_info(emp_name, furigana, emp_email, password, role) values (?,?,?,?,?)";
+			String sql = "insert into emp_info (emp_name, furigana, emp_email, password, role) values (?,?,?,?,?)";
 			
 			try {
 				connect();
@@ -149,7 +173,7 @@ public class UserDao extends DBAccess{
 		//ユーザを更新（アップデート）するメソッド
 		public void update(int emp_id, String emp_name, String furigana, String emp_email, int role) {
 			
-			String sql = "update emp_info set emp_name=?, furigana=?, emp_email=? role=? where emp_id=?";
+			String sql = "update emp_info set emp_name=?, furigana=?, emp_email=?, role=? where emp_id=?";
 			
 			try {
 				connect();

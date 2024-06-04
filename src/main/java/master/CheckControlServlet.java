@@ -26,59 +26,48 @@ public class CheckControlServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
 		response.setContentType("text/html;charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
-
+		
 		//セッションの取得
 		HttpSession session = request.getSession(true);
-
+		
 		String forward=null;
-
+		
 		if(request.getParameter("type").equals("user")) {
-
 			if(request.getParameter("submit").equals("登録")){
-
 				String name = (String)session.getAttribute("name");
 				String furigana = (String)session.getAttribute("furigana");
 				String email = (String)session.getAttribute("email");
 				String pass = (String)session.getAttribute("pass");
-				int kubun = Integer.parseInt((String)session.getAttribute("kubun"));
-
+				int kubun = (int)session.getAttribute("kubun");
+				
 				UserDao dao= new UserDao();
 				dao.insert(name,furigana,email,pass,kubun);
 				forward="/jsp/userComp.jsp?submit=登録";
-
 			}
-
 			if(request.getParameter("submit").equals("変更")){
-
-				int id = Integer.parseInt((String)session.getAttribute("emp_id"));
+				int id = (int)session.getAttribute("id");
 				String name = (String)session.getAttribute("name");
 				String furigana = (String)session.getAttribute("furigana");
 				String email = (String)session.getAttribute("email");
-				int kubun = Integer.parseInt((String)session.getAttribute("kubun"));
-
+				int kubun = (int)session.getAttribute("kubun");
+				
 				UserDao dao= new UserDao();
 				dao.update(id,name,furigana,email,kubun);
 				forward="/jsp/userComp.jsp?submit=変更";
-
 			}
-
 			if(request.getParameter("submit").equals("削除")){
-
-				int id = Integer.parseInt(request.getParameter("emp_id"));
-
+				int id = (int)session.getAttribute("id");
+				
 				UserDao dao= new UserDao();
 				dao.delete(id);
 				forward="/jsp/userComp.jsp?submit=削除";
-
 			}
-
 		}
-
-
-
+		
+		
 		if(request.getParameter("type").equals("category") && request.getParameter("maker").equals("bc")) {
 			request.setAttribute("categoryType", "bc");
 

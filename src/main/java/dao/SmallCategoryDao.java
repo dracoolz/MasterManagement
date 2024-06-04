@@ -11,182 +11,181 @@ public class SmallCategoryDao extends DBAccess{
 	
 	
 	//小カテゴリ一覧を表示するメソッド
-		public ArrayList<SmallCategoryBean> selectAll() {
+	public ArrayList<SmallCategoryBean> selectAll() {
 
-			ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>();
+		ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>();
 
-			String sql = "select * from small_category;";
+		String sql = "select * from small_category;";
 
-			try {
-				connect();
-				// ステートメントの作成
-				PreparedStatement ps = getConnection().prepareStatement(sql);
+		try {
+			connect();
+			// ステートメントの作成
+			PreparedStatement ps = getConnection().prepareStatement(sql);
 
-				 ResultSet rs = ps.executeQuery();
+			 ResultSet rs = ps.executeQuery();
 
-				while (rs.next()) {
-					SmallCategoryBean bean = new SmallCategoryBean();
-					bean.setSc_id(rs.getInt("sc_id"));
-					bean.setBc_id(rs.getInt("bc_id"));
-					bean.setSc_category(rs.getString("sc_category"));
-					list.add(bean);
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				disconnect();
-			}
-			return list;
-		}
-		
-		
-		//小カテゴリテーブルで条件をつけて検索するメソッド
-		public SmallCategoryBean selectIf(String name) {
-
-			SmallCategoryBean bean = new SmallCategoryBean();
-
-			String sql = "select * from small_category where sc_category=?";
-
-			try {
-				connect();
-				// ステートメントの作成
-				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setString(1, name);
-
-				ResultSet rs = ps.executeQuery();
-
+			while (rs.next()) {
+				SmallCategoryBean bean = new SmallCategoryBean();
 				bean.setSc_id(rs.getInt("sc_id"));
 				bean.setBc_id(rs.getInt("bc_id"));
 				bean.setSc_category(rs.getString("sc_category"));
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				disconnect();
+				list.add(bean);
 			}
-			return bean;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
-		
-		
-		public SmallCategoryBean selectSc(int id) {
+		return list;
+	}
+	
+	
+	//小カテゴリテーブルで条件をつけて検索するメソッド
+	public SmallCategoryBean selectIf(String name) {
 
-			SmallCategoryBean bean = new SmallCategoryBean();
+		SmallCategoryBean bean = new SmallCategoryBean();
 
-			String sql = "select * from small_category where sc_id=?";
+		String sql = "select * from small_category where sc_category=?";
 
-			try {
-				connect();
-				// ステートメントの作成
-				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, id);
+		try {
+			connect();
+			// ステートメントの作成
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setString(1, name);
 
-				ResultSet rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 
+			bean.setSc_id(rs.getInt("sc_id"));
+			bean.setBc_id(rs.getInt("bc_id"));
+			bean.setSc_category(rs.getString("sc_category"));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return bean;
+	}
+	
+	
+	public SmallCategoryBean selectSc(int id) {
+
+		SmallCategoryBean bean = new SmallCategoryBean();
+
+		String sql = "select * from small_category where sc_id=?";
+
+		try {
+			connect();
+			// ステートメントの作成
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setInt(1, id);
+
+			ResultSet rs = ps.executeQuery();
+
+			bean.setSc_id(rs.getInt("sc_id"));
+			bean.setBc_id(rs.getInt("bc_id"));
+			bean.setSc_category(rs.getString("sc_category"));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return bean;
+	}
+	
+	public ArrayList<SmallCategoryBean> selectBc(int id) {
+
+		ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>();
+
+		String sql = "select * from small_category where bc_id=?;";
+
+		try {
+			connect();
+			// ステートメントの作成
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setInt(1, id);
+
+			 ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				SmallCategoryBean bean = new SmallCategoryBean();
 				bean.setSc_id(rs.getInt("sc_id"));
 				bean.setBc_id(rs.getInt("bc_id"));
 				bean.setSc_category(rs.getString("sc_category"));
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				disconnect();
+				list.add(bean);
 			}
-			return bean;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
-		
-		public ArrayList<SmallCategoryBean> selectBc(int id) {
+		return list;
+	}
 
-			ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>();
+	//小カテゴリテーブルに値を追加するメソッド
+	public void insert(int sc_id ,int bc_id ,String name) {
 
-			String sql = "select * from small_category where bc_id=?;";
+		String sql = "insert into small_category(sc_id,bc_id,sc_category) values (?,?,?)";
 
-			try {
-				connect();
-				// ステートメントの作成
-				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, id);
+		try {
+			connect();
+			// ステートメントの作成
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setInt(1, sc_id);
+			ps.setInt(2, bc_id);
+			ps.setString(3, name);
+			ps.executeUpdate();
 
-				 ResultSet rs = ps.executeQuery();
-
-				while (rs.next()) {
-					SmallCategoryBean bean = new SmallCategoryBean();
-					bean.setSc_id(rs.getInt("sc_id"));
-					bean.setBc_id(rs.getInt("bc_id"));
-					bean.setSc_category(rs.getString("sc_category"));
-					list.add(bean);
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				disconnect();
-			}
-			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
+	}
+	
 
-		//小カテゴリテーブルに値を追加するメソッド
-		public void insert(int sc_id ,int bc_id ,String name) {
+	//小カテゴリを更新（アップデート）するメソッド
+	public void update(int sc_id ,int bc_id ,int new_sc_id ,String name) {
 
-			String sql = "insert into small_category(sc_id,bc_id,sc_category) values (?,?,?)";
+		String sql = "update small_category set sc_id=?,bc_id=?,sc_category=? where sc_id=?";
 
-			try {
-				connect();
-				// ステートメントの作成
-				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, sc_id);
-				ps.setInt(2, bc_id);
-				ps.setString(3, name);
-				ps.executeUpdate();
+		try {
+			connect();
+			// ステートメントの作成
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setInt(1, new_sc_id);
+			ps.setInt(2, bc_id);
+			ps.setString(3, name);
+			ps.setInt(4, sc_id);
+			ps.executeUpdate();
 
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				disconnect();
-			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
-		
+	}
+	
 
-		//小カテゴリを更新（アップデート）するメソッド
-		public void update(int sc_id ,int bc_id ,int new_sc_id ,String name) {
+	//小カテゴリを削除するメソッド
+	public  void delete(int id) {
 
-			String sql = "update small_category set sc_id=?,bc_id=?,sc_category=? where sc_id=?";
+		String sql = "delete from small_category where sc_id=?";
 
-			try {
-				connect();
-				// ステートメントの作成
-				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, new_sc_id);
-				ps.setInt(2, bc_id);
-				ps.setString(3, name);
-				ps.setInt(4, sc_id);
-				ps.executeUpdate();
+		try {
+			connect();
+			// ステートメントの作成
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setInt(1, id);
+			ps.executeUpdate();
 
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				disconnect();
-			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
 		}
-		
-
-		//小カテゴリを削除するメソッド
-		public  void delete(int id) {
-
-			String sql = "delete from small_category where sc_id=?";
-
-			try {
-				connect();
-				// ステートメントの作成
-				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, id);
-				ps.executeUpdate();
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				disconnect();
-			}
-		}
-
+	}
 }
