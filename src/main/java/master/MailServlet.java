@@ -75,7 +75,7 @@ public class MailServlet extends HttpServlet {
 					}
 					err = "登録されているメールアドレスにリンクを送信しました";	
 					*/
-				
+					
 					session.setAttribute("userid",iid);
 					RequestDispatcher rd = request.getRequestDispatcher("/jsp/password.jsp?no=1");
 					rd.forward(request, response);

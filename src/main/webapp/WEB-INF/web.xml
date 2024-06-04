@@ -49,7 +49,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ManageControlServlet</servlet-name>
-		<url-pattern>/managecontrol</url-pattern>
+		<url-pattern>/manageControl</url-pattern>
 	</servlet-mapping>
 
 	<!-- MailServlet -->
