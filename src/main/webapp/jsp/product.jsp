@@ -90,7 +90,7 @@
 	       			<td colspan="2"></td>
        			</tr>
        		</thead>
-       		<% for(int i=0; i < proList.size(); i++) { %>
+			<% for(int i=0; i < proList.size(); i++) { %>
        			<tr>
 	       			<td><%=proList.get(i).getPro_id() %></td>
 	       			<td><%=proList.get(i).getPi_name() %></td>

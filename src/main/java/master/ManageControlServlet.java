@@ -10,11 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bean.BigCategoryBean;
-import bean.ProductBean;
 import bean.SmallCategoryBean;
 import bean.UserBean;
 import dao.BigCategoryDao;
-import dao.ProductDao;
 import dao.SmallCategoryDao;
 import dao.UserDao;
 
@@ -56,11 +54,6 @@ public class ManageControlServlet extends HttpServlet {
 				rd = request.getRequestDispatcher("./jsp/category.jsp");
 				break;
 			case 3:
-				ProductDao pdao = new ProductDao();
-				ArrayList<ProductBean> parr = new ArrayList<ProductBean>();
-				parr = pdao.selectAll();
-				request.setAttribute("list", parr);
-				
 				BigCategoryDao bdao2 = new BigCategoryDao();
 				ArrayList<BigCategoryBean> barr2 = new ArrayList<BigCategoryBean>();
 				barr2 = bdao2.selectAll();

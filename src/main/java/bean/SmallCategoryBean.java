@@ -7,6 +7,7 @@ public class SmallCategoryBean implements Serializable {
 	private int sc_id;
 	private int bc_id;
 	private String sc_category;
+	private String bc_category;
 	
 	
 	public int getSc_id() {
@@ -27,5 +28,10 @@ public class SmallCategoryBean implements Serializable {
 	public void setSc_category(String sc_category) {
 		this.sc_category = sc_category;
 	}
-	
+	public String getBc_category() {
+		return bc_category;
+	}
+	public void setBc_category(String bc_category) {
+		this.bc_category = bc_category;
+	}
 }
