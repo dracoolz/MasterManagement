@@ -116,7 +116,6 @@ public class SmallCategoryDao extends DBAccess{
 				bean.setSc_category(rs.getString("sc_category"));
 				
 				list.add(bean);
-				bean.setBc_category(rs.getString("bc_category"));
 			}	
 		} catch (SQLException e) {
 			e.printStackTrace();
