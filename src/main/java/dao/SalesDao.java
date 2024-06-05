@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import bean.SalesBean;
 
 public class SalesDao extends DBAccess {
-
-    public ArrayList<SalesBean> selectProSales() {
-        ArrayList<SalesBean> list = new ArrayList<>();
-
-        String sql = "SELECT s.pro_id, pi.pi_name, sc.sc_category AS category, s.sale_price, " +
+	public ArrayList<SalesBean> selectProSales() {
+		ArrayList<SalesBean> list = new ArrayList<>();
+		
+		String sql = "SELECT s.pro_id, pi.pi_name, sc.sc_category AS category, s.sale_price, " +
                      "(s.sale_price * 5 / 6) AS stock_price, s.sale_qty, " +
                      "((s.sale_price * s.sale_qty) - ((s.sale_price * 5 / 6) * s.sale_qty)) AS profit, " +
                      "((s.sale_price * s.sale_qty) / " +
@@ -24,43 +23,40 @@ public class SalesDao extends DBAccess {
                      "JOIN category c ON pi.category_id = c.category_id " +
                      "JOIN small_category sc ON c.sc_id = sc.sc_id " +
                      "ORDER BY s.pro_id";
-
-        try {
-            connect();
-            PreparedStatement ps = getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                SalesBean bean = new SalesBean();
-                bean.setPro_id(rs.getString("pro_id"));
-                bean.setPi_name(rs.getString("pi_name"));
-                bean.setCategory(rs.getString("category"));
-                bean.setSale_price(rs.getInt("sale_price"));
-                bean.setStock_price(rs.getInt("stock_price"));
-                bean.setSale_amount(rs.getInt("sale_qty"));
-                bean.setProfit(rs.getInt("profit"));
-                bean.setComparison(rs.getDouble("comparison"));
-                list.add(bean);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            disconnect();
-        }
-        return list;
-    }
-
-
+		
+		try {
+			connect();
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				SalesBean bean = new SalesBean();
+				bean.setPro_id(rs.getString("pro_id"));
+				bean.setPi_name(rs.getString("pi_name"));
+				bean.setCategory(rs.getString("category"));
+				bean.setSale_price(rs.getInt("sale_price"));
+				bean.setStock_price(rs.getInt("stock_price"));
+				bean.setSale_amount(rs.getInt("sale_qty"));
+				bean.setProfit(rs.getInt("profit"));
+				bean.setComparison(rs.getDouble("comparison"));
+				list.add(bean);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
+	}
 
 
-
-    //商品売上情報一覧を返す
-    public ArrayList<SalesBean> selectProSalesById(String id){
-
-        ArrayList<SalesBean> list = new ArrayList<SalesBean>();
-
-        // SQL文を作成する
-        String sql = "SELECT s.pro_id, pi.pi_name, sc.sc_category AS category, s.sale_price, " +
+	//商品売上情報一覧を返す
+	public ArrayList<SalesBean> selectProSalesById(String id){
+		
+		ArrayList<SalesBean> list = new ArrayList<SalesBean>();
+		
+		// SQL文を作成する
+		String sql = "SELECT s.pro_id, pi.pi_name, sc.sc_category AS category, s.sale_price, " +
 	                "(s.sale_price * 5 / 6) AS stock_price, s.sale_qty, cus.district,  " +
 	                "((s.sale_price * s.sale_qty) - ((s.sale_price * 5 / 6) * s.sale_qty)) AS profit, " +
 	                "((s.sale_price * s.sale_qty) / " +
@@ -74,9 +70,8 @@ public class SalesDao extends DBAccess {
 	                "JOIN small_category sc ON c.sc_id = sc.sc_id " +
 	                "JOIN customer cus ON s.cus_id = cus.cus_id " +
 	                "WHERE s.pro_id = ?";
-
-
-        try {
+		
+		try {
 
             // Connectionオブジェクトを取得する
             connect();
@@ -309,13 +304,13 @@ public class SalesDao extends DBAccess {
 				"JOIN customer c ON sl.cus_id = c.cus_id " +
 				"JOIN product p ON sl.pro_id = p.pro_id " +
 				"WHERE c.cus_name = ?";
-
+		
 		try {
 			connect();
 			PreparedStatement ps = getConnection().prepareStatement(sql);
 			ps.setString(1, customerName);
 			ResultSet rs = ps.executeQuery();
-
+			
 			while (rs.next()) {
 				SalesBean bean = new SalesBean();
 				bean.setSale_id(rs.getInt("sale_id"));
@@ -375,14 +370,14 @@ public class SalesDao extends DBAccess {
 
 	public ArrayList<SalesBean> selectDistrict(String district) {
 		ArrayList<SalesBean> list = new ArrayList<SalesBean>();
-
+		
 		String sql = "SELECT sl.sale_id, sl.cus_id, sl.pro_id, sl.sale_amount, sl.sale_price, sl.date, c.cus_name, " +
 				"(((sl.sale_price - p.wholesale) * sl.sale_amount) / (sl.sale_price * sl.sale_amount)) * 100 AS gross_profit " +
 				"FROM sale_list sl " +
 				"JOIN customer c ON sl.cus_id = c.cus_id " +
 				"JOIN product p ON sl.pro_id = p.pro_id " +
 				"WHERE c.district = ?";
-
+		
 		try {
 			connect();
 			PreparedStatement ps = getConnection().prepareStatement(sql);

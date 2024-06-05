@@ -10,17 +10,17 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/productList.css">
 <script>
-    function incrementMonth() {
-        const monthSelect = document.getElementById("month");
-        let currentMonth = parseInt(monthSelect.value);
-        if (currentMonth < 12) {
-            monthSelect.value = currentMonth + 1;
-        } else {
-            monthSelect.value = 1;
-            incrementYear();
-        }
-    }
-
+	function incrementMonth() {
+		const monthSelect = document.getElementById("month");
+		let currentMonth = parseInt(monthSelect.value);
+		if (currentMonth < 12) {
+			monthSelect.value = currentMonth + 1;
+		} else {
+			monthSelect.value = 1;
+			incrementYear();
+		}
+	}
+	
     function decrementMonth() {
         const monthSelect = document.getElementById("month");
         let currentMonth = parseInt(monthSelect.value);
@@ -36,7 +36,7 @@
         const yearSelect = document.getElementById("year");
         let currentYear = parseInt(yearSelect.value);
         yearSelect.value = currentYear + 1;
-    }
+	}
 
     function decrementYear() {
         const yearSelect = document.getElementById("year");

@@ -8,12 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bean.BigCategoryBean;
 import bean.ProductBean;
 import bean.SmallCategoryBean;
 import bean.UserBean;
 import dao.BigCategoryDao;
+import dao.ProductDao;
 import dao.SmallCategoryDao;
 import dao.UserDao;
 
@@ -30,6 +32,7 @@ public class ManageControlServlet extends HttpServlet {
 		//文字コードの設定
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
+		HttpSession session = request.getSession(true);
 		
 		int no = Integer.parseInt(request.getParameter("no"));
 		RequestDispatcher rd = null;
@@ -39,6 +42,7 @@ public class ManageControlServlet extends HttpServlet {
 				ArrayList<UserBean> uarr = new ArrayList<UserBean>();
 				uarr = dao.selectAll();
 				request.setAttribute("list", uarr);
+				request.setAttribute("search", "");
 				rd = request.getRequestDispatcher("/jsp/user.jsp");
 				break;
 			case 2:
@@ -55,12 +59,14 @@ public class ManageControlServlet extends HttpServlet {
 				rd = request.getRequestDispatcher("./jsp/category.jsp");
 				break;
 			case 3:
+				ProductDao pdao = new ProductDao();
 				ArrayList<ProductBean> parr = new ArrayList<ProductBean>();
+				parr = pdao.selectAll();
 				request.setAttribute("list", parr);
 				BigCategoryDao bdao2 = new BigCategoryDao();
 				ArrayList<BigCategoryBean> barr2 = new ArrayList<BigCategoryBean>();
 				barr2 = bdao2.selectAll();
-				request.setAttribute("bclist", barr2);
+				session.setAttribute("bclist", barr2);
 				rd = request.getRequestDispatcher("./jsp/product.jsp");
 				break;
 			case 4:

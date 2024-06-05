@@ -20,9 +20,16 @@
 			<a href="/first">ログアウト</a>
 		</div>
 		<p><%=str+"しました"%></p>
-		<form action= "./manageControl?no=1" method="post">
-			<p><input type ="submit"  name="submit" value="次へ"></p>
-		</form>
-    </div>
+		
+		<%if(request.getParameter("status").equals("change")) {%>
+			<form action= "./login" method="post">
+				<p><input type ="submit"  name="submit" value="次へ"></p>
+			</form>
+		<% } else { %>
+			<form action= "./manageControl?no=1" method="post">
+				<p><input type ="submit"  name="submit" value="次へ"></p>
+			</form>
+		<% } %>
+	</div>
 </body>
 </html>

@@ -59,6 +59,7 @@ if(kubun == 0) {
 			</tr>
 			<tr>
 				<td align="right">(必須)</td>
+				<td>*全角ひらがな</td>
 			</tr>
 			<tr>
 				<td align="right">メールアドレス：</td>

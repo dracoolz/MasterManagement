@@ -14,9 +14,9 @@ public class ProductBean implements Serializable {
 	private int set_quantity;
 	
 	private String pi_name;
-	private int category_id;
-	private String jan_cade;
-	private int branch_no;
+	private String category_id;
+	private String jan_code;
+	private String branch_no;
 	private String ref_type;
 	private int retail_price;
 	private int tax_rate_class;
@@ -27,7 +27,10 @@ public class ProductBean implements Serializable {
 	private String direct_permission;
 	private String out_of_stock;
 	
-	private int sc_id;
+	private int sc_id1;
+	private int sc_id2;
+	private int sc_id3;
+	
 	private String bc_category_1;
 	private String sc_category_1;
 	private String bc_category_2;
@@ -124,27 +127,27 @@ public class ProductBean implements Serializable {
 		this.pi_name = pi_name;
 	}
 	
-	public int getCategory_id() {
+	public String getCategory_id() {
 		return category_id;
 	}
 	
-	public void setCategory_id(int category_id) {
+	public void setCategory_id(String category_id) {
 		this.category_id = category_id;
 	}
 	
-	public String getJan_cade() {
-		return jan_cade;
+	public String getJan_code() {
+		return jan_code;
 	}
 	
-	public void setJan_cade(String jan_cade) {
-		this.jan_cade = jan_cade;
+	public void setJan_code(String jan_code) {
+		this.jan_code = jan_code;
 	}
 	
-	public int getBranch_no() {
+	public String getBranch_no() {
 		return branch_no;
 	}
 	
-	public void setBranch_no(int branch_no) {
+	public void setBranch_no(String branch_no) {
 		this.branch_no = branch_no;
 	}
 	
@@ -220,12 +223,28 @@ public class ProductBean implements Serializable {
 		this.out_of_stock = out_of_stock;
 	}
 	
-	public int getSc_id() {
-		return sc_id;
+	public int getSc_id1() {
+		return sc_id1;
 	}
 	
-	public void setSc_id(int sc_id) {
-		this.sc_id = sc_id;
+	public void setSc_id1(int sc_id1) {
+		this.sc_id1 = sc_id1;
+	}
+	
+	public int getSc_id2() {
+		return sc_id2;
+	}
+	
+	public void setSc_id2(int sc_id2) {
+		this.sc_id2 = sc_id2;
+	}
+	
+	public int getSc_id3() {
+		return sc_id3;
+	}
+	
+	public void setSc_id3(int sc_id3) {
+		this.sc_id3 = sc_id3;
 	}
 	
 	public String getDescr() {

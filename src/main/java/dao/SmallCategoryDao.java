@@ -31,7 +31,7 @@ public class SmallCategoryDao extends DBAccess{
 				bean.setSc_category(rs.getString("sc_category"));
 				list.add(bean);
 			}
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -43,9 +43,9 @@ public class SmallCategoryDao extends DBAccess{
 	
 	//小カテゴリテーブルで条件をつけて検索するメソッド
 	public SmallCategoryBean selectIf(String name) {
-
+		
 		SmallCategoryBean bean = new SmallCategoryBean();
-
+		
 			String sql = "select bc.bc_id,bc.bc_category,sc.sc_id,sc.sc_category from big_category as bc,small_category as sc where bc.bc_id=sc.bc_id and sc_id=?";
 			
 		try {
@@ -53,9 +53,9 @@ public class SmallCategoryDao extends DBAccess{
 			// ステートメントの作成
 			PreparedStatement ps = getConnection().prepareStatement(sql);
 			ps.setString(1, name);
-
+			
 			ResultSet rs = ps.executeQuery();
-
+			
 			bean.setSc_id(rs.getInt("sc_id"));
 			bean.setBc_id(rs.getInt("bc_id"));
 			bean.setSc_category(rs.getString("sc_category"));
@@ -70,19 +70,19 @@ public class SmallCategoryDao extends DBAccess{
 	
 	
 	public SmallCategoryBean selectSc(int id) {
-
+		
 		SmallCategoryBean bean = new SmallCategoryBean();
-
+		
 		String sql = "select * from small_category where sc_id=?";
-
+		
 		try {
 			connect();
 			// ステートメントの作成
 			PreparedStatement ps = getConnection().prepareStatement(sql);
 			ps.setInt(1, id);
-
+			
 			ResultSet rs = ps.executeQuery();
-
+			
 			bean.setSc_id(rs.getInt("sc_id"));
 			bean.setBc_id(rs.getInt("bc_id"));
 			bean.setSc_category(rs.getString("sc_category"));
@@ -96,28 +96,27 @@ public class SmallCategoryDao extends DBAccess{
 	}
 	
 	public ArrayList<SmallCategoryBean> selectBc(int id) {
-
+		
 		ArrayList<SmallCategoryBean> list = new ArrayList<SmallCategoryBean>();
-
+		
 		String sql = "select * from small_category where bc_id=?;";
-
+		
 		try {
 			connect();
 			// ステートメントの作成
 			PreparedStatement ps = getConnection().prepareStatement(sql);
 			ps.setInt(1, id);
-
+			
 			 ResultSet rs = ps.executeQuery();
-
+			 
 			while (rs.next()) {
 				SmallCategoryBean bean = new SmallCategoryBean();
 				bean.setSc_id(rs.getInt("sc_id"));
 				bean.setBc_id(rs.getInt("bc_id"));
 				bean.setSc_category(rs.getString("sc_category"));
-				
 				list.add(bean);
-				bean.setBc_category(rs.getString("bc_category"));
-			}	
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -128,9 +127,9 @@ public class SmallCategoryDao extends DBAccess{
 
 	//小カテゴリテーブルに値を追加するメソッド
 	public void insert(int sc_id ,int bc_id ,String name) {
-
+		
 		String sql = "insert into small_category(sc_id,bc_id,sc_category) values (?,?,?)";
-
+		
 		try {
 			connect();
 			// ステートメントの作成
@@ -139,7 +138,7 @@ public class SmallCategoryDao extends DBAccess{
 			ps.setInt(2, bc_id);
 			ps.setString(3, name);
 			ps.executeUpdate();
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -162,7 +161,7 @@ public class SmallCategoryDao extends DBAccess{
 			ps.setString(3, name);
 			ps.setInt(4, sc_id);
 			ps.executeUpdate();
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -170,19 +169,18 @@ public class SmallCategoryDao extends DBAccess{
 		}
 	}
 	
-
 	//小カテゴリを削除するメソッド
 	public  void delete(int id) {
-
+		
 		String sql = "delete from small_category where sc_id=?";
-
+		
 		try {
 			connect();
 			// ステートメントの作成
 			PreparedStatement ps = getConnection().prepareStatement(sql);
 			ps.setInt(1, id);
 			ps.executeUpdate();
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

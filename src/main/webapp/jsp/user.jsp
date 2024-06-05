@@ -15,7 +15,7 @@
 </head>
 
 <body>
-<script src="../js/tableSorter.js"></script>
+<script src="${pageContext.request.contextPath}/js/tableSorter.js"></script>
 <%ArrayList<UserBean> userList =(ArrayList<UserBean>)request.getAttribute("list"); %>
 <form action ="./DUControl?type=user" method="post">
 	<div align="center">
@@ -25,12 +25,12 @@
 		<strong>ユーザ情報の一覧</strong>
 		<div align="right">
 			<p><%="ようこそ、"+session.getAttribute("username")+"さん" %></p>
-			<a href="/first">ログアウト</a>
+			<a href="./first">ログアウト</a>
 		</div>
 		<div align="left" id="search">
 			<table>
 				<tr>
-					<td>🔍<input type="text" name="searchWord"></td>
+					<td>🔍<input type="text" name="searchWord" value=<%=request.getAttribute("search")%>></td>
 					<td><input type="submit" name="submit" value="検索"></td> 
 				</tr>
 			</table>

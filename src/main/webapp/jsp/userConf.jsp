@@ -15,7 +15,7 @@
 		<div align="left">
 			<p>ユーザ管理</p>
 		</div>
-		<strong>ユーザ情報の登録</strong>
+		<strong><%="ユーザ情報の"+str%></strong>
 		<div align="right">
 			<p><%="ようこそ、"+session.getAttribute("username")+"さん" %></p>
 			<a href="/first">ログアウト</a>
@@ -47,7 +47,7 @@
 			<tr>
 				<td align="right">区分：</td>
 				<td align="left">
-					<%int role = (int)session.getAttribute("kubun");%>
+					<%int role = (int)session.getAttribute("role");%>
 						<%if(role == 0) { %>
 							正社員
 						<%} else { %>
@@ -62,8 +62,8 @@
 				<td><input type ="submit" name="submit" value=<%=str%>></td>
 				<%if(str.equals("削除")) {%>
 					<td><input type ="submit" name="submit" formaction="./manageControl?no=1" value="戻る"></td>
-				<%}else {%>
-					<td><input type ="submit" name="submit" formaction="./DUControl?type=user" value="戻る"></td>
+				<%}else{%>
+					<td><input type ="submit" name="submit" formaction=<%="./DUControl?type=user&status="+str%> value="戻る"></td>
 				<%} %>
 			</tr>
 		</table>

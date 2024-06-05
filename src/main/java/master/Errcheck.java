@@ -50,10 +50,10 @@ public class Errcheck {
 			for(int i = 0; i < necStrs.length; ++i) {
 				if(necStrs[i].length() == 0) {
 					if(place == null) {
-						place = strNames[i];
+						place = necStrNames[i];
 					}
 					else {
-						place = place + "、" + strNames[i];
+						place = place + "、" + necStrNames[i];
 					}
 				}
 			}
@@ -89,12 +89,22 @@ public class Errcheck {
 	}
 	
 	public String numberCheck(String[] strs, String[] strNames){
-		String str;
+		String place = null;
 		for(int i=0; i<strs.length; i++) {
-			str = strs[i];
-			if(!str.matches("[0-9]+") || Integer.parseInt(str)<0){
-				return strNames[i]+"は整数で入力してください";
+			if(strs[i].length() == 0) {
+				continue;
+			} else if(!strs[i].matches("[0-9]+") || Integer.parseInt(strs[i])<0){
+				System.out.println(strNames[i]+"+"+strs[i]);
+				if(place == null) {
+					place = strNames[i];
+				}
+				else {
+					place = place + "、" + strNames[i];
+				}
 			}
+		}
+		if(place != null) {
+			return place + "は整数で入力してください";
 		}
 		return null;
 	}
@@ -121,7 +131,7 @@ public class Errcheck {
 				return null;
 			}
 			return "存在しない社員番号です";
-		} else if(type.equals("bc")) {
+		} /*else if(type.equals("bc")) {
 			BigCategoryDao dao = new BigCategoryDao();
 			BigCategoryBean bean = dao.select(id);
 			if(id == bean.getBc_id()){
@@ -135,7 +145,7 @@ public class Errcheck {
 				return null;
 			}
 			return "存在しない小カテゴリ番号です";
-		}
+		}*/
 		return null;
 	}
 	
@@ -143,10 +153,10 @@ public class Errcheck {
 		if(type.equals("product")) {
 			ProductDao dao = new ProductDao();
 			ProductBean bean = dao.select(String.valueOf(id));
-			if(String.valueOf(id) == bean.getPro_id()){
+			if(bean.getPro_id() == null){
 				return null;
 			}
-			return "存在しないダイレクト商品番号です";
+			return "このダイレクト商品番号は既に存在しています";
 		}
 		return null;
 	}

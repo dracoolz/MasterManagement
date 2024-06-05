@@ -101,8 +101,8 @@ public class UserDao extends DBAccess{
 		public ArrayList<UserBean> selectPart(String str) {
 			
 			ArrayList<UserBean> list = new ArrayList<UserBean>();
-			String sql = "select * from emp_info where emp_id like ? or emp_name like ? or furigana like ? or emp_email like ? or role like ?";
-
+			String sql = "select * from emp_info where emp_id like ? or emp_name like ? or furigana like ? or emp_email like ? or (case when role = 0 then '正社員' when role = 1 then 'アルバイト' end) like ?";
+			
 			try {
 				connect();
 				// ステートメントの作成
@@ -112,17 +112,16 @@ public class UserDao extends DBAccess{
 				ps.setString(3, "%" + str + "%");
 				ps.setString(4, "%" + str + "%");
 				ps.setString(5, "%" + str + "%");
-
+				
 				ResultSet rs = ps.executeQuery();
-
+				
 				while (rs.next()) {
 					UserBean bean = new UserBean();
 					bean.setEmp_id(rs.getInt("emp_id"));
 					bean.setEmp_name(rs.getString("emp_name"));
 					bean.setFurigana(rs.getString("furigana"));
 					bean.setEmp_email(rs.getString("emp_email"));
-					bean.setFurigana(rs.getString("password"));
-					bean.setFurigana(rs.getString("role"));
+					bean.setRole(rs.getInt("role"));
 					list.add(bean);
 				}
 				
