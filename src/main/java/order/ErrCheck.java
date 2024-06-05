@@ -27,6 +27,7 @@ public class ErrCheck {
 	private String E020 = "商品情報を入力してください";
 	private String E021 = "対象商品は既に存在しています";
 	private String E022 = "取引先名を追加してください";
+	private String E023 = "取引先IDは半角数字で入力してください";
 	
 	//入力されているかチェック
 	public boolean IsEnteredCheck(String str) {
@@ -37,10 +38,35 @@ public class ErrCheck {
 		return result;
 	}
 	
+	//半角数値入力されているか
+	public boolean numberCheck(String str){
+		boolean result = true;
+		if(!str.matches("[0-9]+") || Integer.parseInt(str)<0){
+			result = false;
+		}
+		return result;
+	}
+	
 	//キャンセル数と返品数の合計が受注数を超えないか
 	public boolean decrementQtyOverCheck(int orderQty, int cancelQty ,int refundQty) {
 		boolean result = true;
 		if(orderQty < (cancelQty+refundQty)) {
+			result = false;
+		}
+		return result;
+	}
+	
+	//既に同じ商品が追加されているか
+	public boolean productDuplicateCheck(String productId, ArrayList<OrderSlipBean> slip) {
+		boolean result = true;
+		int duplicateNumber = 0;
+		
+		for(OrderSlipBean item:slip) {
+			if(item.getProductId().equals(productId)) {
+				duplicateNumber = duplicateNumber + 1;
+			}
+		}
+		if(duplicateNumber > 0) {
 			result = false;
 		}
 		return result;
@@ -171,5 +197,9 @@ public class ErrCheck {
 
 	public String getE022() {
 		return E022;
+	}
+	
+	public String getE023() {
+		return E023;
 	}	
 }

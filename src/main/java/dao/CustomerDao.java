@@ -9,7 +9,7 @@ import bean.CustomerViewBean;
 
 public class CustomerDao extends DBAccess {
 
-	public String selectCustomerId(int cusId) {
+	public String selectCustomerName(int cusId) {
 		String sql="select cus_name from customer where cus_id = ?";
 		ResultSet rs = null;
 		String customerName = null;

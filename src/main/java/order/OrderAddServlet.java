@@ -27,64 +27,119 @@ public class OrderAddServlet extends HttpServlet {
 	
 	//session
 	HttpSession session = req.getSession();
+	//session.setAttribute("addSlip", null);
 	
 	//get_parameter
 	String customerFlag = req.getParameter("customerFlag");
 	String productFlag = req.getParameter("productFlag");
-	String customerId = req.getParameter("customerId");
-	String errMsg = (String) req.getAttribute("errMsg");
+	String selCustomerId = req.getParameter("selCustomerId");
+	String selProductId = req.getParameter("selProductId");
+	String delProductId = req.getParameter("delProductId");
+	String[] orderQtyList = req.getParameterValues("orderQty");
+	//String customerErrMsg = req.getParameter("customerErrMsg");
+	//String productErrMsg = (String) req.getAttribute("productErrMsg");
 	
 	@SuppressWarnings("unchecked")
-	ArrayList<OrderSlipBean> addSlip = (ArrayList<OrderSlipBean>) req.getAttribute("addSlip");
+	ArrayList<OrderSlipBean> addSlip = (ArrayList<OrderSlipBean>) session.getAttribute("addSlip");
 	
 	//何も追加されていなかったら
 	if(addSlip == null) {
+		addSlip = new ArrayList<OrderSlipBean>();
+		session.setAttribute("addSlip", addSlip);
 	}
 	
 	//jump_url
 	String url = "/jsp/orderAdd.jsp";
 	
+	ErrCheck errChecker = new ErrCheck();
+	boolean result = true;
+	
 	//顧客関係処理
 	if(("削除").equals(customerFlag)) {
 		//sessionの取引先IDの値を消す
-		session.setAttribute("customerName", null);
+		session.setAttribute("addCustomerId",null);
+		session.setAttribute("addCustomerName", null);
 		
 	}else if(("追加").equals(customerFlag)) {
-		ErrCheck errChecker = new ErrCheck();
-		boolean result = errChecker.IsEnteredCheck(customerId);
 		
+		result = errChecker.IsEnteredCheck(selCustomerId);
+		
+		//入力漏れあり
 		if(!result) {
-			errMsg = errChecker.getE017();
-			req.setAttribute("errMsg", errMsg);
-			session.setAttribute("customerName", null);
+			req.setAttribute("customerErrMsg", errChecker.getE019());
+			session.setAttribute("addCustomerId",null);
+			session.setAttribute("addCustomerName", null);
 		}else {
-			CustomerDao cusDao = new CustomerDao();
-			String customerName = cusDao.selectCustomerId(Integer.parseInt(customerId));
-			session.setAttribute("customerName", customerName);
+			
+			result = errChecker.numberCheck(selCustomerId);
+			//半角数値じゃなかったら
+			if(!result) {
+				req.setAttribute("customerErrMsg", errChecker.getE023());
+				session.setAttribute("addCustomerId",null);
+				session.setAttribute("addCustomerName", null);
+			//半角数値だったら
+			}else {
+				CustomerDao cusDao = new CustomerDao();
+				String customerName = cusDao.selectCustomerName(Integer.parseInt(selCustomerId));
+				//顧客が見つからなかった
+				if(customerName == null) {
+					req.setAttribute("customerErrMsg", errChecker.getE017());
+					session.setAttribute("addCustomerId",null);
+					session.setAttribute("addCustomerName", null);
+					
+				//顧客が見つかった
+				}else {
+					session.setAttribute("addCustomerId", selCustomerId);
+					session.setAttribute("addCustomerName", customerName);
+				}
+			}
 		}
 	}
 	
 	//商品関係処理
 	if(("削除").equals(productFlag)) {
 		//productListから商品情報を削除 productId
-		String delProId = req.getParameter("delProId");
-		int i = 0;
-		for(OrderSlipBean item:addSlip) {
+		//int i = 0;
+		for(int i=0; i<addSlip.size(); i++) {
 			//削除する商品だったら
-			if(item.getProductId().equals(delProId)) {
+			if(addSlip.get(i).getProductId().equals(delProductId)) {
 				addSlip.remove(i);
 			}
-			i++;
 		}
 		
 	}else if(("追加").equals(productFlag)) {
-		//productListに商品情報を追加
-		ProductDao proDao = new ProductDao();
 		
+		result = errChecker.IsEnteredCheck(selProductId);
+		//入力漏れあり
+		if(!result) {
+			req.setAttribute("productErrMsg", errChecker.getE020());
+		//入力漏れなし
+		}else {
+			ProductDao proDao = new ProductDao();
+			String productName = proDao.selectProductName(selProductId);
+			//商品が見つからなかったら
+			if(productName == null) {
+				req.setAttribute("productErrMsg", errChecker.getE017());
+			//商品が見つかったら
+			}else {
+				result = errChecker.productDuplicateCheck(selProductId, addSlip);
+				//同じ商品が追加されていたら
+				if(!result) {
+					req.setAttribute("productErrMsg", errChecker.getE021());
+				//同じ商品はなかったら　allOK!
+				}else {
+					//addSlip sessionに追加
+					OrderSlipBean bean = new OrderSlipBean();
+					bean.setProductId(selProductId);
+					bean.setProductName(productName);
+					addSlip.add(bean);
+				}
+			}
+		}
 	}
 	
 	
-	session.setAttribute("productList",addSlip);
+	//session.setAttribute("productList",addSlip);
 	
 	
 	//jump
