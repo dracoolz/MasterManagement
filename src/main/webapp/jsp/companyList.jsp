@@ -6,9 +6,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>商品売上一覧</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/productList.css">
+<title>取引先別売上一覧</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/companyList.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/js/jquery.tablesorter.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.0/css/theme.default.min.css">
 <script>
     function incrementMonth() {
         const monthSelect = document.getElementById("month");
@@ -43,12 +45,28 @@
         let currentYear = parseInt(yearSelect.value);
         yearSelect.value = currentYear - 1;
     }
+
+    $(document).ready(function() {
+        $("#company_table").tablesorter({
+            headers: {
+                4: { sorter: false }
+            }
+        });
+    });
 </script>
 </head>
 <body>
-	<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("companylist"); %>
+    <% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("companylist");
+    int pageSize = 100; // Number of items per page
+    int totalPages = (int) Math.ceil((double) list.size() / pageSize);
+    String pageParam = request.getParameter("page");
+    int currentPage = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
+    int startIdx = (currentPage - 1) * pageSize;
+    int endIdx = Math.min(startIdx + pageSize, list.size());
+    List<SalesBean> currentPageList = list.subList(startIdx, endIdx);
+    %>
 	<div align="center">
-		<strong>取引先別売上一覧</strong>
+		<strong id="topPage">取引先別売上一覧</strong>
 		<div align="right">
 			<p>
 				<%="ようこそ、"+session.getAttribute("username")+"さん" %>
@@ -98,16 +116,18 @@
 			<button type="submit" value="検索">検索</button>
 		</form>
 		<div class="table">
-			<table>
-				<tr>
-					<th>取引先ID▽</th>
-					<th>取引先名▽</th>
-					<th>売上(万円)▽</th>
-					<th>先年度比(%)▽</th>
-					<th></th>
-				</tr>
+			<table border="1" style="border-collapse: collapse" class="tablesorter" id="company_table">
+				<thead>
+					<tr align="center">
+						<th>取引先ID</th>
+						<th>取引先名</th>
+						<th>売上(万円)</th>
+						<th>先年度比(%)</th>
+						<th></th>
+					</tr>
+				</thead>
 				<% for (int i = 0; i < list.size(); i++) { %>
-				<tr>
+				<tr align="center">
 					<td><%= list.get(i).getCus_id() %></td>
 					<td><%= list.get(i).getCus_name() %></td>
 					<td><%= list.get(i).getSale_amount() %></td>
@@ -121,8 +141,50 @@
 				<% } %>
 			</table>
 		</div>
+		<%-- Pagination --%>
+		<%
+		if (totalPages > 1) {
+		%>
+		<div class="pagination">
+			<%
+			if (currentPage > 1) {
+			%>
+			<a href="?page=1">First</a> <a href="?page=<%=currentPage - 1%>">Previous</a>
+			<%
+			}
+			%>
+			<%
+			for (int i = 1; i <= totalPages; i++) {
+			%>
+			<%
+			if (i == currentPage) {
+			%>
+			<span class="current-page"><%=i%></span>
+			<%
+			} else {
+			%>
+			<a href="?page=<%=i%>"><%=i%></a>
+			<%
+			}
+			%>
+			<%
+			}
+			%>
+			<%
+			if (currentPage < totalPages) {
+			%>
+			<a href="?page=<%=currentPage + 1%>">Next</a> <a
+				href="?page=<%=totalPages%>">Last</a>
+			<%
+			}
+			%>
+		</div>
+		<%
+		}
+		%>
+
 		<div class="footer_button">
-			<button type="button">トップページ</button>
+			<button type="button" onclick="window.location.href='#topPage'">トップページ</button>
 			<button type="button" onclick="location.href='./master?no=1'">戻る</button>
 		</div>
 	</div>
