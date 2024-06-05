@@ -9,75 +9,36 @@ import bean.ProductViewBean;
 
 public class ProductDao extends DBAccess {
 
-	public ArrayList<ProductViewBean> selectMultipleProducts(String product_name, String[] large_categories, String[] small_categories) {
-	    ArrayList<ProductViewBean> list = new ArrayList<>();
-	    StringBuilder sql = new StringBuilder("SELECT pi.pi_id, pi.pi_name, sc1.sc_category AS sc_category1, sc2.sc_category AS sc_category2, sc3.sc_category AS sc_category3, pi.retail_price FROM product_info pi ");
-	    sql.append("JOIN small_category sc1 ON pi.category_id = sc1.sc_id ");
-	    sql.append("JOIN small_category sc2 ON pi.category_id = sc2.sc_id ");
-	    sql.append("JOIN small_category sc3 ON pi.category_id = sc3.sc_id ");
-	    sql.append("JOIN big_category bc ON sc1.bc_id = bc.bc_id WHERE 1=1");
-
-	    if (product_name != null && !product_name.isEmpty()) {
-	        sql.append(" AND pi.pi_name LIKE ?");
-	    }
-
-	    for (int i = 0; i < large_categories.length; i++) {
-	        if ((large_categories[i] != null && !large_categories[i].isEmpty()) && (small_categories[i] != null && !small_categories[i].isEmpty())) {
-	            sql.append(" AND (sc1.bc_id = ? AND sc1.sc_category = ?)");
-	        }
-	    }
-
-	    try {
-	        connect();
-	        PreparedStatement ps = getConnection().prepareStatement(sql.toString());
-
-	        int index = 1;
-	        if (product_name != null && !product_name.isEmpty()) {
-	            ps.setString(index++, "%" + product_name + "%");
-	        }
-
-	        for (int i = 0; i < large_categories.length; i++) {
-	            if ((large_categories[i] != null && !large_categories[i].isEmpty()) && (small_categories[i] != null && !small_categories[i].isEmpty())) {
-	                ps.setInt(index++, Integer.parseInt(large_categories[i]));
-	                ps.setString(index++, small_categories[i]);
-	            }
-	        }
-
-	        System.out.println("Executing query: " + ps.toString()); // デバッグ用のログを追加
-	        ResultSet rs = ps.executeQuery();
-
-	        while (rs.next()) {
-	            ProductViewBean bean = new ProductViewBean();
-	            bean.setProductId(rs.getInt("pi_id"));
-	            bean.setProductName(rs.getString("pi_name"));
-	            bean.setScCategory1(rs.getString("sc_category1"));
-	            bean.setScCategory2(rs.getString("sc_category2"));
-	            bean.setScCategory3(rs.getString("sc_category3"));
-	            bean.setPrice(rs.getInt("retail_price"));
-	            list.add(bean);
-	        }
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        disconnect();
-	    }
-	    return list;
-	}
-    public List<ProductViewBean> getLargeCategories() {
+    public List<ProductViewBean> selectMultipleProduct(String productName) {
         List<ProductViewBean> list = new ArrayList<>();
-        String sql = "SELECT bc_id, bc_category FROM big_category";
+
+        StringBuilder sql = new StringBuilder("SELECT pi.pi_id, pi.pi_name, sc.sc_category, pi.retail_price ");
+        sql.append("FROM product_info pi ");
+        sql.append("JOIN category c ON pi.category_id = c.category_id ");
+        sql.append("JOIN small_category sc ON c.sc_id = sc.sc_id ");
+        sql.append("WHERE pi.pi_name LIKE ?");
 
         try {
             connect();
-            PreparedStatement ps = getConnection().prepareStatement(sql);
+            PreparedStatement ps = getConnection().prepareStatement(sql.toString());
+            ps.setString(1, "%" + productName + "%");
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                ProductViewBean bean = new ProductViewBean();
-                bean.setBcId(rs.getInt("bc_id"));
-                bean.setBcCategory(rs.getString("bc_category"));
-                list.add(bean);
+                String productId = rs.getString("pi_id");
+                ProductViewBean bean = findProductInList(list, productId);
+
+                if (bean == null) {
+                    bean = new ProductViewBean();
+                    bean.setProductId(productId);
+                    bean.setProductName(rs.getString("pi_name"));
+                    bean.setRetailPrice(rs.getInt("retail_price"));
+                    bean.setSmallCategories(new ArrayList<>());
+                    list.add(bean);
+                }
+
+                bean.getSmallCategories().add(rs.getString("sc_category"));
             }
 
         } catch (Exception e) {
@@ -88,28 +49,12 @@ public class ProductDao extends DBAccess {
         return list;
     }
 
-    public List<ProductViewBean> getSmallCategories(int largeCategoryId) {
-        List<ProductViewBean> list = new ArrayList<>();
-        String sql = "SELECT sc_id, sc_category FROM small_category WHERE bc_id = ?";
-
-        try {
-            connect();
-            PreparedStatement ps = getConnection().prepareStatement(sql);
-            ps.setInt(1, largeCategoryId);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                ProductViewBean bean = new ProductViewBean();
-                bean.setScId(rs.getInt("sc_id"));
-                bean.setScCategory(rs.getString("sc_category"));
-                list.add(bean);
+    private ProductViewBean findProductInList(List<ProductViewBean> list, String productId) {
+        for (ProductViewBean bean : list) {
+            if (bean.getProductId().equals(productId)) {
+                return bean;
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            disconnect();
         }
-        return list;
+        return null;
     }
 }
