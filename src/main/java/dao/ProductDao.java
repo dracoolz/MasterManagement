@@ -11,14 +11,14 @@ public class ProductDao extends DBAccess {
 
     public ArrayList<ProductViewBean> selectMultipleProducts(String product_name, String[] large_categories, String[] small_categories) {
         ArrayList<ProductViewBean> list = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT pd.pi_id, pd.pi_name, sc1.sc_category AS sc_category1, sc2.sc_category AS sc_category2, sc3.sc_category AS sc_category3, pd.price FROM product_description pd ");
-        sql.append("JOIN small_category sc1 ON pd.category_id1 = sc1.sc_id ");
-        sql.append("JOIN small_category sc2 ON pd.category_id2 = sc2.sc_id ");
-        sql.append("JOIN small_category sc3 ON pd.category_id3 = sc3.sc_id ");
+        StringBuilder sql = new StringBuilder("SELECT pi.pi_id, pi.pi_name, sc1.sc_category AS sc_category1, sc2.sc_category AS sc_category2, sc3.sc_category AS sc_category3, pi.retail_price FROM product_info pi ");
+        sql.append("JOIN small_category sc1 ON pi.category_id1 = sc1.sc_id ");
+        sql.append("JOIN small_category sc2 ON pi.category_id2 = sc2.sc_id ");
+        sql.append("JOIN small_category sc3 ON pi.category_id3 = sc3.sc_id ");
         sql.append("JOIN big_category bc ON sc1.bc_id = bc.bc_id WHERE 1=1");
 
         if (product_name != null && !product_name.isEmpty()) {
-            sql.append(" AND pd.pi_name LIKE ?");
+            sql.append(" AND pi.pi_name LIKE ?");
         }
 
         for (int i = 0; i < large_categories.length; i++) {

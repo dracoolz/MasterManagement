@@ -24,7 +24,7 @@ public class SearchProductServlet extends HttpServlet {
             String[] smallCategories = request.getParameterValues("small_category");
 
             ArrayList<ProductViewBean> products = productDao.selectMultipleProducts(productName, largeCategories, smallCategories);
-            request.setAttribute("products", products);
+            request.setAttribute("list", products);
 
             List<ProductViewBean> largeCategoriesList = productDao.getLargeCategories();
             request.setAttribute("largeCategories", largeCategoriesList);

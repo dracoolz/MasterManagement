@@ -85,10 +85,10 @@ public class ProductViewBean {
     }
 
     public String getScCategory() {
-        return scCategory1; // エラーの原因だったメソッドの修正
+        return scCategory1;
     }
 
     public void setScCategory(String scCategory) {
-        this.scCategory1 = scCategory; // エラーの原因だったメソッドの修正
+        this.scCategory1 = scCategory;
     }
 }

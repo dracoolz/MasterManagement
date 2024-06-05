@@ -62,14 +62,15 @@
             <input type="submit" value="検索">
             <input type="hidden" name="action" value="search">
         </form>
-        
-        
-        
-             <table align="center" border="1">
+
+        <table align="center" border="1">
             <tr align="center">
-                <th>取引先名</th>
-                <th>担当者</th>
-                <th>都道府県</th>
+                <th>ID</th>
+                <th>商品名</th>
+                <th>小カテゴリ1</th>
+                <th>小カテゴリ2</th>
+                <th>小カテゴリ3</th>
+                <th>販売単価</th>
                 <th></th>
             </tr>
             <%
@@ -80,7 +81,10 @@
             <tr>
                 <td><%= cus.getProductId() %></td>
                 <td><%= cus.getProductName() %></td>
-                <td><%= cus.getBcCategory() %></td>
+                <td><%= cus.getScCategory1() %></td>
+                <td><%= cus.getScCategory2() %></td>
+                <td><%= cus.getScCategory3() %></td>
+                <td><%= cus.getPrice() %></td>
                 <td>
                     <form action="/Master/searchProduct" method="post" style="display:inline;">
                         <input type="hidden" name="getProductId" value="<%= cus.getProductId() %>">
@@ -94,7 +98,7 @@
                 }
             } else {
             %>
-            <tr><td colspan="4" align="center">検索結果がありません</td></tr>
+            <tr><td colspan="7" align="center">検索結果がありません</td></tr>
             <%
             }
             %>
