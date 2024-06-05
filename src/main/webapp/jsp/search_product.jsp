@@ -16,8 +16,7 @@
             <a href="/first">ログアウト</a>
         </div>
         <h1 align="center">商品検索</h1>
-        <form action="/Master/searchProduct" method="post">
-            
+        <form action="/Master/searchProduct" method="post" accept-charset="UTF-8">
             商品名：<input type="text" name="product_name" placeholder="商品名" >
 
             <% 
