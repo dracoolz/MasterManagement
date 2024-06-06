@@ -10,74 +10,95 @@
 <head>
 <meta charset="UTF-8">
 <title>商品別売上詳細</title>
-<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("productlist"); %>
-<% if (list == null) {
-     list = new ArrayList<SalesBean>();
+<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("productlist");
+   if (list == null) {
+       list = new ArrayList<SalesBean>();
    }
-	SalesBean firstBean = null;
-    if (!list.isEmpty()) {
-        firstBean = list.get(0);
+   SalesBean firstBean = null;
+   if (!list.isEmpty()) {
+       firstBean = list.get(0);
    } %>
+
+<%
+// Initialize a map to hold aggregated sales by district
+				Map<String, Integer> districtSales = new LinkedHashMap<>();
+
+				// Aggregate sales by district from the list
+				for (SalesBean bean : list) {
+					String district = bean.getDistrict();
+					int saleAmount = bean.getSale_amount();
+					if (districtSales.containsKey(district)) {
+						// Add current sale amount to the existing amount for the district
+						districtSales.put(district, districtSales.get(district) + saleAmount);
+					} else {
+						// Initialize this district in the map with the current sale amount
+						districtSales.put(district, saleAmount);
+					}
+				}
+%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/productListDetail.css">
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-        google.charts.load('current', { 'packages': ['corechart', 'bar'] });
-        google.charts.setOnLoadCallback(drawCharts);
+    google.charts.load('current', {'packages':['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawCharts);
 
-        function drawCharts() {
-            drawBarChart();
-            drawPieChart();
-        }
+    function drawCharts() {
+        drawBarChart();
+        drawPieChart();
+    }
 
-        function drawBarChart() {
-        	var data = google.visualization.arrayToDataTable([
-        	    ['Year', '売上'],
-        	    <% 
-        	    for (int i = 0; i < 13; i++) { 
-        	        if (i < list.size()) { 
-        	    %>
-        	            ['・', <%= list.get(i).getSale_amount() %>],
-        	        <% } else { %>
-        	            ['・', 0],
-        	        <% } %>
-        	    <% } %>
-        	]);
-
-            var options = {
-                chart: {
-                    title: "売上金額の推移",
-                    titleTextStyle: {
-                        color: 'black'
-                    }
+    function drawBarChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Year', '売上'],
+            <% for (int i = 0; i < 13; i++) {
+                int year = 2023 + (i / 12);
+                int month = 6 + (i % 12);
+                if (month <= 0) {
+                    month += 12;
+                    year--;
                 }
-            };
+                int saleAmount = (i < list.size() ? list.get(i).getSale_amount() : 0);
+            %>
+            ['<%= year + "-" + (month < 10 ? "0" + month : month) %>', <%= saleAmount %>],
+            <% } %>
+        ]);
 
-            var chart = new google.charts.Bar(document.getElementById('barChart'));
-
-            chart.draw(data, google.charts.Bar.convertOptions(options));
-        }
-
-        function drawPieChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['地区', '売上'],
-                <% for (SalesBean bean : list) { %>
-                	[, <%= bean.getSale_amount() %>],
-                <% } %>
-            ]);
-
-            var options = {
-                title: '地区別売上',
+        var options = {
+            chart: {
+                title: '売上金額の推移',
                 titleTextStyle: {
                     color: 'black'
                 }
-            };
+            }
+        };
 
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-            chart.draw(data, options);
-        }
-    </script>
+        var chart = new google.charts.Bar(document.getElementById('barChart'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+
+    function drawPieChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['地区', '売上'],
+            <% // Iterate over the map to display the aggregated results
+                for (Map.Entry<String, Integer> entry : districtSales.entrySet()) {
+            %>
+                [, <%= entry.getValue() %>],
+            <% } %>
+        ]);
+
+        var options = {
+            title: '地区別売上',
+            titleTextStyle: {
+                color: 'black'
+            }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }
+</script>
 </head>
 <body>
 	<div align="center">
@@ -90,10 +111,11 @@
 		</div>
 		<div class="top-button">
 			<form method="post" action="./detail?no=2">
-                <input type="hidden" name="idValue" value="<%= session.getAttribute("idValue") %>">
-                <button type="submit" name="switcher" value="year">年表示</button>
-                <button type="submit" name="switcher" value="month">月表示</button>
-            </form>
+				<input type="hidden" name="idValue"
+					value="<%= session.getAttribute("idValue") %>">
+				<button type="submit" name="switcher" value="year">年表示</button>
+				<button type="submit" name="switcher" value="month">月表示</button>
+			</form>
 			<button type="button" onclick="location.href='manageControl?no=5'">戻る</button>
 		</div>
 		<!-- table -->
@@ -129,7 +151,7 @@
 			<div id="barChart" style="width: 400px; height: 300px;"></div>
 			<div>
 				<table>
-                    <%
+					<%
                         String sessionMonth = (String) session.getAttribute("month");
                         DateTimeFormatter formatter;
                         boolean isMonthly = "month".equals(sessionMonth);
@@ -142,11 +164,11 @@
                     %>
 					<thead>
 						<tr>
-						<% if (isMonthly) { %>
+							<% if (isMonthly) { %>
 							<th>月</th>
-						<% } else { %>
+							<% } else { %>
 							<th>年</th>
-						<% } %>
+							<% } %>
 							<th>売上</th>
 						</tr>
 					</thead>
@@ -232,12 +254,16 @@
 						</tr>
 					</thead>
 					<tbody>
-						<% for (SalesBean bean : list) { %>
+						<%
+						// Iterate over the districtSales map to display the aggregated results
+						for (Map.Entry<String, Integer> entry : districtSales.entrySet()) {
+						%>
 						<tr>
-							<td><%= bean.getDistrict() %></td>
-							<td><%= bean.getSale_amount() %></td>
+							<td><%=entry.getKey()%></td>
+							<td><%=entry.getValue()%></td>
 						</tr>
 						<% } %>
+
 					</tbody>
 				</table>
 			</div>
