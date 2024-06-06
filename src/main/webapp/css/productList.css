@@ -64,11 +64,6 @@ strong {
     margin-top: 5vh;
 }
 
-table, th, td {
-    border: 1px solid black;
-    text-align: center;
-}
-
 .footer_button {
     margin-top: 5vh;
 }

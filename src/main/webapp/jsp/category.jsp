@@ -32,7 +32,7 @@
 			<div align="left">
 				<p>カテゴリ管理</p>
 			</div>
-			<strong>カテゴリ情報の一覧</strong>
+			<strong id="topPage">カテゴリ情報の一覧</strong>
 			<div align="right">
 				<p><%="ようこそ、"+session.getAttribute("username")+"さん" %></p>
 				<a href="/first">ログアウト</a>
@@ -159,9 +159,8 @@
 	</form>
 	<table>
 		<tr>
-			<td><a class="pagetop" href="#"><div class="pagetop__arrow"></div></a></td>
-			<td><button type="button"
-					onclick="location.href='./master?no=1'">戻る</button></td>
+			<td><button type="button" onclick="window.location.href='#topPage'">トップページ</button></td>
+			<td><button type="button"onclick="location.href='./master?no=1'">戻る</button></td>
 		</tr>
 	</table>
 	</div>

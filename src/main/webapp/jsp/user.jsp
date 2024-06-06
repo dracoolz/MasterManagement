@@ -15,7 +15,7 @@
 </head>
 
 <body>
-<script src="./js/tableSorter.js"></script>
+<script src="${pageContext.request.contextPath}/js/tableSorter.js"></script>
 <%ArrayList<UserBean> userList =(ArrayList<UserBean>)request.getAttribute("list"); %>
 <form action ="./DUControl?type=user" method="post">
 	<div align="center">

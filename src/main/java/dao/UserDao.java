@@ -121,8 +121,8 @@ public class UserDao extends DBAccess{
 					bean.setEmp_name(rs.getString("emp_name"));
 					bean.setFurigana(rs.getString("furigana"));
 					bean.setEmp_email(rs.getString("emp_email"));
-					bean.setFurigana(rs.getString("password"));
-					bean.setFurigana(rs.getString("role"));
+					bean.setPassword(rs.getString("password"));
+					bean.setRole(rs.getInt("role"));
 					list.add(bean);
 				}
 				

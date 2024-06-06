@@ -83,11 +83,36 @@ public class SmallCategoryDao extends DBAccess{
 			ps.setInt(1, id);
 
 			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				bean.setSc_id(rs.getInt("sc_id"));
+				bean.setBc_id(rs.getInt("bc_id"));
+				bean.setSc_category(rs.getString("sc_category"));
+				bean.setBc_category(selectBcName(rs.getInt("bc_id")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return bean;
+	}
 
-			bean.setSc_id(rs.getInt("sc_id"));
-			bean.setBc_id(rs.getInt("bc_id"));
-			bean.setSc_category(rs.getString("sc_category"));
+		public String selectBcName(int bc_id) {
+		
+		String bean = null;
+		
+		String sql = "select bc_category from big_category where bc_id=?";
+		
+		try {
+			connect();
+			// ステートメントの作成
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setInt(1, bc_id);
 			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				bean = rs.getString("bc_category");
+			}	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

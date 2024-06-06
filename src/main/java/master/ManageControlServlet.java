@@ -59,16 +59,16 @@ public class ManageControlServlet extends HttpServlet {
 				rd = request.getRequestDispatcher("./jsp/category.jsp");
 				break;
 			case 3:
-				BigCategoryDao bdao2 = new BigCategoryDao();
-				ArrayList<BigCategoryBean> barr2 = new ArrayList<BigCategoryBean>();
-				barr2 = bdao2.selectAll();
-				request.setAttribute("bclist", barr2);
 				ProductDao pdao = new ProductDao();
-				ArrayList<ProductBean> parr = new ArrayList<ProductBean>();
-				request.setAttribute("bclist", barr2);
-				request.setAttribute("list", parr);
-				rd = request.getRequestDispatcher("./jsp/product.jsp");
-				break;
+                ArrayList<ProductBean> parr = new ArrayList<ProductBean>();
+                parr = pdao.selectAll();
+                request.setAttribute("list", parr);
+                BigCategoryDao bdao2 = new BigCategoryDao();
+                ArrayList<BigCategoryBean> barr2 = new ArrayList<BigCategoryBean>();
+                barr2 = bdao2.selectAll();
+                session.setAttribute("bclist", barr2);
+                rd = request.getRequestDispatcher("./jsp/product.jsp");
+                break;
 			case 4:
 				rd = request.getRequestDispatcher("/list?no=1");
 				break;

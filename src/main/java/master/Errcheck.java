@@ -89,15 +89,25 @@ public class Errcheck {
 	}
 	
 	public String numberCheck(String[] strs, String[] strNames){
-		String str;
-		for(int i=0; i<strs.length; i++) {
-			str = strs[i];
-			if(!str.matches("[0-9]+") || Integer.parseInt(str)<0){
-				return strNames[i]+"は整数で入力してください";
-			}
-		}
-		return null;
-	}
+        String place = null;
+        for(int i=0; i<strs.length; i++) {
+            if(strs[i].length() == 0) {
+                continue;
+            } else if(!strs[i].matches("[0-9]+") || Integer.parseInt(strs[i])<0){
+                System.out.println(strNames[i]+"+"+strs[i]);
+                if(place == null) {
+                    place = strNames[i];
+                }
+                else {
+                    place = place + "、" + strNames[i];
+                }
+            }
+        }
+        if(place != null) {
+            return place + "は整数で入力してください";
+        }
+        return null;
+    }
 	
 	public String fullWidthCheck(String str) {
 		if(str.matches("^[ぁ-ん ]+$")) {
@@ -143,10 +153,10 @@ public class Errcheck {
 		if(type.equals("product")) {
 			ProductDao dao = new ProductDao();
 			ProductBean bean = dao.select(String.valueOf(id));
-			if(String.valueOf(id) == bean.getPro_id()){
+			if(bean.getPro_id() == null){
 				return null;
 			}
-			return "存在しないダイレクト商品番号です";
+			return "このダイレクト商品番号は既に存在しています";
 		}
 		return null;
 	}
@@ -166,5 +176,44 @@ public class Errcheck {
 			}
 		}
 	return null;
+	}
+	
+	public String contentsCheck(String type, String id, String[] strs, String[] strNames) {
+	    ProductDao dao = new ProductDao();
+	    String bean = dao.selectShop(id);
+	    if (type.equals("サプライヤー")) {
+	    	if(bean != null) {
+	    		return null;
+	    	}
+	    }
+	    return "そのサプライヤーは存在しません";
+	    /*else {
+	        if (!bean.getPi_name().equals(strs[0])) {
+	            return "その商品管理番号の" + strNames[0] + "は" + bean.getPi_name() + "です";
+	        }
+	        if (!bean.getJan_code().equals(strs[1])) {
+	            return "その商品管理番号の" + strNames[1] + "は" + bean.getJan_code() + "です";
+	        }
+	        if (!bean.getRef_type().equals(strs[2])) {
+	            return "その商品管理番号の" + strNames[2] + "は" + bean.getRef_type() + "です";
+	        }
+	        if (!String.valueOf(bean.getRetail_price()).equals(strs[3])) {
+	            return "その商品管理番号の" + strNames[3] + "は" + bean.getRetail_price() + "です";
+	        }
+	        if (!String.valueOf(bean.getTax_rate_class()).equals(strs[4])) {
+	            return "その商品管理番号の" + strNames[4] + "は" + bean.getTax_rate_class() + "です";
+	        }
+	        if (!bean.getShipping_term().equals(strs[5])) {
+	            return "その商品管理番号の" + strNames[5] + "は" + bean.getShipping_term() + "です";
+	        }
+	        if (!bean.getDescr().equals(strs[6])) {
+	            return "その商品管理番号の" + strNames[6] + "は" + bean.getDescr() + "です";
+	        }
+	        if (!bean.getDetail().equals(strs[7])) {
+	            return "その商品管理番号の" + strNames[7] + "は" + bean.getDetail() + "です";
+	        }
+	   }
+	        return null;*/
+	    
 	}
 }

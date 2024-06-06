@@ -13,6 +13,7 @@ public class SalesBean implements Serializable {
     private LocalDate date;
     private String cus_name;
     private int gross_profit;
+    private int net_profit;
     private String pi_name;
     private String category;
     private int stock_price;
@@ -85,8 +86,16 @@ public class SalesBean implements Serializable {
     public void setGross_profit(int gross_profit) {
         this.gross_profit = gross_profit;
     }
+    
+    public int getNet_profit() {
+		return net_profit;
+	}
 
-    public String getPi_name() {
+	public void setNet_profit(int net_profit) {
+		this.net_profit = net_profit;
+	}
+
+	public String getPi_name() {
         return pi_name;
     }
 

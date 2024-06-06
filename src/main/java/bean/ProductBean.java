@@ -14,9 +14,9 @@ public class ProductBean implements Serializable {
 	private int set_quantity;
 	
 	private String pi_name;
-	private int category_id;
-	private String jan_cade;
-	private int branch_no;
+	private String category_id;
+	private String jan_code;
+	private String branch_no;
 	private String ref_type;
 	private int retail_price;
 	private int tax_rate_class;
@@ -27,7 +27,10 @@ public class ProductBean implements Serializable {
 	private String direct_permission;
 	private String out_of_stock;
 	
-	private int sc_id;
+	private int sc_id1;
+	private int sc_id2;
+	private int sc_id3;
+	
 	private String bc_category_1;
 	private String sc_category_1;
 	private String bc_category_2;
@@ -38,6 +41,7 @@ public class ProductBean implements Serializable {
 	private String descr;
 	private String detail;
 	
+	private int image_id;
 	private String image_1;
 	private String image_2;
 	private String image_3;
@@ -124,27 +128,27 @@ public class ProductBean implements Serializable {
 		this.pi_name = pi_name;
 	}
 	
-	public int getCategory_id() {
+	public String getCategory_id() {
 		return category_id;
 	}
 	
-	public void setCategory_id(int category_id) {
+	public void setCategory_id(String category_id) {
 		this.category_id = category_id;
 	}
 	
-	public String getJan_cade() {
-		return jan_cade;
+	public String getJan_code() {
+		return jan_code;
 	}
 	
-	public void setJan_cade(String jan_cade) {
-		this.jan_cade = jan_cade;
+	public void setJan_code(String jan_code) {
+		this.jan_code = jan_code;
 	}
 	
-	public int getBranch_no() {
+	public String getBranch_no() {
 		return branch_no;
 	}
 	
-	public void setBranch_no(int branch_no) {
+	public void setBranch_no(String branch_no) {
 		this.branch_no = branch_no;
 	}
 	
@@ -220,12 +224,28 @@ public class ProductBean implements Serializable {
 		this.out_of_stock = out_of_stock;
 	}
 	
-	public int getSc_id() {
-		return sc_id;
+	public int getSc_id1() {
+		return sc_id1;
 	}
 	
-	public void setSc_id(int sc_id) {
-		this.sc_id = sc_id;
+	public void setSc_id1(int sc_id1) {
+		this.sc_id1 = sc_id1;
+	}
+	
+	public int getSc_id2() {
+		return sc_id2;
+	}
+	
+	public void setSc_id2(int sc_id2) {
+		this.sc_id2 = sc_id2;
+	}
+	
+	public int getSc_id3() {
+		return sc_id3;
+	}
+	
+	public void setSc_id3(int sc_id3) {
+		this.sc_id3 = sc_id3;
 	}
 	
 	public String getDescr() {
@@ -244,84 +264,93 @@ public class ProductBean implements Serializable {
 		this.detail = detail;
 	}
 	
+	public int getImage_id() {
+		return image_id;
+	}
+	
+	public void setImage_id(int image_id) {
+		this.image_id = image_id;
+	}
+
+	
 	public String getImage_1() {
 		return image_1;
 	}
 	
-	public void setImage_1(String image_1) {
-		this.image_1 = image_1;
+	public void setImage_1(String images_1) {
+		this.image_1 = images_1;
 	}
 	
 	public String getImage_2() {
 		return image_2;
 	}
 	
-	public void setImage_2(String image_2) {
-		this.image_2 = image_2;
+	public void setImage_2(String images_2) {
+		this.image_2 = images_2;
 	}
 	
 	public String getImage_3() {
 		return image_3;
 	}
 	
-	public void setImage_3(String image_3) {
-		this.image_3 = image_3;
+	public void setImage_3(String images_3) {
+		this.image_3 = images_3;
 	}
 	
 	public String getImage_4() {
 		return image_4;
 	}
 	
-	public void setImage_4(String image_4) {
-		this.image_4 = image_4;
+	public void setImage_4(String images_4) {
+		this.image_4 = images_4;
 	}
 	
 	public String getImage_5() {
 		return image_5;
 	}
 	
-	public void setImage_5(String image_5) {
-		this.image_5 = image_5;
+	public void setImage_5(String images_5) {
+		this.image_5 = images_5;
 	}
 	
 	public String getImage_6() {
 		return image_6;
 	}
 	
-	public void setImage_6(String image_6) {
-		this.image_6 = image_6;
+	public void setImage_6(String images_6) {
+		this.image_6 = images_6;
 	}
 	
 	public String getImage_7() {
 		return image_7;
 	}
 	
-	public void setImage_7(String image_7) {
-		this.image_7 = image_7;
+	public void setImage_7(String images_7) {
+		this.image_7 = images_7;
 	}
 	
 	public String getImage_8() {
 		return image_8;
 	}
 	
-	public void setImage_8(String image_8) {
-		this.image_8 = image_8;
+	public void setImage_8(String images_8) {
+		this.image_8 = images_8;
 	}
 	
 	public String getImage_9() {
 		return image_9;
 	}
 	
-	public void setImage_9(String image_9) {
-		this.image_9 = image_9;
+	public void setImage_9(String images_9) {
+		this.image_9 = images_9;
 	}
 	
 	public String getImage_10() {
 		return image_10;
 	}
 	
-	public void setImage_10(String image_10) {
-		this.image_10 = image_10;
+	public void setImage_10(String images_10) {
+		this.image_10 = images_10;
 	}
 	
 	public String getShop_name() {

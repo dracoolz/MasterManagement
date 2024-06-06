@@ -19,6 +19,17 @@ public class DetailServlet extends HttpServlet {
         
         int no = Integer.parseInt(req.getParameter("no"));
         String idValue = req.getParameter("idValue");
+        String switcher = req.getParameter("switcher");
+
+        if (switcher != null) {
+            req.getSession().setAttribute("month", switcher);
+        }
+
+        if (idValue != null) {
+            req.getSession().setAttribute("idValue", idValue);
+        } else {
+            idValue = (String) req.getSession().getAttribute("idValue");
+        }
 
         if(no == 1) {
             //for companyList

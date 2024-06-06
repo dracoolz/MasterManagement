@@ -1,5 +1,4 @@
-
- $(document).ready(function()
+$(document).ready(function()
  	{
    $("#user_table").tablesorter({
 		headers: {
