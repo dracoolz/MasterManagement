@@ -73,74 +73,62 @@ public class CheckControlServlet extends HttpServlet {
 
 			if(request.getParameter("submit").equals("登録")){
 
-				int id = Integer.parseInt(request.getParameter("bc_id"));
-				String name = request.getParameter("bc_category");
+				int id = Integer.parseInt((String)session.getAttribute("bc_id"));
+				String name = (String)session.getAttribute("bc_category");
 
 				BigCategoryDao dao= new BigCategoryDao();
 				dao.insert(id,name);
-				forward="/jsp/categoryComp.jsp?submit=登録";
+				forward="/jsp/categoryComp.jsp?submit=登録&category=bc";
 
-			}
+			}else if(request.getParameter("submit").equals("変更")){
 
-			if(request.getParameter("submit").equals("変更")){
-
-				int id = Integer.parseInt(request.getParameter("bc_id"));
-				int new_id = Integer.parseInt(request.getParameter("new_bc_id"));
-				String name = request.getParameter("bc_category");
+				int id = Integer.parseInt((String)session.getAttribute("bc_id"));
+				String new_name = (String)session.getAttribute("new_bc_category");
 
 				BigCategoryDao dao= new BigCategoryDao();
-				dao.update(id,new_id,name);
-				forward="/jsp/categoryComp.jsp?submit=変更";
+				dao.update(id,new_name);
+				forward="/jsp/categoryComp.jsp?submit=変更&category=bc";
 
-			}
-
-			if(request.getParameter("submit").equals("削除")){
-
-				int id = Integer.parseInt(request.getParameter("bc_id"));
+			}else if(request.getParameter("submit").equals("削除")){
+				System.out.println(session.getAttribute("bc_id"));
+				int id = Integer.parseInt((String)session.getAttribute("bc_id"));
 
 				BigCategoryDao dao= new BigCategoryDao();
 				dao.delete(id);
-				forward="/jsp/categoryComp.jsp?submit=削除";
+				forward="/jsp/categoryComp.jsp?submit=削除&category=bc";
 
 			}
 
-		}
-
-		if(request.getParameter("type").equals("category") && request.getParameter("maker").equals("sc")) {
+		}else if(request.getParameter("type").equals("category") && request.getParameter("maker").equals("sc")) {
 			request.setAttribute("categoryType", "sc");
 
 			if(request.getParameter("submit").equals("登録")){
 
-				int sc_id = Integer.parseInt(request.getParameter("sc_id"));
-				int bc_id = Integer.parseInt(request.getParameter("bc_id"));
-				String name = request.getParameter("sc_category");
+				int sc_id = Integer.parseInt((String)session.getAttribute("sc_id"));
+				int bc_id = Integer.parseInt((String)session.getAttribute("bc_id"));
+				String name = (String)session.getAttribute("sc_category");
 
 				SmallCategoryDao dao= new SmallCategoryDao();
 				dao.insert(sc_id,bc_id,name);
-				forward="/jsp/categoryComp.jsp?submit=登録";
+				forward="/jsp/categoryComp.jsp?submit=登録&category=sc";
 
-			}
+			}else if(request.getParameter("submit").equals("変更")){
 
-			if(request.getParameter("submit").equals("変更")){
-
-				int sc_id = Integer.parseInt(request.getParameter("sc_id"));
-				int bc_id = Integer.parseInt(request.getParameter("bc_id"));
-				int new_sc_id = Integer.parseInt(request.getParameter("new_sc_id"));
-				String name = request.getParameter("sc_category");
+				int sc_id = Integer.parseInt((String)session.getAttribute("sc_id"));
+				int bc_id = Integer.parseInt((String)session.getAttribute("bc_id"));
+				String name = (String)session.getAttribute("sc_category");
 
 				SmallCategoryDao dao= new SmallCategoryDao();
-				dao.update(sc_id,bc_id,new_sc_id,name);
-				forward="/jsp/categoryComp.jsp?submit=変更";
+				dao.update(sc_id,bc_id,name);
+				forward="/jsp/categoryComp.jsp?submit=変更&category=sc";
 
-			}
+			}else if(request.getParameter("submit").equals("削除")){
 
-			if(request.getParameter("submit").equals("削除")){
-
-				int id = Integer.parseInt(request.getParameter("sc_id"));
+				int id = Integer.parseInt((String)session.getAttribute("sc_id"));
 
 				SmallCategoryDao dao= new SmallCategoryDao();
 				dao.delete(id);
-				forward="/jsp/categoryComp.jsp?submit=削除";
+				forward="/jsp/categoryComp.jsp?submit=削除&category=sc";
 
 			}
 
