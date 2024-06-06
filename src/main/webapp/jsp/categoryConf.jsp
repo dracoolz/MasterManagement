@@ -9,10 +9,10 @@
 </head>
 
 <body>
-	
-<% if(session.getParameter("categoryType").equals("大カテゴリ")){ %>
-	<% if(request.getParameter("submit").equals("登録")){ %>
-	<form action ="Master/checkControl" method="post">
+<% String str = request.getParameter("submit"); %>
+<% if(request.getParameter("categoryType").equals("bc")){ %>
+	<% if(str.equals("登録")){ %>
+	<form action ="./checkControl?type=category&maker=bc" method="post">
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -37,17 +37,20 @@
 			<table>
 				<tr>
 					<td><input type ="submit" name="submit" value="登録"></td>
-	</form>
-	<form action="duControl" method="post">
-			<td><input type ="submit" name="submit" value="戻る" onclick="history.back()"></td>
-	</form>
-				</tr>
+	
+				<%if(str.equals("削除")) {%>
+					<td><input type ="submit" name="submit" formaction="./manageControl?no=2" value="戻る"></td>
+				<%}else {%>
+					<td><input type ="submit" name="submit" formaction="./DUControl?type=category&categoryType=bc&mod=登録" value="戻る"></td>
+				<%} %>
+			</tr>
 			</table>
 	    </div>
+	 </form>
 	<% } %>
 		
-	<% if(request.getParameter("submit").equals("変更")){ %>
-	<form action ="Master/checkControl" method="post">
+	<% if(str.equals("変更")){ %>
+	<form action ="./checkControl?type=category&maker=bc" method="post">
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -57,7 +60,7 @@
 	            <p><%="ようこそ、"+session.getAttribute("username")+"さん" %></p>
 	            <a href="/first">ログアウト</a>
 	        </div>
-	        <p>以下の内容を変更します。よろしいですか？</p>
+	        <p>以下の内容に変更します。よろしいですか？</p>
 	        <table>
 				<tr>
 					<td align="right">大カテゴリID：</td>
@@ -65,24 +68,26 @@
 				</tr>
 				<tr>
 					<td align="right">大カテゴリ名：</td>
-					<td align="left"><%=session.getAttribute("bc_category") %></td>
+					<td align="left"><%=session.getAttribute("new_bc_category") %></td>
 				</tr>
 			</table>
 			<br>
 			<table>
 				<tr>
 					<td><input type ="submit" name="submit" value="変更"></td>
-	</form>
-	<form action="duControl" method="post">
-			<td><input type ="submit" name="submit" value="戻る" onclick="history.back()"></td>
-	</form>
-				</tr>
+				<%if(str.equals("削除")) {%>
+					<td><input type ="submit" name="submit" formaction="./manageControl?no=2" value="戻る"></td>
+				<%}else {%>
+					<td><input type ="submit" name="submit" formaction="./DUControl?type=category&categoryType=bc&mod=変更"" value="戻る"></td>
+				<%} %>
+			</tr>
 			</table>
 	    </div>
+	 </form>
 	<% } %>
 		
-	<% if(request.getParameter("submit").equals("削除")){ %>
-	<form action ="Master/checkControl" method="post">
+	<% if(str.equals("削除")){ %>
+	<form action ="./checkControl?type=category&maker=bc" method="post">
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -107,19 +112,21 @@
 			<table>
 				<tr>
 					<td><input type ="submit" name="submit" value="削除"></td>
-	</form>
-	<form action="duControl" method="post">
-			<td><input type ="submit" name="submit" value="戻る" onclick="history.back()"></td>
-	</form>
-				</tr>
+				<%if(str.equals("削除")) {%>
+					<td><input type ="submit" name="submit" formaction="./manageControl?no=2" value="戻る"></td>
+				<%}else {%>
+					<td><input type ="submit" name="submit" formaction="./DUControl?type=category&categoryType=bc&mod=削除" value="戻る"></td>
+				<%} %>
+			</tr>
 			</table>
 	    </div>
+	</form>
 	<% } %>
 <%} %>
 
-<% if(session.getParameter("categoryType").equals("小カテゴリ")){ %>
-	<% if(request.getParameter("submit").equals("登録")){ %>
-	<form action ="Master/checkControl" method="post">
+<% if(request.getParameter("categoryType").equals("sc")){ %>
+	<% if(str.equals("登録")){ %>
+	<form action ="./checkControl?type=category&maker=sc" method="post">
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -133,28 +140,34 @@
 	        <table>
 				<tr>
 					<td align="right">小カテゴリID：</td>
-					<td align="left"><%=session.getAttribute("bc_id") %></td>
+					<td align="left"><%=session.getAttribute("sc_id") %></td>
+				</tr>
+				<tr>
+					<td align="right">大カテゴリ名：</td>
+					<td align="left"><%=session.getAttribute("bc_category") %></td>
 				</tr>
 				<tr>
 					<td align="right">小カテゴリ名：</td>
-					<td align="left"><%=session.getAttribute("bc_category") %></td>
+					<td align="left"><%=session.getAttribute("sc_category") %></td>
 				</tr>
 			</table>
 			<br>
 			<table>
 				<tr>
 					<td><input type ="submit" name="submit" value="登録"></td>
-	</form>
-	<form action="duControl" method="post">
-			<td><input type ="submit" name="submit" value="戻る" onclick="history.back()"></td>
-	</form>
-				</tr>
+				<%if(str.equals("削除")) {%>
+					<td><input type ="submit" name="submit" formaction="./manageControl?no=2" value="戻る"></td>
+				<%}else {%>
+					<td><input type ="submit" name="submit" formaction="./DUControl?type=category&categoryType=sc&mod=登録"" value="戻る"></td>
+				<%} %>
+			</tr>
 			</table>
 	    </div>
+	</form>
 	<% } %>
 		
-	<% if(request.getParameter("submit").equals("変更")){ %>
-	<form action ="Master/checkControl" method="post">
+	<% if(str.equals("変更")){ %>
+	<form action ="./checkControl?type=category&maker=sc" method="post">
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -164,32 +177,38 @@
 	            <p><%="ようこそ、"+session.getAttribute("username")+"さん" %></p>
 	            <a href="/first">ログアウト</a>
 	        </div>
-	        <p>以下の内容を変更します。よろしいですか？</p>
+	        <p>以下の内容に変更します。よろしいですか？</p>
 	        <table>
 				<tr>
 					<td align="right">小カテゴリID：</td>
-					<td align="left"><%=session.getAttribute("bc_id") %></td>
+					<td align="left"><%=session.getAttribute("sc_id") %></td>
+				</tr>
+				<tr>
+					<td align="right">大カテゴリ名：</td>
+					<td align="left"><%=session.getAttribute("bc_category") %></td>
 				</tr>
 				<tr>
 					<td align="right">小カテゴリ名：</td>
-					<td align="left"><%=session.getAttribute("bc_category") %></td>
+					<td align="left"><%=session.getAttribute("sc_category") %></td>
 				</tr>
 			</table>
 			<br>
 			<table>
 				<tr>
 					<td><input type ="submit" name="submit" value="変更"></td>
-	</form>
-	<form action="duControl" method="post">
-			<td><input type ="submit" name="submit" value="戻る" onclick="history.back()"></td>
-	</form>
-				</tr>
+				<%if(str.equals("削除")) {%>
+					<td><input type ="submit" name="submit" formaction="./manageControl?no=2" value="戻る"></td>
+				<%}else {%>
+					<td><input type ="submit" name="submit" formaction="./DUControl?type=category&categoryType=sc&mod=変更" value="戻る"></td>
+				<%} %>
+			</tr>
 			</table>
 	    </div>
+	</form>
 	<% } %>
 		
-	<% if(request.getParameter("submit").equals("削除")){ %>
-	<form action ="Master/checkControl" method="post">
+	<% if(str.equals("削除")){ %>
+	<form action ="./checkControl?type=category&maker=sc" method="post">
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -203,24 +222,26 @@
 	        <table>
 				<tr>
 					<td align="right">小カテゴリID：</td>
-					<td align="left"><%=session.getAttribute("bc_id") %></td>
+					<td align="left"><%=session.getAttribute("sc_id") %></td>
 				</tr>
 				<tr>
 					<td align="right">小カテゴリ名：</td>
-					<td align="left"><%=session.getAttribute("bc_category") %></td>
+					<td align="left"><%=session.getAttribute("sc_category") %></td>
 				</tr>
 			</table>
 			<br>
 			<table>
 				<tr>
 					<td><input type ="submit" name="submit" value="削除"></td>
-	</form>
-	<form action="duControl" method="post">
-			<td><input type ="submit" name="submit" value="戻る" onclick="history.back()"></td>
-	</form>
-				</tr>
+				<%if(str.equals("削除")) {%>
+					<td><input type ="submit" name="submit" formaction="./manageControl?no=2" value="戻る"></td>
+				<%}else {%>
+					<td><input type ="submit" name="submit" formaction="./DUControl?type=category&categoryType=sc&mod=削除" value="戻る"></td>
+				<%} %>
+			</tr>
 			</table>
 	    </div>
+	</form>
 	<% } %>
 <%} %>
 
