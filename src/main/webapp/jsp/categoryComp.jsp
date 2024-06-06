@@ -9,9 +9,9 @@
 </head>
 
 <body>
-
-<% if(session.getParameter("category").equals("大カテゴリ")){ %>
-	<% if(request.getParameter("submit").equals("登録")){ %>
+<% String str =  request.getParameter("submit");%>
+<% if(request.getParameter("category").equals("bc")){ %>
+	<% if(str.equals("登録")){ %>
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -22,15 +22,13 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>登録しました</p>
-	        <form action= "./master?no=2" method="post">
+	        <form action= "./manageControl?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>
 			</form>
 	    </div>
-	<% } %>
-		
-	<% if(session.getParameter("submit").equals("変更")){ %>
+	<% }else if(str.equals("変更")){ %>
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -41,15 +39,13 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>変更しました</p>
-	        <form action= "./master?no=2" method="post">
+	        <form action= "./manageControl?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>
 			</form>
 	    </div>
-	<% } %>
-		
-	<% if(request.getParameter("submit").equals("削除")){ %>
+	<% }else if(str.equals("削除")){ %>
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -60,18 +56,15 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>削除しました</p>
-	        <form action= "./master?no=2" method="post">
+	        <form action= "./manageControl?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>
 			</form>
 	    </div>
 	<% } %>
-<%} %>
-
-	
-<% if(request.getParameter("category").equals("小カテゴリ")){ %>
-	<% if(request.getParameter("submit").equals("登録")){ %>
+<%}else if(request.getParameter("category").equals("sc")){ %>
+	<% if(str.equals("登録")){ %>
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -82,15 +75,13 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>登録しました</p>
-	        <form action= "./master?no=2" method="post">
+	        <form action= "./manageControl?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>
 			</form>
 	    </div>
-	<% } %>
-		
-	<% if(request.getParameter("submit").equals("変更")){ %>
+	<% }else if(str.equals("変更")){ %>
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -101,15 +92,13 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>変更しました</p>
-	        <form action= "./master?no=2" method="post">
+	        <form action= "./manageControl?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>
 			</form>
 	    </div>
-	<% } %>
-		
-	<% if(request.getParameter("submit").equals("削除")){ %>
+	<% }else if(str.equals("削除")){ %>
 		<div align="center">
 			<div align="left">
 				<p>カテゴリ管理</p>
@@ -120,7 +109,7 @@
 	            <a href="/first">ログアウト</a>
 	        </div>
 	        <p>削除しました</p>
-	        <form action= "./master?no=2" method="post">
+	        <form action= "./manageControl?no=2" method="post">
 			<P>
 			<input type ="submit"  name="submit" value="次へ">
 			</p>

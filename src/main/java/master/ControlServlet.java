@@ -101,8 +101,7 @@ public class ControlServlet extends HttpServlet {
 					forward="/jsp/userMod.jsp?submit=変更";
 				}
 			 }
-		}
-		
+		}		
 		
 		if(request.getParameter("type").equals("category") && request.getParameter("maker").equals("bc")) {
 			
@@ -116,13 +115,12 @@ public class ControlServlet extends HttpServlet {
 				String[] itemName = {"大カテゴリ番号","大カテゴリ名"};
 				String[] necItemName = {"大カテゴリ番号","大カテゴリ名"};
 				
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
-				String errmsg4=null;
 				Errcheck err = new Errcheck();
+				String errmsg1 = err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2 = err.idExistCheck(Integer.parseInt(id),"bc");
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.idExistCheck(id,"bc")==null){
+				
+				if(errmsg1.equals(null) && errmsg2.equals(null)){
 					session.setAttribute("bc_id", id);
 					session.setAttribute("bc_category", name);
 					forward="/jsp/categoryConf.jsp?submit=登録";
@@ -132,33 +130,30 @@ public class ControlServlet extends HttpServlet {
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
-					request.setAttribute("errmsg3", errmsg3);
-					request.setAttribute("errmsg4", errmsg4);
 					forward="/jsp/categoryMod.jsp?submit=登録";
 				}
 
-				forward="/jsp/categoryConf.jsp?submit=登録";
+				forward="/jsp/categoryConf.jsp?submit=登録&categoryType=bc";
 
 			 }
 			
 			if(request.getParameter("submit").equals("変更")){
 
-				String id = request.getParameter("bc_id");
-				String name = request.getParameter("bc_category");
-				String[] item = {id,name};
-				String[] necItem = {id,name};
+				String id = (String)session.getAttribute("bc_id");
+				String name = (String)session.getAttribute("bc_category");
+				String new_name = request.getParameter("bc_category");
+				String[] item = {id,name,new_name};
+				String[] necItem = {id,name,new_name};
 				String[] itemName = {"大カテゴリ番号","大カテゴリ名"};
 				String[] necItemName = {"大カテゴリ番号","大カテゴリ名"};
 
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
-				String errmsg4=null;
 				Errcheck err = new Errcheck();
+				String errmsg1 = err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2 = err.idExistCheck(Integer.parseInt(id),"bc");
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.idExistCheck(id,"bc")==null){
+				if(errmsg1.equals(null) && errmsg2.equals(null)){
 					session.setAttribute("bc_id", id);
-					session.setAttribute("bc_category", name);
+					session.setAttribute("new_bc_category", new_name);
 					forward="/jsp/categoryConf.jsp?submit=変更";
 				}else{
 					session.setAttribute("bc_id", id);
@@ -166,12 +161,10 @@ public class ControlServlet extends HttpServlet {
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
-					request.setAttribute("errmsg3", errmsg3);
-					request.setAttribute("errmsg4", errmsg4);
 					forward="/jsp/categoryMod.jsp?submit=変更";
 				}
 
-				forward="/jsp/categoryConf.jsp?submit=変更";
+				forward="/jsp/categoryConf.jsp?submit=変更&categoryType=bc";
 
 			 }
 
@@ -187,75 +180,89 @@ public class ControlServlet extends HttpServlet {
 			
 			if(request.getParameter("submit").equals("登録")){
 
+				BigCategoryBean bean = new BigCategoryBean();
+				BigCategoryDao dao = new BigCategoryDao();
 				String sc_id = request.getParameter("sc_id");
-				String bc_id = request.getParameter("bc_id");
-				String name = request.getParameter("sc_category");
-				String[] item = {sc_id,bc_id,name};
-				String[] necItem = {sc_id,bc_id,name};
+				String bc_id = request.getParameter("bc_id2");
+				String sc_name = request.getParameter("sc_category");
+				String bc_name;
+				String[] item = {sc_id,bc_id,sc_name};
+				String[] necItem = {sc_id,bc_id,sc_name};
 				String[] itemName = {"小カテゴリ番号","大カテゴリ番号","小カテゴリ名"};
 				String[] necItemName = {"小カテゴリ番号","大カテゴリ番号","小カテゴリ名"};
 				
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
-				String errmsg4=null;
-				Errcheck err = new Errcheck();
+				bean = dao.selectIf(Integer.parseInt(bc_id));
+				bc_name = bean.getBc_category();
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.idExistCheck(sc_id,"bc")==null){
+				Errcheck err = new Errcheck();
+				String errmsg1 = err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2 = err.idExistCheck(Integer.parseInt(sc_id),"sc");
+				
+				
+				if(errmsg1.equals(null) && errmsg2.equals(null)){
 					session.setAttribute("sc_id", sc_id);
 					session.setAttribute("bc_id", bc_id);
-					session.setAttribute("sc_category", name);
+					session.setAttribute("sc_category", sc_name);
+					session.setAttribute("bc_category", bc_name);
+					System.out.println(sc_id);
+					System.out.println(bc_id);
 					forward="/jsp/categoryConf.jsp?submit=登録";
 				}else{
 					session.setAttribute("sc_id", sc_id);
 					session.setAttribute("bc_id", bc_id);
-					session.setAttribute("sc_category", name);
+					session.setAttribute("sc_category", sc_name);
+					session.setAttribute("bc_category", bc_name);
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
-					request.setAttribute("errmsg3", errmsg3);
-					request.setAttribute("errmsg4", errmsg4);
 					forward="/jsp/categoryMod.jsp?submit=登録";
 				}
 
-				forward="/jsp/categoryConf.jsp?submit=登録";
+				forward="/jsp/categoryConf.jsp?submit=登録&categoryType=sc";
 
 			 }
 			
 			if(request.getParameter("submit").equals("変更")){
 
-				String sc_id = request.getParameter("sc_id");
+				BigCategoryBean bean = new BigCategoryBean();
+				BigCategoryDao dao = new BigCategoryDao();
+				String sc_id = (String)session.getAttribute("sc_id");
 				String bc_id = request.getParameter("bc_id");
-				String name = request.getParameter("sc_category");
-				String[] item = {sc_id,bc_id,name};
-				String[] necItem = {sc_id,bc_id,name};
+				String sc_name = request.getParameter("sc_category");
+				String bc_name;
+				String[] item = {sc_id,bc_id,sc_name};
+				String[] necItem = {sc_id,bc_id,sc_name};
 				String[] itemName = {"小カテゴリ番号","大カテゴリ番号","小カテゴリ名"};
 				String[] necItemName = {"小カテゴリ番号","大カテゴリ番号","小カテゴリ名"};
-
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
-				String errmsg4=null;
-				Errcheck err = new Errcheck();
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.idExistCheck(sc_id,"bc")==null){
+				bean = dao.selectIf(Integer.parseInt(bc_id));
+				bc_name = bean.getBc_category();
+				System.out.println(sc_id);
+				System.out.println(bc_id);
+				System.out.println(sc_name);
+
+				Errcheck err = new Errcheck();
+				String errmsg1 = err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2 = err.idExistCheck(Integer.parseInt(sc_id),"sc");
+				
+				if(errmsg1.equals(null) && errmsg2.equals(null)){
 					session.setAttribute("sc_id", sc_id);
 					session.setAttribute("bc_id", bc_id);
-					session.setAttribute("sc_category", name);
-					forward="/jsp/categoryConf.jsp?submit=変更";
+					session.setAttribute("sc_category", sc_name);
+					session.setAttribute("bc_category", bc_name);
+					forward="/jsp/categoryConf.jsp?submit=変更&categoryType=sc";
 				}else{
 					session.setAttribute("sc_id", sc_id);
 					session.setAttribute("bc_id", bc_id);
-					session.setAttribute("sc_category", name);
+					session.setAttribute("sc_category", sc_name);
+					session.setAttribute("bc_category", bc_name);
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
-					request.setAttribute("errmsg3", errmsg3);
-					request.setAttribute("errmsg4", errmsg4);
-					forward="/jsp/categoryMod.jsp?submit=変更";
+					forward="/jsp/categoryMod.jsp?submit=変更&categoryType=sc";
 				}
 
-				forward="/jsp/categoryConf.jsp?submit=変更";
+				forward="/jsp/categoryConf.jsp?submit=変更&categoryType=sc";
 
 			 }
 
@@ -269,7 +276,7 @@ public class ControlServlet extends HttpServlet {
 		if(request.getParameter("type").equals("product")) {
 			
 			if(request.getParameter("submit").equals("登録")){
-
+				
 				String pro_id = request.getParameter("pro_id");
 				String sp_id = request.getParameter("sp_id");
 				String pi_id = request.getParameter("pi_id");
@@ -279,7 +286,6 @@ public class ControlServlet extends HttpServlet {
 				String wholesale = request.getParameter("wholesale");
 				String set_quantity = request.getParameter("set_quantity");
 				String pi_name = request.getParameter("pi_name");
-				String category_id = request.getParameter("category_id");
 				String jan_code = request.getParameter("jan_code");
 				String branch_no = request.getParameter("branch_no");
 				String ref_type = request.getParameter("ref_type");
@@ -291,13 +297,12 @@ public class ControlServlet extends HttpServlet {
 				String auction_permission = request.getParameter("auction_permission");
 				String direct_permission = request.getParameter("direct_permission");
 				String out_of_stock = request.getParameter("out_of_stock");
-				String sc_id = request.getParameter("sc_id");
-				String bc_category_1 = request.getParameter("bc_category_1");
-				String sc_category_1 = request.getParameter("sc_category_1");
-				String bc_category_2 = request.getParameter("bc_category_2");
-				String sc_category_2 = request.getParameter("sc_category_2");
-				String bc_category_3 = request.getParameter("bc_category_3");
-				String sc_category_3 = request.getParameter("sc_category_3");
+				String bc_category_1 = request.getParameter("bc_id_1");
+				String sc_category_1 = request.getParameter("sc_id_1");
+				String bc_category_2 = request.getParameter("bc_id_2");
+				String sc_category_2 = request.getParameter("sc_id_2");
+				String bc_category_3 = request.getParameter("bc_id_3");
+				String sc_category_3 = request.getParameter("sc_id_3");
 				String descr = request.getParameter("descr");
 				String detail = request.getParameter("detail");
 				String image_1 = request.getParameter("image_1");
@@ -313,17 +318,20 @@ public class ControlServlet extends HttpServlet {
 				String shop_name = request.getParameter("shop_name");
 				String[] item = {pro_id,sp_id,pi_id,pi_name,bc_category_1,sc_category_1,bc_category_2,sc_category_2,bc_category_3,sc_category_3,shop_name,descr,detail,jan_code,branch_no,itemization,ref_type,retail_price,wholesale,set_quantity,tax_rate_class,shipping_term,image_1,image_2,image_3,image_4,image_5,image_6,image_7,image_8,image_9,image_10,image_permission,sell_permission,auction_permission,direct_permission,out_of_stock};
 				String[] necItem = {pro_id,sp_id,pi_id,pi_name,shop_name,ref_type,wholesale,set_quantity,tax_rate_class};
-				String[] numItem = {sp_id,wholesale,set_quantity,category_id,retail_price,tax_rate_class,sc_id};
+				String[] numItem = {sp_id,wholesale,set_quantity,retail_price,tax_rate_class};
 				String[] itemName = {"ダイレクト商品ID","サプライヤーID","商品管理番号","商品名","カテゴリ1(大)","カテゴリ1(小)","カテゴリ2(大)","カテゴリ2(小)","カテゴリ3(大)","カテゴリ3(小)","ショップ名","消費者向け商品説明文","消費者向け商品詳細","JANコード","商品管理枝番号","内訳","参考価格種別","上代価格","卸価格単価","セット毎数量","税率区分","出荷条件","商品画像1","商品画像2","商品画像3","商品画像4","商品画像5","商品画像6","商品画像7","商品画像8","商品画像9","商品画像10","画像転載可","ネット販売可","ネットオークション可","消費者直送可","品切れ"};
-				String[] necItemName = {"ダイレクト商品ID","サプライヤー番号","商品管理番号","ショップ名","参考価格種別","卸価格単価","セット毎数量","税金区分"};
-				String[] necNumItem = {"サプライヤー番号","卸価格単価","セット毎数量","カテゴリ番号","上代価格","税金区分","小カテゴリ番号"};
+				String[] necItemName = {"ダイレクト商品ID","サプライヤーID","商品管理番号","商品名","ショップ名","参考価格種別","卸価格単価","セット毎数量","税金区分"};
+				String[] necNumItem = {"サプライヤー番号","卸価格単価","セット毎数量","上代価格","税金区分"};
+				String[] shop = {"ショップ名"};
+				String[] shopn = {shop_name};
 				
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
 				Errcheck err = new Errcheck();
+				String errmsg1=err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2=err.numberCheck(numItem,necNumItem);
+				String errmsg3=err.idExistCheck(pro_id, "product");
+				String errmsg4=err.contentsCheck("サプライヤー", sp_id, shopn, shop);
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.numberCheck(numItem,necNumItem)==null){
+				if(errmsg1 == null && errmsg2 == null && errmsg3 == null && errmsg4 == null){
 					session.setAttribute("pro_id",pro_id);
 					session.setAttribute("sp_id",sp_id);
 					session.setAttribute("pi_id",pi_id);
@@ -333,7 +341,6 @@ public class ControlServlet extends HttpServlet {
 					session.setAttribute("wholesale",wholesale);
 					session.setAttribute("set_quantity",set_quantity);
 					session.setAttribute("pi_name",pi_name);
-					session.setAttribute("category_id",category_id);
 					session.setAttribute("jan_code",jan_code);
 					session.setAttribute("branch_no",branch_no);
 					session.setAttribute("ref_type",ref_type);
@@ -356,6 +363,14 @@ public class ControlServlet extends HttpServlet {
 					session.setAttribute("detail",detail);
 					session.setAttribute("image_1",image_1);
 					session.setAttribute("image_2",image_2);
+					session.setAttribute("image_3",image_3);
+					session.setAttribute("image_4",image_4);
+					session.setAttribute("image_5",image_5);
+					session.setAttribute("image_6",image_6);
+					session.setAttribute("image_7",image_7);
+					session.setAttribute("image_8",image_8);
+					session.setAttribute("image_9",image_9);
+					session.setAttribute("image_10",image_10);
 					session.setAttribute("shop_name",shop_name);
 					forward="/jsp/productConf.jsp?submit=登録";
 				}else{
@@ -368,7 +383,6 @@ public class ControlServlet extends HttpServlet {
 					session.setAttribute("wholesale",wholesale);
 					session.setAttribute("set_quantity",set_quantity);
 					session.setAttribute("pi_name",pi_name);
-					session.setAttribute("category_id",category_id);
 					session.setAttribute("jan_code",jan_code);
 					session.setAttribute("branch_no",branch_no);
 					session.setAttribute("ref_type",ref_type);
@@ -389,18 +403,24 @@ public class ControlServlet extends HttpServlet {
 					session.setAttribute("sc_category_3",sc_category_3);
 					session.setAttribute("descr",descr);
 					session.setAttribute("detail",detail);
-					session.setAttribute("images_1",image_1);
-					session.setAttribute("images_2",image_2);
+					session.setAttribute("image_1",image_1);
+					session.setAttribute("image_2",image_2);
+					session.setAttribute("image_3",image_3);
+					session.setAttribute("image_4",image_4);
+					session.setAttribute("image_5",image_5);
+					session.setAttribute("image_6",image_6);
+					session.setAttribute("image_7",image_7);
+					session.setAttribute("image_8",image_8);
+					session.setAttribute("image_9",image_9);
+					session.setAttribute("image_10",image_10);
 					session.setAttribute("shop_name",shop_name);
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
 					request.setAttribute("errmsg3", errmsg3);
+					request.setAttribute("errmsg4", errmsg4);
 					forward="/jsp/productMod.jsp?submit=登録";
 				}
-
-				forward="/jsp/productConf.jsp?submit=登録";
-
 			 }
 			
 			if(request.getParameter("submit").equals("変更")){
@@ -414,7 +434,6 @@ public class ControlServlet extends HttpServlet {
 				String wholesale = request.getParameter("wholesale");
 				String set_quantity = request.getParameter("set_quantity");
 				String pi_name = request.getParameter("pi_name");
-				String category_id = request.getParameter("category_id");
 				String jan_code = request.getParameter("jan_code");
 				String branch_no = request.getParameter("branch_no");
 				String ref_type = request.getParameter("ref_type");
@@ -426,13 +445,12 @@ public class ControlServlet extends HttpServlet {
 				String auction_permission = request.getParameter("auction_permission");
 				String direct_permission = request.getParameter("direct_permission");
 				String out_of_stock = request.getParameter("out_of_stock");
-				String sc_id = request.getParameter("sc_id");
-				String bc_category_1 = request.getParameter("bc_category_1");
-				String sc_category_1 = request.getParameter("sc_category_1");
-				String bc_category_2 = request.getParameter("bc_category_2");
-				String sc_category_2 = request.getParameter("sc_category_2");
-				String bc_category_3 = request.getParameter("bc_category_3");
-				String sc_category_3 = request.getParameter("sc_category_3");
+				String bc_category_1 = request.getParameter("bc_id_1");
+				String sc_category_1 = request.getParameter("sc_id_1");
+				String bc_category_2 = request.getParameter("bc_id_2");
+				String sc_category_2 = request.getParameter("sc_id_2");
+				String bc_category_3 = request.getParameter("bc_id_3");
+				String sc_category_3 = request.getParameter("sc_id_3");
 				String descr = request.getParameter("descr");
 				String detail = request.getParameter("detail");
 				String image_1 = request.getParameter("image_1");
@@ -448,17 +466,21 @@ public class ControlServlet extends HttpServlet {
 				String shop_name = request.getParameter("shop_name");
 				String[] item = {pro_id,sp_id,pi_id,pi_name,bc_category_1,sc_category_1,bc_category_2,sc_category_2,bc_category_3,sc_category_3,shop_name,descr,detail,jan_code,branch_no,itemization,ref_type,retail_price,wholesale,set_quantity,tax_rate_class,shipping_term,image_1,image_2,image_3,image_4,image_5,image_6,image_7,image_8,image_9,image_10,image_permission,sell_permission,auction_permission,direct_permission,out_of_stock};
 				String[] necItem = {pro_id,sp_id,pi_id,pi_name,shop_name,ref_type,wholesale,set_quantity,tax_rate_class};
-				String[] numItem = {sp_id,wholesale,set_quantity,category_id,retail_price,tax_rate_class,sc_id};
+				String[] numItem = {sp_id,wholesale,set_quantity,retail_price,tax_rate_class};
 				String[] itemName = {"ダイレクト商品ID","サプライヤーID","商品管理番号","商品名","カテゴリ1(大)","カテゴリ1(小)","カテゴリ2(大)","カテゴリ2(小)","カテゴリ3(大)","カテゴリ3(小)","ショップ名","消費者向け商品説明文","消費者向け商品詳細","JANコード","商品管理枝番号","内訳","参考価格種別","上代価格","卸価格単価","セット毎数量","税率区分","出荷条件","商品画像1","商品画像2","商品画像3","商品画像4","商品画像5","商品画像6","商品画像7","商品画像8","商品画像9","商品画像10","画像転載可","ネット販売可","ネットオークション可","消費者直送可","品切れ"};
-				String[] necItemName = {"ダイレクト商品ID","サプライヤー番号","商品管理番号","ショップ名","参考価格種別","卸価格単価","セット毎数量","税金区分"};
-				String[] necNumItem = {"サプライヤー番号","卸価格単価","セット毎数量","カテゴリ番号","上代価格","税金区分","小カテゴリ番号"};
-				
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
+				String[] necItemName = {"ダイレクト商品ID","サプライヤーID","商品管理番号","商品名","ショップ名","参考価格種別","卸価格単価","セット毎数量","税金区分"};
+				String[] necNumItem = {"サプライヤー番号","卸価格単価","セット毎数量","上代価格","税金区分"};
+				String[] shop = {"ショップ名"};
+				String[] shopn = {shop_name};
 				Errcheck err = new Errcheck();
-				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.numberCheck(numItem,necNumItem)==null){
+				String errmsg1=err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2=err.numberCheck(numItem,necNumItem);
+				String errmsg3=null;
+				String errmsg4=err.contentsCheck("サプライヤー", sp_id, shopn, shop);
+				if (!session.getAttribute("pro_id").equals(pro_id)) {
+					errmsg3=err.idExistCheck(pro_id, "product");
+				}
+				if(errmsg1==null && errmsg2==null && errmsg3==null && errmsg4==null){
 					session.setAttribute("pro_id",pro_id);
 					session.setAttribute("sp_id",sp_id);
 					session.setAttribute("pi_id",pi_id);
@@ -468,7 +490,6 @@ public class ControlServlet extends HttpServlet {
 					session.setAttribute("wholesale",wholesale);
 					session.setAttribute("set_quantity",set_quantity);
 					session.setAttribute("pi_name",pi_name);
-					session.setAttribute("category_id",category_id);
 					session.setAttribute("jan_code",jan_code);
 					session.setAttribute("branch_no",branch_no);
 					session.setAttribute("ref_type",ref_type);
@@ -489,8 +510,17 @@ public class ControlServlet extends HttpServlet {
 					session.setAttribute("sc_category_3",sc_category_3);
 					session.setAttribute("descr",descr);
 					session.setAttribute("detail",detail);
-					session.setAttribute("images_1",image_1);
-					session.setAttribute("images_2",image_2);
+					session.setAttribute("image_1",image_1);
+					session.setAttribute("image_2",image_2);
+					session.setAttribute("image_3",image_3);
+					session.setAttribute("image_4",image_4);
+					session.setAttribute("image_5",image_5);
+					session.setAttribute("image_6",image_6);
+					session.setAttribute("image_7",image_7);
+					session.setAttribute("image_8",image_8);
+					session.setAttribute("image_9",image_9);
+					session.setAttribute("image_10",image_10);
+					
 					session.setAttribute("shop_name",shop_name);
 					forward="/jsp/productConf.jsp?submit=変更";
 				}else{
@@ -503,7 +533,6 @@ public class ControlServlet extends HttpServlet {
 					session.setAttribute("wholesale",wholesale);
 					session.setAttribute("set_quantity",set_quantity);
 					session.setAttribute("pi_name",pi_name);
-					session.setAttribute("category_id",category_id);
 					session.setAttribute("jan_code",jan_code);
 					session.setAttribute("branch_no",branch_no);
 					session.setAttribute("ref_type",ref_type);
@@ -524,18 +553,24 @@ public class ControlServlet extends HttpServlet {
 					session.setAttribute("sc_category_3",sc_category_3);
 					session.setAttribute("descr",descr);
 					session.setAttribute("detail",detail);
-					session.setAttribute("images_1",image_1);
-					session.setAttribute("images_2",image_2);
+					session.setAttribute("image_1",image_1);
+					session.setAttribute("image_2",image_2);
+					session.setAttribute("image_3",image_3);
+					session.setAttribute("image_4",image_4);
+					session.setAttribute("image_5",image_5);
+					session.setAttribute("image_6",image_6);
+					session.setAttribute("image_7",image_7);
+					session.setAttribute("image_8",image_8);
+					session.setAttribute("image_9",image_9);
+					session.setAttribute("image_10",image_10);
 					session.setAttribute("shop_name",shop_name);
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
 					request.setAttribute("errmsg3", errmsg3);
+					request.setAttribute("errmsg4", errmsg4);
 					forward="/jsp/productMod.jsp?submit=変更";
 				}
-				
-				forward="/jsp/productConf.jsp?submit=変更";
-				
 			 }
 			
 			if(request.getParameter("submit").equals("戻る")){
@@ -547,4 +582,13 @@ public class ControlServlet extends HttpServlet {
 		rd.forward(request, response);
 		
 	}	
+	
+	public void nullChange(String str1, String str2, HttpServletRequest request) {
+		HttpSession session = request.getSession(true);
+		if(str2 == null) {
+			session.setAttribute(str1,"");
+		} else {
+			session.setAttribute(str1,str2);
+		}
+	}
 }
