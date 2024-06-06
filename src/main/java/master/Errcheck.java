@@ -123,7 +123,7 @@ public class Errcheck {
 			return "存在しない社員番号です";
 		} else if(type.equals("bc")) {
 			BigCategoryDao dao = new BigCategoryDao();
-			BigCategoryBean bean = dao.select(id);
+			BigCategoryBean bean = dao.selectIf(id);
 			if(id == bean.getBc_id()){
 				return null;
 			}

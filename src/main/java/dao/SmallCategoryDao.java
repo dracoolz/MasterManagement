@@ -117,7 +117,6 @@ public class SmallCategoryDao extends DBAccess{
 				bean.setSc_category(rs.getString("sc_category"));
 				
 				list.add(bean);
-				bean.setBc_category(rs.getString("bc_category"));
 			}	
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -150,18 +149,17 @@ public class SmallCategoryDao extends DBAccess{
 	
 
 	//小カテゴリを更新（アップデート）するメソッド
-	public void update(int sc_id ,int bc_id ,int new_sc_id ,String name) {
+	public void update(int sc_id ,int bc_id ,String name) {
 
-		String sql = "update small_category set sc_id=?,bc_id=?,sc_category=? where sc_id=?";
+		String sql = "update small_category set bc_id=?,sc_category=? where sc_id=?";
 
 		try {
 			connect();
 			// ステートメントの作成
 			PreparedStatement ps = getConnection().prepareStatement(sql);
-			ps.setInt(1, new_sc_id);
-			ps.setInt(2, bc_id);
-			ps.setString(3, name);
-			ps.setInt(4, sc_id);
+			ps.setInt(1, bc_id);
+			ps.setString(2, name);
+			ps.setInt(3, sc_id);
 			ps.executeUpdate();
 
 		} catch (SQLException e) {

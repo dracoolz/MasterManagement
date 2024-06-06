@@ -11,12 +11,30 @@ function ctrlTab() {
     var sc = document.getElementsByClassName("scSelect");
     var scBoxes = sc.length;
     
-     for (var j = 0; j < sc.length; j++) {
-                sc[j].style.display = 'none';
-            }
     for (var i = 0; i < scBoxes; i++) {
-        if (sc[i].id == bc) {
-            sc[i].style.display = 'block';
+		sc[i].style.display = "none";
+            
+		if (sc[i].id == bc) {
+			sc[i].style.display = "";
         }
+     }
+}
+
+
+function formSwitch() {
+    hoge = document.getElementsByName('maker')
+    if (hoge[0].checked) {
+        document.getElementById('bcform').style.display = "";
+        document.getElementById('scform').style.display = "none";
+    } else if (hoge[1].checked) {
+        document.getElementById('bcform').style.display = "none";
+        document.getElementById('scform').style.display = "";
+    } else {
+        document.getElementById('bcform').style.display = "none";
+        document.getElementById('scform').style.display = "none";
     }
 }
+window.onload = function(){
+	document.getElementById('bcform').style.display = "";
+    document.getElementById('scform').style.display = "none";
+	}

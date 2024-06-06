@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bean.BigCategoryBean;
 import bean.ProductBean;
@@ -32,6 +33,8 @@ public class ManageControlServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		
+		HttpSession session = request.getSession(true);
+		
 		int no = Integer.parseInt(request.getParameter("no"));
 		RequestDispatcher rd = null;
 		switch(no) {
@@ -46,12 +49,12 @@ public class ManageControlServlet extends HttpServlet {
 				BigCategoryDao bdao = new BigCategoryDao();
 				ArrayList<BigCategoryBean> barr = new ArrayList<BigCategoryBean>();
 				barr = bdao.selectAll();
-				request.setAttribute("bclist", barr);
+				session.setAttribute("bclist", barr);
 				
 				SmallCategoryDao sdao = new SmallCategoryDao();
 				ArrayList<SmallCategoryBean> sarr = new ArrayList<SmallCategoryBean>();
 				sarr = sdao.selectAll();
-				request.setAttribute("sclist", sarr);
+				session.setAttribute("sclist", sarr);
 				
 				rd = request.getRequestDispatcher("./jsp/category.jsp");
 				break;

@@ -28,9 +28,19 @@
       } 
    ); 
    
+   $(document).ready(function() 
+      { 
+         $("#bc_table").tablesorter({
+            headers: {
+               2: { sorter: false }
+            }
+         });
+      } 
+   ); 
+   
   $(document).ready(function() 
       { 
-         $("#category_table").tablesorter({
+         $("#sc_table").tablesorter({
             headers: {
                4: { sorter: false }
             }

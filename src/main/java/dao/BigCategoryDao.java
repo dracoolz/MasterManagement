@@ -67,6 +67,34 @@ public class BigCategoryDao extends DBAccess{
 			return bean;
 		}
 		
+		public BigCategoryBean selectIf(int id) {
+
+			BigCategoryBean bean = new BigCategoryBean();
+
+			String sql = "select * from big_category where bc_id=?";
+
+			try {
+			    connect();
+			    // ステートメントの作成
+			    PreparedStatement ps = getConnection().prepareStatement(sql);
+			    ps.setInt(1, id);
+
+			    ResultSet rs = ps.executeQuery();
+
+			    if (rs.next()) {
+			        bean.setBc_id(rs.getInt("bc_id"));
+			        bean.setBc_category(rs.getString("bc_category"));
+			    } else {
+			        // データが見つからない場合の処理を追加する
+			    }
+			} catch (SQLException e) {
+			    e.printStackTrace();
+			} finally {
+			    disconnect();
+			}
+
+			return bean;
+		}
 		
 		public ArrayList<SmallCategoryBean> select(int id) {
 
@@ -122,17 +150,16 @@ public class BigCategoryDao extends DBAccess{
 		
 
 		//大カテゴリを更新（アップデート）するメソッド
-		public void update(int id ,int new_id ,String name) {
+		public void update(int id ,String new_name) {
 
-			String sql = "update big_category set bc_id=?,bc_category=? where bc_id=?";
+			String sql = "update big_category set bc_category=? where bc_id=?";
 
 			try {
 				connect();
 				// ステートメントの作成
 				PreparedStatement ps = getConnection().prepareStatement(sql);
-				ps.setInt(1, new_id);
-				ps.setString(2, name);
-				ps.setInt(3, id);
+				ps.setString(1, new_name);
+				ps.setInt(2, id);
 				ps.executeUpdate();
 
 			} catch (SQLException e) {
