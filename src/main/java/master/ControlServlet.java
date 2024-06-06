@@ -116,13 +116,12 @@ public class ControlServlet extends HttpServlet {
 				String[] itemName = {"大カテゴリ番号","大カテゴリ名"};
 				String[] necItemName = {"大カテゴリ番号","大カテゴリ名"};
 				
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
-				String errmsg4=null;
 				Errcheck err = new Errcheck();
+				String errmsg1 = err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2 = err.idExistCheck(Integer.parseInt(id),"bc");
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.idExistCheck(id,"bc")==null){
+				
+				if(errmsg1.equals(null) && errmsg2.equals(null)){
 					session.setAttribute("bc_id", id);
 					session.setAttribute("bc_category", name);
 					forward="/jsp/categoryConf.jsp?submit=登録";
@@ -132,33 +131,30 @@ public class ControlServlet extends HttpServlet {
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
-					request.setAttribute("errmsg3", errmsg3);
-					request.setAttribute("errmsg4", errmsg4);
 					forward="/jsp/categoryMod.jsp?submit=登録";
 				}
 
-				forward="/jsp/categoryConf.jsp?submit=登録";
+				forward="/jsp/categoryConf.jsp?submit=登録&categoryType=bc";
 
 			 }
 			
 			if(request.getParameter("submit").equals("変更")){
 
-				String id = request.getParameter("bc_id");
-				String name = request.getParameter("bc_category");
-				String[] item = {id,name};
-				String[] necItem = {id,name};
+				String id = (String)session.getAttribute("bc_id");
+				String name = (String)session.getAttribute("bc_category");
+				String new_name = request.getParameter("bc_category");
+				String[] item = {id,name,new_name};
+				String[] necItem = {id,name,new_name};
 				String[] itemName = {"大カテゴリ番号","大カテゴリ名"};
 				String[] necItemName = {"大カテゴリ番号","大カテゴリ名"};
 
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
-				String errmsg4=null;
 				Errcheck err = new Errcheck();
+				String errmsg1 = err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2 = err.idExistCheck(Integer.parseInt(id),"bc");
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.idExistCheck(id,"bc")==null){
+				if(errmsg1.equals(null) && errmsg2.equals(null)){
 					session.setAttribute("bc_id", id);
-					session.setAttribute("bc_category", name);
+					session.setAttribute("new_bc_category", new_name);
 					forward="/jsp/categoryConf.jsp?submit=変更";
 				}else{
 					session.setAttribute("bc_id", id);
@@ -166,12 +162,10 @@ public class ControlServlet extends HttpServlet {
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
-					request.setAttribute("errmsg3", errmsg3);
-					request.setAttribute("errmsg4", errmsg4);
 					forward="/jsp/categoryMod.jsp?submit=変更";
 				}
 
-				forward="/jsp/categoryConf.jsp?submit=変更";
+				forward="/jsp/categoryConf.jsp?submit=変更&categoryType=bc";
 
 			 }
 
@@ -187,75 +181,89 @@ public class ControlServlet extends HttpServlet {
 			
 			if(request.getParameter("submit").equals("登録")){
 
+				BigCategoryBean bean = new BigCategoryBean();
+				BigCategoryDao dao = new BigCategoryDao();
 				String sc_id = request.getParameter("sc_id");
-				String bc_id = request.getParameter("bc_id");
-				String name = request.getParameter("sc_category");
-				String[] item = {sc_id,bc_id,name};
-				String[] necItem = {sc_id,bc_id,name};
+				String bc_id = request.getParameter("bc_id2");
+				String sc_name = request.getParameter("sc_category");
+				String bc_name;
+				String[] item = {sc_id,bc_id,sc_name};
+				String[] necItem = {sc_id,bc_id,sc_name};
 				String[] itemName = {"小カテゴリ番号","大カテゴリ番号","小カテゴリ名"};
 				String[] necItemName = {"小カテゴリ番号","大カテゴリ番号","小カテゴリ名"};
 				
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
-				String errmsg4=null;
-				Errcheck err = new Errcheck();
+				bean = dao.selectIf(Integer.parseInt(bc_id));
+				bc_name = bean.getBc_category();
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.idExistCheck(sc_id,"bc")==null){
+				Errcheck err = new Errcheck();
+				String errmsg1 = err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2 = err.idExistCheck(Integer.parseInt(sc_id),"sc");
+				
+				
+				if(errmsg1.equals(null) && errmsg2.equals(null)){
 					session.setAttribute("sc_id", sc_id);
 					session.setAttribute("bc_id", bc_id);
-					session.setAttribute("sc_category", name);
+					session.setAttribute("sc_category", sc_name);
+					session.setAttribute("bc_category", bc_name);
+					System.out.println(sc_id);
+					System.out.println(bc_id);
 					forward="/jsp/categoryConf.jsp?submit=登録";
 				}else{
 					session.setAttribute("sc_id", sc_id);
 					session.setAttribute("bc_id", bc_id);
-					session.setAttribute("sc_category", name);
+					session.setAttribute("sc_category", sc_name);
+					session.setAttribute("bc_category", bc_name);
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
-					request.setAttribute("errmsg3", errmsg3);
-					request.setAttribute("errmsg4", errmsg4);
 					forward="/jsp/categoryMod.jsp?submit=登録";
 				}
 
-				forward="/jsp/categoryConf.jsp?submit=登録";
+				forward="/jsp/categoryConf.jsp?submit=登録&categoryType=sc";
 
 			 }
 			
 			if(request.getParameter("submit").equals("変更")){
 
-				String sc_id = request.getParameter("sc_id");
+				BigCategoryBean bean = new BigCategoryBean();
+				BigCategoryDao dao = new BigCategoryDao();
+				String sc_id = (String)session.getAttribute("sc_id");
 				String bc_id = request.getParameter("bc_id");
-				String name = request.getParameter("sc_category");
-				String[] item = {sc_id,bc_id,name};
-				String[] necItem = {sc_id,bc_id,name};
+				String sc_name = request.getParameter("sc_category");
+				String bc_name;
+				String[] item = {sc_id,bc_id,sc_name};
+				String[] necItem = {sc_id,bc_id,sc_name};
 				String[] itemName = {"小カテゴリ番号","大カテゴリ番号","小カテゴリ名"};
 				String[] necItemName = {"小カテゴリ番号","大カテゴリ番号","小カテゴリ名"};
-
-				String errmsg1=null;
-				String errmsg2=null;
-				String errmsg3=null;
-				String errmsg4=null;
-				Errcheck err = new Errcheck();
 				
-				if(err.inputCheck(item,necItem,itemName,necItemName)==null && err.idExistCheck(sc_id,"bc")==null){
+				bean = dao.selectIf(Integer.parseInt(bc_id));
+				bc_name = bean.getBc_category();
+				System.out.println(sc_id);
+				System.out.println(bc_id);
+				System.out.println(sc_name);
+
+				Errcheck err = new Errcheck();
+				String errmsg1 = err.inputCheck(item,necItem,itemName,necItemName);
+				String errmsg2 = err.idExistCheck(Integer.parseInt(sc_id),"sc");
+				
+				if(errmsg1.equals(null) && errmsg2.equals(null)){
 					session.setAttribute("sc_id", sc_id);
 					session.setAttribute("bc_id", bc_id);
-					session.setAttribute("sc_category", name);
-					forward="/jsp/categoryConf.jsp?submit=変更";
+					session.setAttribute("sc_category", sc_name);
+					session.setAttribute("bc_category", bc_name);
+					forward="/jsp/categoryConf.jsp?submit=変更&categoryType=sc";
 				}else{
 					session.setAttribute("sc_id", sc_id);
 					session.setAttribute("bc_id", bc_id);
-					session.setAttribute("sc_category", name);
+					session.setAttribute("sc_category", sc_name);
+					session.setAttribute("bc_category", bc_name);
 					//入力画面に戻した際の画面表示の設定
 					request.setAttribute("errmsg1", errmsg1);
 					request.setAttribute("errmsg2", errmsg2);
-					request.setAttribute("errmsg3", errmsg3);
-					request.setAttribute("errmsg4", errmsg4);
-					forward="/jsp/categoryMod.jsp?submit=変更";
+					forward="/jsp/categoryMod.jsp?submit=変更&categoryType=sc";
 				}
 
-				forward="/jsp/categoryConf.jsp?submit=変更";
+				forward="/jsp/categoryConf.jsp?submit=変更&categoryType=sc";
 
 			 }
 
