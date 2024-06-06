@@ -36,17 +36,38 @@ public class OrderAddServlet extends HttpServlet {
 	String selProductId = req.getParameter("selProductId");
 	String delProductId = req.getParameter("delProductId");
 	String[] orderQtyList = req.getParameterValues("orderQty");
+	//String errMsg = (String) req.getAttribute("errMsg");
+	//req.setAttribute("errMsg", errMsg);
+	String productErrMsg = (String)req.getAttribute("productErrMsg");
+	req.setAttribute("productErrMsg", productErrMsg);
+	String customerErrMsg = (String)req.getAttribute("customerErrMsg");
+	req.setAttribute("customerErrMsg", customerErrMsg);
+	
+	String message = (String) req.getAttribute("message");
+	req.setAttribute("message", message);
 	//String customerErrMsg = req.getParameter("customerErrMsg");
 	//String productErrMsg = (String) req.getAttribute("productErrMsg");
 	
 	@SuppressWarnings("unchecked")
 	ArrayList<OrderSlipBean> addSlip = (ArrayList<OrderSlipBean>) session.getAttribute("addSlip");
 	
-	//何も追加されていなかったら
+	//初期化 何も追加されていなかったら
 	if(addSlip == null) {
 		addSlip = new ArrayList<OrderSlipBean>();
 		session.setAttribute("addSlip", addSlip);
 	}
+	
+	
+	//注文数の引継ぎ 
+	if(addSlip.size() > 0 && orderQtyList != null) {
+		int n=0;
+		for(OrderSlipBean item:addSlip) {
+			item.setOrderQty(Integer.parseInt(orderQtyList[n]));
+			n++;
+		}
+		session.setAttribute("addSlip", addSlip);
+	}
+	
 	
 	//jump_url
 	String url = "/jsp/orderAdd.jsp";
@@ -132,14 +153,20 @@ public class OrderAddServlet extends HttpServlet {
 					OrderSlipBean bean = new OrderSlipBean();
 					bean.setProductId(selProductId);
 					bean.setProductName(productName);
+					bean.setOrderQty(1);
 					addSlip.add(bean);
+					
+					//金額集計は最後に追加した商品が反映されないから
+					//ConfirmServletで
+					
+					session.setAttribute("addSlip",addSlip);
 				}
 			}
 		}
 	}
 	
 	
-	//session.setAttribute("productList",addSlip);
+	
 	
 	
 	//jump

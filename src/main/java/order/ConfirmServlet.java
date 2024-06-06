@@ -1,6 +1,8 @@
 package order;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bean.OrderSlipBean;
+import dao.ProductDao;
 
 public class ConfirmServlet extends HttpServlet {
 
@@ -29,13 +32,83 @@ public class ConfirmServlet extends HttpServlet {
 		//get para
 		String code = req.getParameter("code");
 		String pageFlag = req.getParameter("pageFlag");
-		System.out.println("orderId:"+session.getAttribute("orderId")); //test
 
 		//jumpurl
 		String url = "/jsp/confirm.jsp";
 
 		ErrCheck errChecker = new ErrCheck();
 
+		
+		//追加 orderAdd.jsp
+		if(("add").equals(code)) {
+			String[] orderQtyList = req.getParameterValues("orderQty");
+			@SuppressWarnings("unchecked")
+			ArrayList<OrderSlipBean> addSlip = (ArrayList<OrderSlipBean>) session.getAttribute("addSlip");
+			
+			String customerErrMsg = null;
+			String productErrMsg = null;
+			
+			//取引先名が入力されているかチェック
+			String customerName = (String) session.getAttribute("addCustomerName");
+			if(customerName == null) {
+				customerErrMsg = errChecker.getE022();
+			}
+			
+			//商品があるかチェック
+			if(orderQtyList == null) {
+				productErrMsg = errChecker.getE018();
+			}else {
+				//入力チェック
+				boolean isAllEntered = true;
+				for (String orderQty : orderQtyList) {
+					isAllEntered = errChecker.IsEnteredCheck(orderQty);
+					if (!isAllEntered) {
+						break;
+					}
+				}
+				//入力漏れあり
+				if(!isAllEntered) {
+					productErrMsg = errChecker.getE010();
+				}
+			}
+			
+			//エラーなしなら確認画面へ
+			if(customerErrMsg == null && productErrMsg == null) {
+				// 現在日時を取得
+		        LocalDateTime nowDate = LocalDateTime.now();
+		        // 形式調整 mysql DATE
+		        DateTimeFormatter dtf1 =DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        String now = dtf1.format(nowDate); 
+		        //注文数反映
+		    	int j=0;
+		    	for(OrderSlipBean item:addSlip) {
+		    		item.setOrderQty(Integer.parseInt(orderQtyList[j]));
+		    		j++;
+		    	}
+		        //商品データ集計
+		        ProductDao proDao = new ProductDao();
+		        ArrayList<OrderSlipBean> list = proDao.selectProductAddInfo(addSlip);
+				int n=0;
+				for(OrderSlipBean item:list) {
+					addSlip.get(n).setSalePrice(item.getSalePrice());
+					addSlip.get(n).setUnitCost(item.getUnitCost());
+					addSlip.get(n).setSaleAmount(item.getSaleAmount());
+					addSlip.get(n).setGrossProfit(item.getGrossProfit());
+					n++;
+				}
+		        //set session
+				session.setAttribute("addSlip",addSlip);
+		        session.setAttribute("orderDate", now);
+		        session.setAttribute("code",code);
+				req.setAttribute("message", "追加しますか?");
+			}else {
+				req.setAttribute("customerErrMsg", customerErrMsg);
+				req.setAttribute("productErrMsg", productErrMsg);
+				url = "orderAdd";
+			}		
+		}
+		
+		
 		//キャンセル処理order_cancel.jspから
 		if (("cancel").equals(code)) {
 			String[] cancelQtyList = req.getParameterValues("cancelQty");
@@ -44,9 +117,7 @@ public class ConfirmServlet extends HttpServlet {
 			//入力チェック
 			boolean isAllEntered = true;
 			for (String cancelQty : cancelQtyList) {
-				System.out.println(cancelQty);
 				isAllEntered = errChecker.IsEnteredCheck(cancelQty);
-				System.out.println(isAllEntered);
 				if (!isAllEntered) {
 					break;
 				}
@@ -87,7 +158,6 @@ public class ConfirmServlet extends HttpServlet {
 			} else {
 				url = "orderCancel";
 				req.setAttribute("errMsg", errChecker.getE011());
-				System.out.println("no field!");
 			}
 		}
 

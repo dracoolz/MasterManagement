@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import bean.OrderSlipBean;
 import bean.ProductBean;
 
 public class ProductDao extends DBAccess {
@@ -534,6 +535,52 @@ public class ProductDao extends DBAccess {
 			disconnect();
 		}
 		return productName;
+	}
+	
+	//商品番号をもとに追加のためのメソッド
+	public ArrayList<OrderSlipBean> selectProductAddInfo(ArrayList<OrderSlipBean> slip) {
+		String sql="""
+				select wholesale, set_quantity
+				from product
+				where pro_id = ?
+				""";
+		ResultSet rs = null;
+		//ArrayList<OrderSlipBean> list = new ArrayList<OrderSlipBean>();
+		//販売単価 = wholesale * set_quantity * 1.1 
+		//仕入れ単価 = 販売単価 * 5/6
+		//売上　＝　販売単価 * 注文数 
+		//粗利　＝ 売上 -　仕入単価*注文数
+		try {
+			connect();
+			//create statement
+			//1商品ずつ取得、計算
+			for(OrderSlipBean bean:slip) {
+				PreparedStatement ps = getConnection().prepareStatement(sql);
+				ps.setString(1, bean.getProductId());
+				//execute
+				rs = ps.executeQuery();
+				while(rs.next()) {
+					int wholesale = rs.getInt("wholesale"); //卸価格単価（税抜）
+					int set_quantity = rs.getInt("set_quantity"); //セット枚数量
+					//必要データを計算
+					int unitSellingPrice = (int)(wholesale * set_quantity * 1.1); //販売単価
+					int purchaseUnitPrice = (int)(unitSellingPrice * 5 / 6); //仕入単価
+					int saleAmount = unitSellingPrice * bean.getOrderQty(); //売上金額
+					int grossProfit = saleAmount - purchaseUnitPrice * bean.getOrderQty();
+					
+					//set bean
+					bean.setSalePrice(unitSellingPrice);
+					bean.setUnitCost(purchaseUnitPrice);
+					bean.setSaleAmount(saleAmount);
+					bean.setGrossProfit(grossProfit);
+				}
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+		return slip;
 	}
 
 }

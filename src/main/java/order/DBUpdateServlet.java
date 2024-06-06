@@ -30,13 +30,40 @@ public class DBUpdateServlet extends HttpServlet {
 	
 	//get
 	String code = (String)session.getAttribute("code");
-	int orderId = (int) session.getAttribute("orderId");
 	
 	//jump url
 	String url = "";
 	
 	
 	//追加処理
+	if(("add").equals(code)) {
+		@SuppressWarnings("unchecked")
+		ArrayList<OrderSlipBean> addSlip = (ArrayList<OrderSlipBean>) session.getAttribute("addSlip");
+		String customerId = (String)session.getAttribute("addCustomerId");
+		String orderDate = (String)session.getAttribute("orderDate");
+		
+		//order_list追加
+		OrderListDao dao1 = new OrderListDao();
+		dao1.insertOrder(Integer.parseInt(customerId), orderDate);
+		//order_slip追加
+		int orderId = dao1.selectMaxOrderId();
+		OrderSlipDao dao2 = new OrderSlipDao();
+		dao2.insertOrder(orderId, addSlip);
+		
+		
+		//message set
+		req.setAttribute("message", "追加が完了しました");
+		
+		//session reset
+		session.setAttribute("code",null);
+		session.setAttribute("addCustomerId", null);
+		session.setAttribute("addCustomerName", null);
+		session.setAttribute("orderDate", null);
+		session.setAttribute("addSlip", null);
+		
+		url = "orderAdd";
+	}
+	
 	//変更処理
 	
 	//キャンセル処理
@@ -44,6 +71,7 @@ public class DBUpdateServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		ArrayList<OrderSlipBean> cancelSlip = (ArrayList<OrderSlipBean>) session.getAttribute("cancelSlip");
 		String cancelComment = (String) session.getAttribute("cancelComment");
+		int orderId = (int) session.getAttribute("orderId");
 		
 		//order_listの更新
 		OrderListDao orderListDao = new OrderListDao();
@@ -77,6 +105,7 @@ public class DBUpdateServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		ArrayList<OrderSlipBean> refundSlip = (ArrayList<OrderSlipBean>) session.getAttribute("refundSlip");
 		String refundComment = (String) session.getAttribute("refundComment");
+		int orderId = (int) session.getAttribute("orderId");
 		
 		//order_listの更新
 		OrderListDao orderListDao = new OrderListDao();

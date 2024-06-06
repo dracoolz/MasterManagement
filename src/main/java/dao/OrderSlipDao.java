@@ -145,4 +145,29 @@ public class OrderSlipDao extends DBAccess {
 		}
 
 	}
+	
+	//受注追加
+    public void insertOrder(int orderId, ArrayList<OrderSlipBean> slip) {
+    	String sql="""
+    			insert into
+    			order_slip(order_id, pro_id, order_qty)
+    			values(?,?,?)
+    			""";
+    	try {
+			connect();
+			//create statement
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			for(OrderSlipBean item:slip) {
+				ps.setInt(1, orderId);
+				ps.setString(2,item.getProductId());
+				ps.setInt(3,item.getOrderQty());
+				//execute
+				ps.executeUpdate();
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+    }
 }

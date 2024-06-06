@@ -366,6 +366,51 @@ public class OrderListDao extends DBAccess{
 			disconnect();
 		}
     }
+    
+    //受注追加
+    public void insertOrder(int customerId, String orderDate) {
+    	String sql="""
+    			insert into
+    			order_list(cus_id, order_date)
+    			values(?,?)
+    			""";
+    	try {
+			connect();
+			//create statement
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			ps.setInt(1, customerId);
+			ps.setString(2, orderDate);
+			//execute
+			ps.executeUpdate();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+    }
+    
+    //最新の注文番号を取得
+    public int selectMaxOrderId() {
+    	String sql="select max(order_id) as id from order_list";
+    	int orderId = 0;
+    	ResultSet rs = null;
+    	
+    	try {
+			connect();
+			//create statement
+			PreparedStatement ps = getConnection().prepareStatement(sql);
+			//execute
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				orderId = rs.getInt("id");
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}
+    	return orderId;
+    }
 }
 	
 
