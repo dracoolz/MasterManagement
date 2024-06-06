@@ -34,6 +34,8 @@ public class DUControlServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		
 		String forward=null;
+		String str = request.getParameter("submit");
+		String mod = request.getParameter("mod");
 		
 		if(request.getParameter("type").equals("user")) {
 			
@@ -87,45 +89,75 @@ public class DUControlServlet extends HttpServlet {
 		
 		
 		if(request.getParameter("type").equals("category")) {
-			if(request.getParameter("submit").equals("登録")){
+			if(request.getParameter("categoryType").equals("bc")) {
+			if(str.equals("登録")){
 
 				forward="/jsp/categoryMod.jsp?submit=登録";
 
 			 }
 			
-			if(request.getParameter("submit").equals("変更")){
+			if(str.equals("変更")){
 
-				forward="/jsp/categoryMod.jsp?submit=変更";
+				session.setAttribute("bc_id", request.getParameter("id"));
+				session.setAttribute("bc_category", request.getParameter("name"));
+				forward="/jsp/categoryMod.jsp?submit=変更&type=bc";
 
 			 }
 
-			if(request.getParameter("submit").equals("削除")){
-
-				forward="/jsp/categoryMod.jsp?submit=削除";
+			if(str.equals("削除")){
+				
+				session.setAttribute("bc_id", request.getParameter("id"));
+				session.setAttribute("bc_category", request.getParameter("name"));
+				forward="/jsp/categoryConf.jsp?submit=削除";
 
 			 }
 			
-			if(request.getParameter("submit").equals("検索")){
-				
-				SmallCategoryDao scdao = new SmallCategoryDao();
-				BigCategoryDao bcdao = new BigCategoryDao();
-				SmallCategoryBean scbean = new SmallCategoryBean();
-				ArrayList<SmallCategoryBean> bclist = new ArrayList<SmallCategoryBean>();
-				
-				if(request.getParameter("sc")==null) {
-					bclist = bcdao.select(Integer.parseInt(request.getParameter("bc")));
-					request.setAttribute("bclist", bclist);
-				}else {
-					scbean = scdao.selectSc(Integer.parseInt(request.getParameter("sc")));
-					request.setAttribute("scbean", scbean);
+
+			if(str.equals("戻る")){
+				if(mod.equals("登録")) {
+					forward="/jsp/categoryMod.jsp?submit=登録";
+				}else if(mod.equals("変更")) {
+					forward="/jsp/categoryMod.jsp?submit=変更&type=bc";
+				}else if(mod.equals("削除")) {
+					forward="/jsp/categoryMod.jsp?submit=削除";
 				}
+			}
+		}
+		
+			if(request.getParameter("type").equals("category")) {
+				if(request.getParameter("categoryType").equals("sc")) {
+				if(str.equals("登録")){
+
+					forward="/jsp/categoryMod.jsp?submit=登録";
+
+				 }
 				
-				forward="/jsp/category.jsp";
+				if(str.equals("変更")){
 
-			 }
+					session.setAttribute("sc_id", request.getParameter("sc_id"));
+					session.setAttribute("sc_category", request.getParameter("sc_name"));
+					forward="/jsp/categoryMod.jsp?submit=変更&type=sc";
 
-			if(request.getParameter("submit").equals("戻る")){
-				forward="./master";
+				 }
+
+				if(str.equals("削除")){
+
+					session.setAttribute("sc_id", request.getParameter("sc_id"));
+					session.setAttribute("sc_category", request.getParameter("sc_name"));
+					forward="/jsp/categoryConf.jsp?submit=削除";
+
+				 }
+				
+
+				if(str.equals("戻る")){
+					if(mod.equals("登録")) {
+						forward="/jsp/categoryMod.jsp?submit=登録";
+					}else if(mod.equals("変更")) {
+						forward="/jsp/categoryMod.jsp?submit=変更&type=sc";
+					}else if(mod.equals("削除")) {
+						forward="/jsp/categoryMod.jsp?submit=削除";
+					}
+				}
 			}
 		}
 		
