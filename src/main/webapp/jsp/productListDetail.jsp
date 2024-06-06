@@ -51,19 +51,38 @@
 
     function drawBarChart() {
         var data = google.visualization.arrayToDataTable([
-            ['Year', '売上'],
-            <% for (int i = 0; i < 13; i++) {
-                int year = 2023 + (i / 12);
-                int month = 6 + (i % 12);
-                if (month <= 0) {
-                    month += 12;
-                    year--;
-                }
-                int saleAmount = (i < list.size() ? list.get(i).getSale_amount() : 0);
+            ['Year-Month', '売上'],
+            <% 
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM"); // Assuming monthly format
+
+            if ("year".equals(request.getParameter("switcher"))) {
+                formatter = DateTimeFormatter.ofPattern("yyyy"); // Change formatter for yearly
+                for (int i = 0; i < 11; i++) { // Adjust for 10 years if yearly
+                    LocalDate date = currentDate.minusYears(i);
+                    Optional<SalesBean> salesForYear = list.stream()
+                        .filter(bean -> bean.getDate() != null && bean.getDate().getYear() == date.getYear())
+                        .findFirst();
+                    int saleAmount = salesForYear.map(SalesBean::getSale_amount).orElse(0);
             %>
-            ['<%= year + "-" + (month < 10 ? "0" + month : month) %>', <%= saleAmount %>],
-            <% } %>
+                    ['<%= date.format(formatter) %>', <%= saleAmount %>],
+            <% 
+                }
+            } else {
+                for (int i = 0; i < 13; i++) { // Adjust for 13 months if monthly
+                    LocalDate date = currentDate.minusMonths(i);
+                    Optional<SalesBean> salesForMonth = list.stream()
+                        .filter(bean -> bean.getDate() != null && bean.getDate().getYear() == date.getYear() && bean.getDate().getMonthValue() == date.getMonthValue())
+                        .findFirst();
+                    int saleAmount = salesForMonth.map(SalesBean::getSale_amount).orElse(0);
+            %>
+                    ['<%= date.format(formatter) %>', <%= saleAmount %>],
+            <% 
+                }
+            }
+            %>
         ]);
+
 
         var options = {
             chart: {
@@ -153,7 +172,6 @@
 				<table>
 					<%
                         String sessionMonth = (String) session.getAttribute("month");
-                        DateTimeFormatter formatter;
                         boolean isMonthly = "month".equals(sessionMonth);
                         
                         if (isMonthly) {
@@ -174,9 +192,6 @@
 					</thead>
 					<tbody>
 						<%
-						LocalDate currentDate = LocalDate.now();
-						%>
-						<%
 						if ("year".equals(request.getParameter("switcher"))) {
 							// Loop for 10 years
 							for (int i = 0; i < 11; i++) {
@@ -189,51 +204,51 @@
 
 								// Check if there's a SalesBean object for the current year
 								if (salesForYear.isPresent()) {
-							SalesBean salesBean = salesForYear.get();
+								SalesBean salesBean = salesForYear.get();
 						%>
-						<tr>
-							<td><%=formattedDate%></td>
-							<td><%=salesBean.getSale_amount()%></td>
-						</tr>
+									<tr>
+										<td><%=formattedDate%></td>
+										<td><%=salesBean.getSale_amount()%></td>
+									</tr>
 						<%
-						} else {
+								} else {
 						%>
-						<tr>
-							<td><%=formattedDate%></td>
-							<td>0</td>
-						</tr>
+									<tr>
+										<td><%=formattedDate%></td>
+										<td>0</td>
+									</tr>
 						<%
-						}
-						}
+								}
+							}
 						} else { // Default to monthly display
-						// Loop for 13 months
-						for (int i = 0; i < 13; i++) {
-						LocalDate date = currentDate.minusMonths(i);
-						String formattedDate = date.format(formatter);
-
-						Optional<SalesBean> salesForMonth = list.stream()
-								.filter(bean -> bean.getDate().getYear() == date.getYear() &&
-								bean.getDate().getMonth() == date.getMonth())
-								.findFirst();
-
-						// Check if there's a SalesBean object for the current month
-						if (salesForMonth.isPresent()) {
-						SalesBean salesBean = salesForMonth.get();
-						%>
-						<tr>
-							<td><%=formattedDate%></td>
-							<td><%=salesBean.getSale_amount()%></td>
-						</tr>
-						<%
-						} else {
-						%>
-						<tr>
-							<td><%=formattedDate%></td>
-							<td>0</td>
-						</tr>
-						<%
-						}
-						}
+							// Loop for 13 months
+							for (int i = 0; i < 13; i++) {
+								LocalDate date = currentDate.minusMonths(i);
+								String formattedDate = date.format(formatter);
+		
+								Optional<SalesBean> salesForMonth = list.stream()
+										.filter(bean -> bean.getDate().getYear() == date.getYear() &&
+										bean.getDate().getMonth() == date.getMonth())
+										.findFirst();
+		
+								// Check if there's a SalesBean object for the current month
+								if (salesForMonth.isPresent()) {
+									SalesBean salesBean = salesForMonth.get();
+									%>
+									<tr>
+										<td><%=formattedDate%></td>
+										<td><%=salesBean.getSale_amount()%></td>
+									</tr>
+									<%
+								} else {
+									%>
+									<tr>
+										<td><%=formattedDate%></td>
+										<td>0</td>
+									</tr>
+									<%
+								}
+							}
 						}
 						%>
 					</tbody>
