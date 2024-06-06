@@ -10,74 +10,114 @@
 <head>
 <meta charset="UTF-8">
 <title>商品別売上詳細</title>
-<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("productlist"); %>
-<% if (list == null) {
-     list = new ArrayList<SalesBean>();
+<% ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("productlist");
+   if (list == null) {
+       list = new ArrayList<SalesBean>();
    }
-	SalesBean firstBean = null;
-    if (!list.isEmpty()) {
-        firstBean = list.get(0);
+   SalesBean firstBean = null;
+   if (!list.isEmpty()) {
+       firstBean = list.get(0);
    } %>
+
+<%
+// Initialize a map to hold aggregated sales by district
+				Map<String, Integer> districtSales = new LinkedHashMap<>();
+
+				// Aggregate sales by district from the list
+				for (SalesBean bean : list) {
+					String district = bean.getDistrict();
+					int saleAmount = bean.getSale_amount();
+					if (districtSales.containsKey(district)) {
+						// Add current sale amount to the existing amount for the district
+						districtSales.put(district, districtSales.get(district) + saleAmount);
+					} else {
+						// Initialize this district in the map with the current sale amount
+						districtSales.put(district, saleAmount);
+					}
+				}
+%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/productListDetail.css">
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-        google.charts.load('current', { 'packages': ['corechart', 'bar'] });
-        google.charts.setOnLoadCallback(drawCharts);
+    google.charts.load('current', {'packages':['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawCharts);
 
-        function drawCharts() {
-            drawBarChart();
-            drawPieChart();
-        }
+    function drawCharts() {
+        drawBarChart();
+        drawPieChart();
+    }
 
-        function drawBarChart() {
-        	var data = google.visualization.arrayToDataTable([
-        	    ['Year', '売上'],
-        	    <% 
-        	    for (int i = 0; i < 13; i++) { 
-        	        if (i < list.size()) { 
-        	    %>
-        	            ['・', <%= list.get(i).getSale_amount() %>],
-        	        <% } else { %>
-        	            ['・', 0],
-        	        <% } %>
-        	    <% } %>
-        	]);
+    function drawBarChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Year-Month', '売上'],
+            <% 
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM"); // Assuming monthly format
 
-            var options = {
-                chart: {
-                    title: "売上金額の推移",
-                    titleTextStyle: {
-                        color: 'black'
-                    }
+            if ("year".equals(request.getParameter("switcher"))) {
+                formatter = DateTimeFormatter.ofPattern("yyyy"); // Change formatter for yearly
+                for (int i = 0; i < 11; i++) { // Adjust for 10 years if yearly
+                    LocalDate date = currentDate.minusYears(i);
+                    Optional<SalesBean> salesForYear = list.stream()
+                        .filter(bean -> bean.getDate() != null && bean.getDate().getYear() == date.getYear())
+                        .findFirst();
+                    int saleAmount = salesForYear.map(SalesBean::getSale_amount).orElse(0);
+            %>
+                    ['<%= date.format(formatter) %>', <%= saleAmount %>],
+            <% 
                 }
-            };
+            } else {
+                for (int i = 0; i < 13; i++) { // Adjust for 13 months if monthly
+                    LocalDate date = currentDate.minusMonths(i);
+                    Optional<SalesBean> salesForMonth = list.stream()
+                        .filter(bean -> bean.getDate() != null && bean.getDate().getYear() == date.getYear() && bean.getDate().getMonthValue() == date.getMonthValue())
+                        .findFirst();
+                    int saleAmount = salesForMonth.map(SalesBean::getSale_amount).orElse(0);
+            %>
+                    ['<%= date.format(formatter) %>', <%= saleAmount %>],
+            <% 
+                }
+            }
+            %>
+        ]);
 
-            var chart = new google.charts.Bar(document.getElementById('barChart'));
 
-            chart.draw(data, google.charts.Bar.convertOptions(options));
-        }
-
-        function drawPieChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['地区', '売上'],
-                <% for (SalesBean bean : list) { %>
-                	[, <%= bean.getSale_amount() %>],
-                <% } %>
-            ]);
-
-            var options = {
-                title: '地区別売上',
+        var options = {
+            chart: {
+                title: '売上金額の推移',
                 titleTextStyle: {
                     color: 'black'
                 }
-            };
+            }
+        };
 
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-            chart.draw(data, options);
-        }
-    </script>
+        var chart = new google.charts.Bar(document.getElementById('barChart'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+
+    function drawPieChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['地区', '売上'],
+            <% // Iterate over the map to display the aggregated results
+                for (Map.Entry<String, Integer> entry : districtSales.entrySet()) {
+            %>
+                [, <%= entry.getValue() %>],
+            <% } %>
+        ]);
+
+        var options = {
+            title: '地区別売上',
+            titleTextStyle: {
+                color: 'black'
+            }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }
+</script>
 </head>
 <body>
 	<div align="center">
@@ -90,10 +130,11 @@
 		</div>
 		<div class="top-button">
 			<form method="post" action="./detail?no=2">
-                <input type="hidden" name="idValue" value="<%= session.getAttribute("idValue") %>">
-                <button type="submit" name="switcher" value="year">年表示</button>
-                <button type="submit" name="switcher" value="month">月表示</button>
-            </form>
+				<input type="hidden" name="idValue"
+					value="<%= session.getAttribute("idValue") %>">
+				<button type="submit" name="switcher" value="year">年表示</button>
+				<button type="submit" name="switcher" value="month">月表示</button>
+			</form>
 			<button type="button" onclick="location.href='manageControl?no=5'">戻る</button>
 		</div>
 		<!-- table -->
@@ -129,9 +170,8 @@
 			<div id="barChart" style="width: 400px; height: 300px;"></div>
 			<div>
 				<table>
-                    <%
+					<%
                         String sessionMonth = (String) session.getAttribute("month");
-                        DateTimeFormatter formatter;
                         boolean isMonthly = "month".equals(sessionMonth);
                         
                         if (isMonthly) {
@@ -142,18 +182,15 @@
                     %>
 					<thead>
 						<tr>
-						<% if (isMonthly) { %>
+							<% if (isMonthly) { %>
 							<th>月</th>
-						<% } else { %>
+							<% } else { %>
 							<th>年</th>
-						<% } %>
+							<% } %>
 							<th>売上</th>
 						</tr>
 					</thead>
 					<tbody>
-						<%
-						LocalDate currentDate = LocalDate.now();
-						%>
 						<%
 						if ("year".equals(request.getParameter("switcher"))) {
 							// Loop for 10 years
@@ -167,51 +204,51 @@
 
 								// Check if there's a SalesBean object for the current year
 								if (salesForYear.isPresent()) {
-							SalesBean salesBean = salesForYear.get();
+								SalesBean salesBean = salesForYear.get();
 						%>
-						<tr>
-							<td><%=formattedDate%></td>
-							<td><%=salesBean.getSale_amount()%></td>
-						</tr>
+									<tr>
+										<td><%=formattedDate%></td>
+										<td><%=salesBean.getSale_amount()%></td>
+									</tr>
 						<%
-						} else {
+								} else {
 						%>
-						<tr>
-							<td><%=formattedDate%></td>
-							<td>0</td>
-						</tr>
+									<tr>
+										<td><%=formattedDate%></td>
+										<td>0</td>
+									</tr>
 						<%
-						}
-						}
+								}
+							}
 						} else { // Default to monthly display
-						// Loop for 13 months
-						for (int i = 0; i < 13; i++) {
-						LocalDate date = currentDate.minusMonths(i);
-						String formattedDate = date.format(formatter);
-
-						Optional<SalesBean> salesForMonth = list.stream()
-								.filter(bean -> bean.getDate().getYear() == date.getYear() &&
-								bean.getDate().getMonth() == date.getMonth())
-								.findFirst();
-
-						// Check if there's a SalesBean object for the current month
-						if (salesForMonth.isPresent()) {
-						SalesBean salesBean = salesForMonth.get();
-						%>
-						<tr>
-							<td><%=formattedDate%></td>
-							<td><%=salesBean.getSale_amount()%></td>
-						</tr>
-						<%
-						} else {
-						%>
-						<tr>
-							<td><%=formattedDate%></td>
-							<td>0</td>
-						</tr>
-						<%
-						}
-						}
+							// Loop for 13 months
+							for (int i = 0; i < 13; i++) {
+								LocalDate date = currentDate.minusMonths(i);
+								String formattedDate = date.format(formatter);
+		
+								Optional<SalesBean> salesForMonth = list.stream()
+										.filter(bean -> bean.getDate().getYear() == date.getYear() &&
+										bean.getDate().getMonth() == date.getMonth())
+										.findFirst();
+		
+								// Check if there's a SalesBean object for the current month
+								if (salesForMonth.isPresent()) {
+									SalesBean salesBean = salesForMonth.get();
+									%>
+									<tr>
+										<td><%=formattedDate%></td>
+										<td><%=salesBean.getSale_amount()%></td>
+									</tr>
+									<%
+								} else {
+									%>
+									<tr>
+										<td><%=formattedDate%></td>
+										<td>0</td>
+									</tr>
+									<%
+								}
+							}
 						}
 						%>
 					</tbody>
@@ -232,12 +269,16 @@
 						</tr>
 					</thead>
 					<tbody>
-						<% for (SalesBean bean : list) { %>
+						<%
+						// Iterate over the districtSales map to display the aggregated results
+						for (Map.Entry<String, Integer> entry : districtSales.entrySet()) {
+						%>
 						<tr>
-							<td><%= bean.getDistrict() %></td>
-							<td><%= bean.getSale_amount() %></td>
+							<td><%=entry.getKey()%></td>
+							<td><%=entry.getValue()%></td>
 						</tr>
 						<% } %>
+
 					</tbody>
 				</table>
 			</div>

@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/companyListDetail.css">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    <%
+    	<%
 		ArrayList<SalesBean> list = (ArrayList<SalesBean>) request.getAttribute("companylist");
 		if (list == null) {
 		    list = new ArrayList<SalesBean>();
@@ -20,6 +20,24 @@
 		SalesBean firstBean = null;
 		if (!list.isEmpty()) {
 		    firstBean = list.get(0);
+		}
+		%>
+
+		<%
+		// Use a LinkedHashMap to maintain the insertion order
+		Map<String, Integer> aggregatedSales = new LinkedHashMap<>();
+
+		// Aggregate sales by category
+		for (int i = 0; i < list.size(); i++) {
+			String category = list.get(i).getCategory();
+			int saleAmount = list.get(i).getSale_amount();
+			if (aggregatedSales.containsKey(category)) {
+				// If the category already exists, add the current sale amount to the existing one
+				aggregatedSales.put(category, aggregatedSales.get(category) + saleAmount);
+			} else {
+				// Otherwise, add the new category with the current sale amount
+				aggregatedSales.put(category, saleAmount);
+			}
 		}
 		%>
         google.charts.load('current', { 'packages': ['corechart', 'bar'] });
@@ -32,17 +50,28 @@
 
         function drawBarChart() {
         	var data = google.visualization.arrayToDataTable([
-        	    ['Year', '売上'],
-        	    <% 
-        	    for (int i = 0; i < 13; i++) { 
-        	        if (i < list.size()) { 
-        	    %>
-        	            ['・', <%= list.get(i).getSale_amount() %>],
-        	        <% } else { %>
-        	            ['・', 0],
-        	        <% } %>
-        	    <% } %>
-        	]);
+                ['Year', '売上'],
+                <% 
+                int year = 2024;
+                int month = 0; // Start from January
+                for (int i = 1; i < 12; i++) { // Loop for 12 months of 2024
+                    int currentMonth = month + i;
+                    if (currentMonth > 12) { // Adjust if the month index goes beyond December
+                        currentMonth -= 12;
+                        year = 2025; // Increment the year if month exceeds December
+                    }
+
+                    // Safely access the list and its elements
+                    int saleAmount = 0; // Default sale amount
+                    if (i < list.size() && list.get(i) != null) { // Check if index is within the list bounds and element is not null
+                        saleAmount = list.get(i).getSale_amount(); // Get sale amount safely
+                    }
+                %>
+                    ['<%= year + "-" + (currentMonth < 10 ? "0" + currentMonth : currentMonth) %>', <%= saleAmount %>],
+                <% } %>
+            ]);
+
+
 
             var options = {
                 chart: {
@@ -54,20 +83,21 @@
             };
 
             var chart = new google.charts.Bar(document.getElementById('barChart'));
-
             chart.draw(data, google.charts.Bar.convertOptions(options));
         }
 
         function drawPieChart() {
             var data = google.visualization.arrayToDataTable([
                 ['カテゴリ', '売上'],
-                <% for (SalesBean bean : list) { %>
-            		[, <%= bean.getSale_amount() %>],
-           	 	<% } %>
+                <% // Iterate over the map to display the aggregated results
+                for (Map.Entry<String, Integer> entry : aggregatedSales.entrySet()) {
+                %>
+                    [, <%= entry.getValue() %>],
+                <% } %>
             ]);
 
             var options = {
-                title: 'カテゴリ',
+                title: 'カテゴリ別売上',
                 titleTextStyle: {
                     color: 'black'
                 }
@@ -76,6 +106,7 @@
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
             chart.draw(data, options);
         }
+
 </script>
 </head>
 <body>
@@ -129,7 +160,7 @@
         <% if (firstBean != null) { %>
         <!-- 取引先別詳細情報 -->
         <div align="left" class="company_info">
-            <h3>株式会社 A</h3>
+            <h3><%= firstBean.getCus_name() %></h3>
             <p>取引先ＩＤ: <%= firstBean.getCus_id() %></p>
             <p>
                 <% 
@@ -236,15 +267,18 @@
                             <th>売上</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <% for (int i = 0; i < list.size(); i++) { %>
-                        <tr>
-                            <td><%= list.get(i).getCategory() %></td>
-                            <td><%= list.get(i).getSale_amount() %></td>
-                        </tr>
-                        <% } %>
-                    </tbody>
-                </table>
+					<tbody>
+						<%
+						// Iterate over the map to display the aggregated results
+						for (Map.Entry<String, Integer> entry : aggregatedSales.entrySet()) {
+						%>
+						<tr>
+							<td><%=entry.getKey()%></td>
+							<td><%=entry.getValue()%></td>
+						</tr>
+						<% } %>
+					</tbody>
+				</table>
             </div>
             <div id="piechart" style="width: 500px; height: 300px;"></div>
         </div>
