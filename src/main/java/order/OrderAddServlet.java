@@ -120,13 +120,9 @@ public class OrderAddServlet extends HttpServlet {
 	//商品関係処理
 	if(("削除").equals(productFlag)) {
 		//productListから商品情報を削除 productId
-		//int i = 0;
-		for(int i=0; i<addSlip.size(); i++) {
-			//削除する商品だったら
-			if(addSlip.get(i).getProductId().equals(delProductId)) {
-				addSlip.remove(i);
-			}
-		}
+		System.out.println("delproductid:"+delProductId);
+		addSlip.removeIf(n -> (n.getProductId().equals(delProductId)));
+		session.setAttribute("addSlip", addSlip);
 		
 	}else if(("追加").equals(productFlag)) {
 		

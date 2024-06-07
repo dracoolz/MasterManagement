@@ -50,9 +50,12 @@
 						<td><%= product.getProductId()%></td>
 						<td><%= product.getProductName() %></td>
 						<td><input type="number" name="orderQty" value="<%=product.getOrderQty() %>" min="1" max=""></td>
-						<td><input type="submit" name="productFlag" value="削除" formaction="orderAdd"></td>
+						
+						<form action="?" method="post">
+							<input type="hidden" name="delProductId" value="<%= product.getProductId()%>">
+							<td><input type="submit" name="productFlag" value="削除" formaction="orderAdd"></td>
+						</form>
 					</tr>
-					<input type="hidden" name="delProductId" value="<%= product.getProductId()%>">
 				<% }%>
 			<%} %>
 		</table>
@@ -71,7 +74,7 @@
 		<br>
 		<input type="hidden" name="code" value="add">
 		<input type="submit" name="pageFlag" value="確認" formaction="confirm">
-		<input type="button" name="back" value="戻る">
+		<input type="submit" name="back" value="戻る" formaction="manageMenu">
 	</form>
 	
 </body>
